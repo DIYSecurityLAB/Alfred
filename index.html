@@ -34,7 +34,7 @@
       property="og:description"
       content="Compre Bitcoin de forma privada e segura com transações P2P sem KYC."
     />
-    <meta property="og:image" content="https://imgur.com/a/H6T2tD4" />
+    <meta property="og:image" content="/alfred.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 
@@ -46,7 +46,7 @@
       property="twitter:description"
       content="Compre Bitcoin de forma privada e segura com transações P2P sem KYC."
     />
-    <meta property="twitter:image" content="https://imgur.com/a/H6T2tD4" />
+    <meta property="twitter:image" content="/alfred.jpg" />
 
     <!-- Meta Keywords -->
     <meta
@@ -70,13 +70,7 @@
     <script>
       function updateFavicon() {
         const favicon = document.getElementById('favicon');
-        const darkMode = window.matchMedia(
-          '(prefers-color-scheme: dark)',
-        ).matches;
-        favicon.setAttribute(
-          'href',
-          darkMode ? '/faviconai.png' : '/faviconai.png',
-        );
+        favicon.setAttribute('href', '/faviconai.png');
       }
 
       updateFavicon();
