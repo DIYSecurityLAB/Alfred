@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { FaRobot } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { LanguageSwitcher } from '../../components/LanguageSwitcher/LanguageSwitcher';
+import { UserLevel } from '../../components/UserLevel/UserLevel';
 import { AuthContext } from '../../context/AuthContext';
 import { ROUTES } from '../../routes/Routes';
 import { NavLinks } from './NavLinks';
@@ -49,17 +50,21 @@ export default function Header() {
           {user ? (
             <>
               <button
-                onClick={() => setIsDropdownOpen((prev) => !prev)}
-                className="flex items-center gap-x-2 text-white hover:text-gray-300 transition-all"
+                onClick={(e) => {
+                  e.stopPropagation(); // Evita interferência com outros cliques
+                  setIsDropdownOpen((prev) => !prev);
+                }}
+                className="flex items-center gap-x-4 text-white hover:text-gray-300 transition-all"
               >
                 <FaRobot size={24} />
                 {/* Exibe o nome do usuário em todas as telas */}
                 <span className="inline text-lg font-semibold">
                   {user.username}
                 </span>
+                <UserLevel />
               </button>
               {isDropdownOpen && (
-                <div className="absolute top-10 right-0 bg-gray-800 shadow-lg rounded-lg p-2 flex flex-col items-center z-50">
+                <div className="absolute top-10 right-0 bg-black   shadow-lg rounded-lg p-2 flex flex-col items-center z-50">
                   <span className="text-white mb-2">Logado</span>
                   <button
                     onClick={handleLogout}

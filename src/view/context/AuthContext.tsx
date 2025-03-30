@@ -8,6 +8,7 @@ export type AuthUser = {
   username: string;
   acessToken: string;
   refreshToken: string;
+  userLevel: number;
 };
 
 type AuthContextType = {
@@ -99,7 +100,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (username: string, password: string) => {
     try {
       const result = await authRepository.login(username, password);
-      if (!result || !result.acessToken || !result.refreshToken || !result.id) {
+      if (
+        !result ||
+        !result.acessToken ||
+        !result.refreshToken ||
+        !result.id ||
+        result.userLevel === undefined
+      ) {
         throw new Error('Dados de login incompletos recebidos do backend');
       }
       const loggedUser: AuthUser = {
@@ -107,6 +114,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         username,
         acessToken: result.acessToken,
         refreshToken: result.refreshToken,
+        userLevel: result.userLevel,
       };
       setUser(loggedUser);
       localStorage.setItem('user', JSON.stringify(loggedUser));
