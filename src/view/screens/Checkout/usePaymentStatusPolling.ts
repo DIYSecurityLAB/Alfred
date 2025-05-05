@@ -49,7 +49,7 @@ export const usePaymentStatusPolling = () => {
         navigate(ROUTES.paymentAlfredStatus.success.call(currentLang));
         clearInterval(timerRef.current!);
       }
-      if (status === 'under_review') {
+      if (status === 'review') {
         navigate(ROUTES.paymentAlfredStatus.review.call(currentLang));
         clearInterval(timerRef.current!);
       } else {
