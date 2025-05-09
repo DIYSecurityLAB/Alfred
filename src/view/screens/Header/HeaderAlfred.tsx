@@ -82,7 +82,7 @@ export default function Header() {
                 >
                   <FaRobot size={24} />
                   <div className="flex flex-col items-start">
-                    <span className="inline text-lg font-semibold">
+                    <span className=" font-pixelade inline text-2xl font-semibold">
                       {user.username}
                     </span>
                     {user.levelName && (
