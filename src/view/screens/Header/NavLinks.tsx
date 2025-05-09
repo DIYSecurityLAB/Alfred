@@ -12,9 +12,16 @@ type NavLinksProps = {
   closeButton?: ReactNode;
   isLargeScreen: boolean;
   LinkCallBack?: () => void;
+  isMobileMenu?: boolean;
 };
 
-export function NavLinks({ LinkCallBack }: NavLinksProps) {
+export function NavLinks({
+  isVisible,
+  closeButton,
+
+  LinkCallBack,
+  isMobileMenu = false,
+}: NavLinksProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { currentLang } = useCurrentLang();
@@ -49,9 +56,21 @@ export function NavLinks({ LinkCallBack }: NavLinksProps) {
     navigate(path);
   };
 
+  if (!isVisible) return null;
+
   return (
     <>
-      <PopoverGroup className="flex flex-row items-center justify-center gap-x-1 sm:gap-x-2 flex-wrap">
+      <PopoverGroup
+        className={classNames(
+          isMobileMenu
+            ? 'flex flex-col items-center justify-center gap-y-2 w-full'
+            : 'hidden md:flex flex-row items-center justify-center gap-x-1 sm:gap-x-2 flex-wrap',
+        )}
+      >
+        {closeButton && isMobileMenu && (
+          <div className="w-full flex justify-end p-2">{closeButton}</div>
+        )}
+
         {Links.map((link, index) => (
           <button
             key={index}
@@ -59,8 +78,8 @@ export function NavLinks({ LinkCallBack }: NavLinksProps) {
             className={classNames(
               'text-xl sm:text-2xl lg:text-3xl font-extralight leading-6 text-white px-3 sm:px-5 py-2 transition-all text-center',
               'hover:bg-white hover:text-black duration-300 ease-in-out',
-              'w-auto',
               'font-pixelade',
+              isMobileMenu ? 'w-full' : 'w-auto',
             )}
           >
             {link.label}

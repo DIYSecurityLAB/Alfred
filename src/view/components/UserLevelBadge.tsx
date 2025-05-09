@@ -12,9 +12,13 @@ import { useUserLevel } from '../hooks/useUserLevel';
 
 interface UserLevelBadgeProps {
   compact?: boolean;
+  className?: string; // Adicionada a prop className
 }
 
-export function UserLevelBadge({ compact = false }: UserLevelBadgeProps) {
+export function UserLevelBadge({
+  compact = false,
+  className = '',
+}: UserLevelBadgeProps) {
   const { userLevel, userLevelName, getUserLevelInfo } = useUserLevel();
   const levelInfo = getUserLevelInfo();
   const { t } = useTranslation();
@@ -121,7 +125,7 @@ export function UserLevelBadge({ compact = false }: UserLevelBadgeProps) {
 
   if (compact) {
     return (
-      <div className="flex items-center justify-center">
+      <div className={`user-level-badge ${className}`}>
         <div
           className={`px-2 py-0.5 rounded-full text-white text-xs bg-gradient-to-r ${colorTheme.bg} flex items-center gap-1 shadow-lg`}
         >
@@ -192,7 +196,7 @@ export function UserLevelBadge({ compact = false }: UserLevelBadgeProps) {
                           {[0, 1, 2, 3, 4, 5].map((level) => (
                             <div
                               key={level}
-                              className={`absolute top-0 bottom-0 flex items-center justify-center w-2 h-2 rounded-full transform -translate-x-1/2 
+                              className={`absolute top-0 bottom-0 flex items-center justify-center w-2 h-2 rounded-full transform -translate-x-1/2
                                          ${level <= userLevel ? 'bg-white' : 'bg-gray-500'}`}
                               style={{ left: `${(level / 5) * 100}%` }}
                             />
