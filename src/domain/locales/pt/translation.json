@@ -69,7 +69,7 @@
   "paymentSuccess": {
     "title": "Pagamento concluído com sucesso!",
     "description": "Sua transação foi concluída com sucesso.",
-    "transactionTime": "Você receberá sua cripto em sua carteira informada no checkout, o processamento pode levar de 5 minutos a 6 horas, por favor aguarde.",
+    "transactionTime": "Você receberá sua cripto em sua carteira informada no checkout, o processamento pode levar de 15 minutos a 12 horas, por favor aguarde.",
     "whatsapp": "FALE CONOSCO",
     "redirectButton": "VOLTAR PARA O SITE",
     "Ballon": "Volte logo!"

@@ -68,7 +68,7 @@
   "paymentSuccess": {
     "title": "Payment completed successfully!",
     "description": "Your transaction has been completed successfully.",
-    "transactionTime": "You will receive your crypto in the wallet you provided during checkout. Processing may take from 5 minutes to 6 hours, please wait.",
+    "transactionTime": "You will receive your crypto in the wallet you provided during checkout. Processing may take from 15 minutes to 12 hours, please wait.",
     "whatsapp": "Contact us via WhatsApp",
     "redirectButton": "Go back to SITE",
     "Ballon": "Come back soon!"

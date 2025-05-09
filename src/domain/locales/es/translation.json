@@ -68,7 +68,7 @@
   "paymentSuccess": {
     "title": "¡Pago completado con éxito!",
     "description": "Su transacción se ha completado con éxito.",
-    "transactionTime": "Recibirá su cripto en la cartera que proporcionó durante el proceso de pago. El procesamiento puede llevar de 5 minutos a 6 horas, por favor, espere.",
+    "transactionTime": "Recibirá su cripto en la cartera que proporcionó durante el proceso de pago. El procesamiento puede llevar de 15 minutos a 12 horas, por favor, espere.",
     "whatsapp": "Póngase en contacto a través de WhatsApp",
     "redirectButton": "Volver al SITIO",
     "Ballon": "¡Vuelve pronto!"
