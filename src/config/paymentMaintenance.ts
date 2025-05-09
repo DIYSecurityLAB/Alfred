@@ -10,7 +10,7 @@
 
 export const paymentMaintenanceConfig = {
   // Controla se o PIX está em manutenção
-  PIX_MAINTENANCE: true,
+  PIX_MAINTENANCE: false,
 
   // Mensagem exibida quando o PIX está em manutenção
   PIX_MAINTENANCE_MESSAGE:
