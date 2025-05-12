@@ -206,7 +206,11 @@ export function useDataForm() {
             }
             break;
           case 'Lightning':
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(coldWallet)) {
+            if (
+              !/^lnbc[0-9]{1,}[a-zA-Z0-9]+$/.test(coldWallet) &&
+              !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(coldWallet) &&
+              !/^lnurl1[a-z0-9]+$/i.test(coldWallet)
+            ) {
               newErrors.coldWallet = t(
                 'buycheckout.invalidColdWalletErrorLightning',
               );
