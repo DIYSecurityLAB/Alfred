@@ -42,6 +42,70 @@ export function Fees() {
 
         <section className="pb-8">
           <h2 className="text-xl font-semibold mb-4 text-white">
+            {t('fees.userLevelsTitle')}
+          </h2>
+
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-2 text-white">
+              {t('fees.level0.title')}
+            </h3>
+            <p className="text-white">{t('fees.level0.howToEnter')}</p>
+            <p className="text-white">{t('fees.level0.transactionLimit')}</p>
+            <p className="text-white">{t('fees.level0.valuePerTransaction')}</p>
+            <p className="text-white">{t('fees.level0.benefits')}</p>
+            <p className="text-white">{t('fees.level0.levelUp')}</p>
+          </div>
+
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-2 text-white">
+              {t('fees.level1.title')}
+            </h3>
+            <p className="text-white">{t('fees.level1.howToEnter')}</p>
+            <p className="text-white">{t('fees.level1.transactionLimit')}</p>
+            <p className="text-white">{t('fees.level1.levelUp')}</p>
+          </div>
+
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-2 text-white">
+              {t('fees.level2.title')}
+            </h3>
+            <p className="text-white">{t('fees.level2.howToEnter')}</p>
+            <p className="text-white">{t('fees.level2.transactionLimit')}</p>
+            <p className="text-white">{t('fees.level2.benefits')}</p>
+            <p className="text-white">{t('fees.level2.levelUp')}</p>
+          </div>
+
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-2 text-white">
+              {t('fees.level3.title')}
+            </h3>
+            <p className="text-white">{t('fees.level3.howToEnter')}</p>
+            <p className="text-white">{t('fees.level3.transactionLimit')}</p>
+            <p className="text-white">{t('fees.level3.benefits')}</p>
+            <p className="text-white">{t('fees.level3.levelUp')}</p>
+          </div>
+
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-2 text-white">
+              {t('fees.level4.title')}
+            </h3>
+            <p className="text-white">{t('fees.level4.howToEnter')}</p>
+            <p className="text-white">{t('fees.level4.transactionLimit')}</p>
+            <p className="text-white">{t('fees.level4.levelUp')}</p>
+          </div>
+
+          <div className="mb-6">
+            <h3 className="text-lg font-semibold mb-2 text-white">
+              {t('fees.level5.title')}
+            </h3>
+            <p className="text-white">{t('fees.level5.howToEnter')}</p>
+            <p className="text-white">{t('fees.level5.transactionLimit')}</p>
+            <p className="text-white">{t('fees.level5.levelUp')}</p>
+          </div>
+        </section>
+
+        <section className="pb-8">
+          <h2 className="text-xl font-semibold mb-4 text-white">
             {t('fees.reflectionTitle')}
           </h2>
           <p className="text-white">{t('fees.reflection1')}</p>

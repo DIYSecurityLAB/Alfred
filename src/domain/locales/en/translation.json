@@ -68,7 +68,7 @@
   "paymentSuccess": {
     "title": "Payment completed successfully!",
     "description": "Your transaction has been completed successfully.",
-    "transactionTime": "You will receive your crypto in the wallet you provided during checkout. Processing may take from 5 minutes to 6 hours, please wait.",
+    "transactionTime": "You will receive your crypto in the wallet you provided during checkout. Processing may take from 15 minutes to 12 hours, please wait.",
     "whatsapp": "Contact us via WhatsApp",
     "redirectButton": "Go back to SITE",
     "Ballon": "Come back soon!"
@@ -90,6 +90,47 @@
     "coupons": "For amounts up to 6,000 BRL, when using a coupon, the fee varies according to the influencer. For amounts above 6,000 BRL, when using a coupon, the fee is reduced to 4.99%.",
     "convertibilityRates": "Rates are variable for transactions involving Pix to LBTC and Bitcoin on-chain transfers.",
     "convertibilityRatesTile": "Convertibility Rates",
+    "userLevelsTitle": "AlfredP2P Levels Program",
+    "level0": {
+      "title": "Level 0 — Wood",
+      "howToEnter": "How to enter: All new users start at this level automatically.",
+      "transactionLimit": "Transaction limit: Up to 2 transactions per day",
+      "valuePerTransaction": "Value per transaction: between R$200 and R$500",
+      "benefits": "Benefits: No additional benefits.",
+      "levelUp": "To level up: Complete 2 transactions within the allowed limit and wait 24 hours after the second transaction"
+    },
+    "level1": {
+      "title": "Level 1 — Bronze",
+      "howToEnter": "How to enter: After completing 2 transactions at Wood level and waiting 24 hours.",
+      "transactionLimit": "Transaction limit: Up to R$6,000 per day.",
+      "levelUp": "To level up: Accumulate total transactions of R$10,000."
+    },
+    "level2": {
+      "title": "Level 2 — Silver",
+      "howToEnter": "How to enter: When accumulating transactions of R$10,000 at Bronze level.",
+      "transactionLimit": "Transaction limit: Up to R$10,000 per day.",
+      "benefits": "Benefits: Approval for transfers via wire transfer (TED)",
+      "levelUp": "To level up: Complete at least 4 purchases and accumulate total transactions of R$50,000"
+    },
+    "level3": {
+      "title": "Level 3 — Gold",
+      "howToEnter": "How to enter: When accumulating transactions of R$50,000 at Silver level.",
+      "transactionLimit": "Transaction limit: Up to R$35,000 per day.",
+      "benefits": "Benefits: Access to all payment methods + Cash deposit",
+      "levelUp": "To level up: Accumulate total transactions of R$100,000."
+    },
+    "level4": {
+      "title": "Level 4 — Platinum",
+      "howToEnter": "How to enter: When reaching R$100,000 in accumulated transactions.",
+      "transactionLimit": "Transaction limit: Up to R$50,000 per day.",
+      "levelUp": "To level up: Accumulate R$250,000 in transactions."
+    },
+    "level5": {
+      "title": "Level 5 — Diamond",
+      "howToEnter": "How to enter: When reaching R$250,000 in accumulated transactions.",
+      "transactionLimit": "Transaction limit: Up to R$150,000 per day.",
+      "levelUp": "To level up: — (Final level)"
+    },
     "reflectionTitle": "Reflection: Bitcoin as a Libertarian Tool",
     "reflection1": "If Bitcoin is truly a libertarian tool, why do governments still allow individuals to buy BTC legally?",
     "reflection2": "The answer lies in how conventional Bitcoin purchases work: to acquire BTC through traditional exchanges, you must provide all your personal data, the well-known KYC (Know Your Customer). This way, the government has access to all information about your transaction, including where your Bitcoin is and who owns it.",
