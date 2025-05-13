@@ -69,7 +69,7 @@
   "paymentSuccess": {
     "title": "Pagamento concluído com sucesso!",
     "description": "Sua transação foi concluída com sucesso.",
-    "transactionTime": "Você receberá sua cripto em sua carteira informada no checkout, o processamento pode levar de 5 minutos a 6 horas, por favor aguarde.",
+    "transactionTime": "Você receberá sua cripto em sua carteira informada no checkout, o processamento pode levar de 15 minutos a 12 horas, por favor aguarde.",
     "whatsapp": "FALE CONOSCO",
     "redirectButton": "VOLTAR PARA O SITE",
     "Ballon": "Volte logo!"
@@ -91,6 +91,47 @@
     "coupons": "Para valores até 6.000 BRL, ao utilizar um cupom, a taxa varia de acordo com o influenciador. Para valores acima de 6.000 BRL, ao utilizar um cupom, a taxa é reduzida para 4,99%.",
     "convertibilityRates": "As taxas são variáveis para transações envolvendo Pix para LBTC e envio de Bitcoin on-chain.",
     "convertibilityRatesTile": "Taxas de Convertibilidade",
+    "userLevelsTitle": "Programa de Níveis AlfredP2P",
+    "level0": {
+      "title": "Nível 0 — Madeira",
+      "howToEnter": "Como entrar: Todos os novos usuários começam neste nível automaticamente.",
+      "transactionLimit": "Limite de transações: Até 2 transações por dia",
+      "valuePerTransaction": "Valor por transação: entre R$200 e R$500",
+      "benefits": "Benefícios: Nenhum benefício adicional.",
+      "levelUp": "Para subir de nível: Realizar 2 transações dentro do limite permitido e aguardar 24 horas após a segunda transação"
+    },
+    "level1": {
+      "title": "Nível 1 — Bronze",
+      "howToEnter": "Como entrar: Após completar 2 transações no nível Madeira e aguardar 24 horas.",
+      "transactionLimit": "Limite de transações: Até R$6.000 por dia.",
+      "levelUp": "Para subir de nível: Acumular movimentações totais de R$10.000."
+    },
+    "level2": {
+      "title": "Nível 2 — Prata",
+      "howToEnter": "Como entrar: Ao acumular movimentações de R$10.000 no nível Bronze.",
+      "transactionLimit": "Limite de transações: Até R$10.000 por dia.",
+      "benefits": "Benefícios: Liberação para transferências via TED",
+      "levelUp": "Para subir de nível: Realizar pelo menos 4 compras e acumular movimentações totais de R$50.000"
+    },
+    "level3": {
+      "title": "Nível 3 — Ouro",
+      "howToEnter": "Como entrar: Ao acumular movimentações de R$50.000 no nível Prata.",
+      "transactionLimit": "Limite de transações: Até R$35.000 por dia.",
+      "benefits": "Benefícios: Liberação de todos os meios de pagamento + Depósito em espécie",
+      "levelUp": "Para subir de nível: Movimentar um total acumulado de R$100.000."
+    },
+    "level4": {
+      "title": "Nível 4 — Platina",
+      "howToEnter": "Como entrar: Ao atingir R$100.000 em movimentações acumuladas.",
+      "transactionLimit": "Limite de transações: Até R$50.000 por dia.",
+      "levelUp": "Para subir de nível: Movimentar R$250.000 acumulados."
+    },
+    "level5": {
+      "title": "Nível 5 — Diamante",
+      "howToEnter": "Como entrar: Ao atingir R$250.000 em movimentações acumuladas.",
+      "transactionLimit": "Limite de transações: Até R$150.000 por dia.",
+      "levelUp": "Para subir de nível: — (Nível final)"
+    },
     "reflectionTitle": "Reflexão: Bitcoin como Ferramenta Libertária",
     "reflection1": "Se o Bitcoin é realmente uma ferramenta libertária, por que os governos ainda permitem que os indivíduos comprem BTC legalmente?",
     "reflection2": "A resposta está na forma como as compras convencionais de Bitcoin funcionam: para adquirir BTC por meio de exchanges tradicionais, você precisa fornecer todos os seus dados pessoais, o famoso KYC (Know Your Customer). Assim, o governo tem acesso a todas as informações sobre a sua transação, incluindo onde seu Bitcoin está e quem o possui.",

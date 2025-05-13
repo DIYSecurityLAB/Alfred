@@ -119,11 +119,11 @@ Quantidade de ${checkoutData.cryptoType}: ${checkoutData.cryptoAmount}`;
             </FormProvider>
           </article>
 
-          <article className="w-full lg:w-1/2 flex justify-center">
+          <article className="w-full lg:w-1/2 flex justify-center items-center overflow-hidden">
             <img
               src={AlfredImg}
               alt="Imagem Alfred"
-              className="w-full max-w-md lg:max-w-full image-step"
+              className="w-full h-auto scale-100 sm:scale-125 md:scale-135 lg:scale-150 xl:scale-165 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-none transition-transform duration-300 image-step"
             />
           </article>
 
