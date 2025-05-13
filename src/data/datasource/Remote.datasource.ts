@@ -40,10 +40,10 @@ export type HeaderValues =
 export class RemoteDataSource {
   private api: AxiosInstance;
 
-  constructor(baseURL?: string) {
+  constructor(baseURL?: string, headers?: object) {
     this.api = axios.create({
       baseURL: baseURL,
-      headers: {},
+      headers: headers,
     });
   }
 
