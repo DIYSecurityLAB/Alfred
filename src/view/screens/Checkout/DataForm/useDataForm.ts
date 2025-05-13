@@ -4,6 +4,7 @@ import {
   isPaymentMethodInMaintenance,
 } from '@/config/paymentMaintenance';
 import { generateVipPixCode, isVipUser } from '@/config/vipUsers';
+
 import { useAuth } from '@/view/hooks/useAuth';
 import { useUserLevel } from '@/view/hooks/useUserLevel';
 import axios from 'axios';
@@ -436,17 +437,17 @@ Cupom: ${cupom}`;
               ? 'PIX_MAINTENANCE'
               : paymentMethod,
           network: network,
-          telefone: '111111111111',
           coldWallet: coldWallet,
           cupom: cupom,
           cryptoType: cryptoType,
-          userLevel: userLevel,
+          amountType: 'BRL',
         },
         {
           headers: {
             Authorization: userObj?.acessToken
               ? `Bearer ${userObj.acessToken}`
               : '',
+            'x-api-key': import.meta.env.VITE_API_KEY,
           },
         },
       );
@@ -648,10 +649,16 @@ Cupom: ${cupom}`;
 
     try {
       setIsLoading(true);
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/coupons/is-valid`,
-        { code: cupom.trim().toUpperCase() },
-      );
+      const axiosInstance = axios.create({
+        baseURL: import.meta.env.VITE_API_URL,
+        headers: {
+          'x-api-key': import.meta.env.VITE_API_KEY,
+        },
+      });
+
+      const response = await axiosInstance.post(`coupons/is-valid`, {
+        code: cupom.trim().toUpperCase(),
+      });
       const coupon = response.data;
 
       if (!coupon.isActive) {

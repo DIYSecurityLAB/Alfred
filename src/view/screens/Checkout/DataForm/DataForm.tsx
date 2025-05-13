@@ -706,9 +706,6 @@ Cupom: ${cupom || 'Nenhum'}`;
           </div>
         </section>
 
-        {/* Removemos a versão anterior da imagem que estava fixa */}
-
-        {/* Só mostrar o modal para usuários não-VIP */}
         {!isVipTransaction && (
           <ConfirmInfosModal
             isOpen={isModalOpen}
@@ -723,7 +720,6 @@ Cupom: ${cupom || 'Nenhum'}`;
             network={network || ''}
             coldWallet={coldWallet || ''}
             paymentMethod={paymentMethod || ''}
-            transactionNumber={'11111111111'}
             cupom={cupom || ''}
             alfredFeePercentage={alfredFeePercentage}
             cryptoType={cryptoType || ''}

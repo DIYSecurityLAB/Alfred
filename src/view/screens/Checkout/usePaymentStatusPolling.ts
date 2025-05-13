@@ -42,6 +42,11 @@ export const usePaymentStatusPolling = () => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/deposit-status?transactionId=${transaction}`,
+        {
+          headers: {
+            'x-api-key': import.meta.env.VITE_API_KEY,
+          },
+        },
       );
       const status = response.data.status;
 

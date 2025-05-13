@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { FaPlay } from 'react-icons/fa';
-import AlfredImg from '../../assets/_DIY SEC LAB - Apresentação Comercial (1).png';
 import { useCheckout } from './useCheckout';
 import { ValuesForm } from './ValuesForm/ValuesForm';
 
@@ -119,13 +118,13 @@ Quantidade de ${checkoutData.cryptoType}: ${checkoutData.cryptoAmount}`;
             </FormProvider>
           </article>
 
-          <article className="w-full lg:w-1/2 flex justify-center items-center overflow-hidden">
+          {/* <article className="w-full lg:w-1/2 flex justify-center items-center overflow-hidden">
             <img
               src={AlfredImg}
               alt="Imagem Alfred"
               className="w-full h-auto scale-100 sm:scale-125 md:scale-135 lg:scale-150 xl:scale-165 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-none transition-transform duration-300 image-step"
             />
-          </article>
+          </article> */}
 
           <section className="lg:hidden mt-4 mb-4 text-center">
             <p className="text-white">{t('checkout.bitcoin_message')}</p>

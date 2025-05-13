@@ -1,7 +1,7 @@
 import { RemoteDataSource } from '@/data/datasource/Remote.datasource';
 import { AuthRepository } from '@/data/repositories/Auth.repository';
 import { axiosInstance } from '@/infrastructure/api/axiosInstance';
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 
 export type AuthUser = {
   id: string;
@@ -28,7 +28,11 @@ export const AuthContext = createContext<AuthContextType>(
 );
 
 // Instância única para chamadas à API
-const remoteDataSource = new RemoteDataSource(import.meta.env.VITE_API_URL);
+const apiKey = import.meta.env.VITE_API_KEY;
+
+const remoteDataSource = new RemoteDataSource(import.meta.env.VITE_API_URL, {
+  'x-api-key': apiKey,
+});
 const authRepository = new AuthRepository(remoteDataSource);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -58,33 +62,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Declaração única da função refreshAccessToken
   // Defina o tipo de resposta que pode vir do backend:
-  const refreshAccessToken = async (
-    userId: string,
-    refreshToken: string,
-  ): Promise<{ acessToken: string }> => {
-    try {
-      const result = await authRepository.refreshToken(userId, refreshToken);
-      if (!result) {
-        throw new Error('Erro ao atualizar o token: resposta nula.');
-      }
-      // Utilize somente a propriedade "acessToken", pois o schema já faz a transformação
-      const newAcessToken = result.acessToken;
-      if (newAcessToken && typeof newAcessToken === 'string') {
-        console.log('Novo acessToken recebido no refresh:', newAcessToken);
-        if (user) {
-          const updatedUser: AuthUser = { ...user, acessToken: newAcessToken };
-          setUser(updatedUser);
-          localStorage.setItem('user', JSON.stringify(updatedUser));
-          axiosInstance.defaults.headers.common.Authorization = `Bearer ${newAcessToken}`;
+  const refreshAccessToken = useCallback(
+    async (
+      userId: string,
+      refreshToken: string,
+    ): Promise<{ acessToken: string }> => {
+      try {
+        const result = await authRepository.refreshToken(userId, refreshToken);
+        if (!result) {
+          throw new Error('Erro ao atualizar o token: resposta nula.');
         }
-        return { acessToken: newAcessToken };
+        // Utilize somente a propriedade "acessToken", pois o schema já faz a transformação
+        const newAcessToken = result.acessToken;
+        if (newAcessToken && typeof newAcessToken === 'string') {
+          console.log('Novo acessToken recebido no refresh:', newAcessToken);
+          if (user) {
+            const updatedUser: AuthUser = {
+              ...user,
+              acessToken: newAcessToken,
+            };
+            setUser(updatedUser);
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            axiosInstance.defaults.headers.common.Authorization = `Bearer ${newAcessToken}`;
+          }
+          return { acessToken: newAcessToken };
+        }
+        throw new Error('Erro ao atualizar o token: resposta inválida.');
+      } catch (error) {
+        console.error('Erro ao atualizar token:', error);
+        throw error;
       }
-      throw new Error('Erro ao atualizar o token: resposta inválida.');
-    } catch (error) {
-      console.error('Erro ao atualizar token:', error);
-      throw error;
-    }
-  };
+    },
+    [user],
+  );
 
   useEffect(() => {
     if (user) {
@@ -96,7 +106,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       );
       return () => clearInterval(interval);
     }
-  }, [user]);
+  }, [user, refreshAccessToken]);
 
   const login = async (username: string, password: string) => {
     try {

@@ -27,16 +27,14 @@ export interface BitcoinRateRepository {
 }
 
 export class BitcoinRateRepositoryImpl implements BitcoinRateRepository {
-  private datasource: RemoteDataSource;
-
-  constructor(datasource: RemoteDataSource) {
-    this.datasource = datasource;
-  }
-
   async list(): ValidateRes {
     try {
       const marketApiUrl = `${import.meta.env.VITE_API_URL || ''}/market`;
-      const marketAPI = new RemoteDataSource(marketApiUrl);
+      const ApiKey = import.meta.env.VITE_API_KEY || '';
+
+      const marketAPI = new RemoteDataSource(marketApiUrl, {
+        'x-api-key': ApiKey,
+      });
 
       // Call the new market API endpoint
       const marketData = await marketAPI.get({
