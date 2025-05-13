@@ -43,7 +43,6 @@ interface ConfirmInfosModalProps {
   network: string;
   coldWallet: string;
   paymentMethod: string;
-  transactionNumber: string;
   cupom: string;
   alfredFeePercentage: number;
 }
@@ -59,7 +58,6 @@ export default function ConfirmInfosModal({
   network,
   coldWallet,
   paymentMethod,
-  transactionNumber,
   cupom,
   alfredFeePercentage,
 }: ConfirmInfosModalProps) {
@@ -178,12 +176,6 @@ export default function ConfirmInfosModal({
                     {t('confirm_infos.user_data_section.wallet')}:
                   </strong>{' '}
                   {coldWallet}
-                </p>
-                <p>
-                  <strong>
-                    {t('confirm_infos.user_data_section.contact_number')}:
-                  </strong>{' '}
-                  {transactionNumber}
                 </p>
                 <p>
                   <strong>
