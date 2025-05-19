@@ -66,7 +66,7 @@ export function PaymentAlfredReview() {
         <button
           onClick={() =>
             window.open(
-              'https://api.whatsapp.com/send?phone=+5511919050416&text=Meu%20pagamento%20no%20Alfred%20est%C3%A1%20em%20revis%C3%A3o.%20Poderia%20me%20ajudar%3F',
+              'https://api.whatsapp.com/send?phone=+5511911872097&text=Meu%20pagamento%20no%20Alfred%20est%C3%A1%20em%20revis%C3%A3o.%20Poderia%20me%20ajudar%3F',
               '_blank',
             )
           }
