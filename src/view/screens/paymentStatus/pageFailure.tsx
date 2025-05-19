@@ -66,7 +66,7 @@ export function PaymentAlfredFailure() {
         <button
           onClick={() =>
             window.open(
-              'https://api.whatsapp.com/send?phone=+5511919050416&text=Meu%20pagamento%20no%20Alfred%20falhou.%20Poderia%20me%20ajudar%3F',
+              'https://api.whatsapp.com/send?phone=+5511911872097&text=Meu%20pagamento%20no%20Alfred%20falhou.%20Poderia%20me%20ajudar%3F',
               '_blank',
             )
           }
