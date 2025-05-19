@@ -13,7 +13,7 @@ export default function Checkout() {
     useCheckout();
 
   const [transactionType, setTransactionType] = useState<'buy' | 'sell'>('buy');
-  const [isMaintenanceMode] = useState(false);
+  const [isMaintenanceMode] = useState(true);
 
   const toggleTransactionType = () => {
     setTransactionType((prevType) => (prevType === 'buy' ? 'sell' : 'buy'));
