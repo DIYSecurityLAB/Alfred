@@ -9,11 +9,16 @@ export const MarketPriceModel = z.object({
   timestamp: z.number(),
   bitcoin: z.object({
     brl: z.number(),
-    usdt: z.number(),
+    eur: z.number().optional(),
   }),
   usd: z.object({
     brl: z.number(),
   }),
+  euro: z
+    .object({
+      brl: z.number(),
+    })
+    .optional(),
 });
 
 export type ListReq = object;
@@ -46,15 +51,23 @@ export class BitcoinRateRepositoryImpl implements BitcoinRateRepository {
         return Result.Error({ code: 'SERIALIZATION' });
       }
 
-      // Only use bitcoin.brl and usd.brl as instructed
+      // Processar as taxas incluindo o Euro
       const result: ListedCryptoRateModel = {
         bitcoin: {
           brl: marketData.bitcoin.brl,
+          eur: marketData.bitcoin.eur,
         },
         tether: {
           brl: marketData.usd.brl,
         },
       };
+
+      // Adicionar dados do Euro se disponíveis
+      if (marketData.euro) {
+        result.euro = {
+          brl: marketData.euro.brl,
+        };
+      }
 
       return Result.Success(result);
     } catch (error) {

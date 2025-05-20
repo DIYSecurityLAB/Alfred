@@ -4,8 +4,9 @@ import { toast } from 'react-toastify';
 import Btc from '../../../assets/bitcoin.svg';
 import Brl from '../../../assets/brl.svg';
 import DepixIcon from '../../../assets/depix-logo.png';
+import Euro from '../../../assets/eur.svg';
 import Mao from '../../../assets/SITE_MAO_ALFRED.png';
-import Usdt from '../../../assets/usdt.svg';
+import Usdt from '../../../assets/usd.svg';
 import { useValuesForm } from './useValuesForm';
 
 interface ValuesFormProps {
@@ -82,6 +83,42 @@ export function ValuesForm({
     return () => clearInterval(timer);
   }, []);
 
+  // Função para obter o placeholder correto baseado no tipo de moeda
+  const getFiatPlaceholder = () => {
+    switch (fiatType) {
+      case 'BRL':
+        return t('checkout.brl_placeholder');
+      case 'EUR':
+        return t('checkout.eur_placeholder') || 'Valor em EUR';
+      default:
+        return t('checkout.usd_placeholder');
+    }
+  };
+
+  // Função para obter o ícone correto baseado no tipo de moeda
+  const getFiatIcon = () => {
+    switch (fiatType) {
+      case 'BRL':
+        return Brl;
+      case 'EUR':
+        return Euro;
+      default:
+        return Usdt;
+    }
+  };
+
+  // Função para obter o texto alt correto baseado no tipo de moeda
+  const getFiatIconAlt = () => {
+    switch (fiatType) {
+      case 'BRL':
+        return t('checkout.brl_label');
+      case 'EUR':
+        return t('checkout.eur_label') || 'Euro';
+      default:
+        return t('checkout.usd_label');
+    }
+  };
+
   return (
     <div className="relative w-full">
       <div className="space-y-1">
@@ -91,11 +128,7 @@ export function ValuesForm({
             <input
               {...form.register('fiatAmount', { required: true })}
               onChange={handleFiatChange}
-              placeholder={
-                fiatType === 'BRL'
-                  ? t('checkout.brl_placeholder')
-                  : t('checkout.usd_placeholder')
-              }
+              placeholder={getFiatPlaceholder()}
               className="border-2 px-16 py-3 rounded-3xl text-base sm:text-lg text-white placeholder-white bg-black text-center w-full"
             />
             <button
@@ -104,12 +137,8 @@ export function ValuesForm({
               className="absolute right-2 top-1/2 -translate-y-1/2 text-white"
             >
               <img
-                src={fiatType === 'BRL' ? Brl : Usdt}
-                alt={
-                  fiatType === 'BRL'
-                    ? t('checkout.brl_label')
-                    : t('checkout.usd_label')
-                }
+                src={getFiatIcon()}
+                alt={getFiatIconAlt()}
                 className="w-6 h-6 sm:w-10 sm:h-10"
               />
               {/* Exibe a mão na seção Fiat se activeMao for 0 */}
