@@ -57,7 +57,9 @@
     "tooltip_attention": {
       "title": "Atención:",
       "message": "Su primera compra estará limitada a 500 BRL para validar su usuario. Después de la primera compra, podrá realizar transacciones normalmente, respetando los límites mencionados."
-    }
+    },
+    "eur_label": "Euro",
+    "eur_placeholder": "Ingrese el monto en EUR"
   },
   "paymentFailure": {
     "title": "Fallo en el Pago",

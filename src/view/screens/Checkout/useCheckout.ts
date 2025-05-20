@@ -12,10 +12,11 @@ export type Checkout = {
   fiatAmount: string;
   cryptoAmount: string;
   cryptoType: 'BITCOIN' | 'USDT' | 'DEPIX';
-  fiatType: 'BRL' | 'USD';
+  fiatType: 'BRL' | 'USD' | 'EUR';
   btcRate: number;
   usdtRate: number;
   usdRate: number;
+  eurRate: number; // Nova taxa para Euro
 };
 
 export type WalletType = 'liquid' | 'lightning' | 'onchain';
@@ -41,6 +42,7 @@ export function useCheckout() {
       btcRate: 0,
       usdtRate: 0,
       usdRate: 0,
+      eurRate: 0, // Valor padrão para a nova taxa do Euro
     },
   });
 
@@ -72,9 +74,24 @@ export function useCheckout() {
         const usdtBrlRate = result.data.tether.brl;
         const btcUsdRate = btcBrlRate / usdtBrlRate;
 
+        // Calcular a taxa para Euro se disponível, ou estimar
+        let eurRate = undefined;
+        if (result.data.bitcoin.eur) {
+          // Se a API fornece diretamente a taxa BTC/EUR
+          eurRate = result.data.bitcoin.eur;
+        } else if (result.data.euro?.brl) {
+          // Se temos taxa EUR/BRL, calculamos BTC/EUR
+          const eurBrlRate = result.data.euro.brl;
+          eurRate = btcBrlRate / eurBrlRate;
+        } else {
+          // Estimamos usando uma conversão aproximada EUR/USD de 1.08
+          eurRate = btcUsdRate / 1.08;
+        }
+
         form.setValue('btcRate', btcBrlRate);
         form.setValue('usdtRate', usdtBrlRate);
         form.setValue('usdRate', btcUsdRate);
+        form.setValue('eurRate', eurRate);
       } catch (error) {
         console.error('Erro ao buscar taxas:', error);
         toast.error(t('checkout.rates_error'));

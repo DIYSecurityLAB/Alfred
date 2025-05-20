@@ -35,6 +35,7 @@
     "depix_placeholder": "Valor em Depix",
     "btc_placeholder": "Valor em BTC",
     "usdt_placeholder": "Valor em USDT",
+    "eur_placeholder": "Digite o valor em EUR",
     "proceed_button": "Prosseguir",
     "transaction_error": "Transações só são permitidas todos os dias, das 8h às 22h no horário de Brasília.",
     "min_value_error": "O valor mínimo para compra em BTC é 200 BRL.",
