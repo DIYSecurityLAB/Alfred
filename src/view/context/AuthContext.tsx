@@ -53,10 +53,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (user?.acessToken) {
       axiosInstance.defaults.headers.common.Authorization = `Bearer ${user.acessToken}`;
-      console.log(
-        'Token configurado no axios:',
-        axiosInstance.defaults.headers.common.Authorization,
-      );
     }
   }, [user]);
 
@@ -67,31 +63,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       userId: string,
       refreshToken: string,
     ): Promise<{ acessToken: string }> => {
-      try {
-        const result = await authRepository.refreshToken(userId, refreshToken);
-        if (!result) {
-          throw new Error('Erro ao atualizar o token: resposta nula.');
-        }
-        // Utilize somente a propriedade "acessToken", pois o schema já faz a transformação
-        const newAcessToken = result.acessToken;
-        if (newAcessToken && typeof newAcessToken === 'string') {
-          console.log('Novo acessToken recebido no refresh:', newAcessToken);
-          if (user) {
-            const updatedUser: AuthUser = {
-              ...user,
-              acessToken: newAcessToken,
-            };
-            setUser(updatedUser);
-            localStorage.setItem('user', JSON.stringify(updatedUser));
-            axiosInstance.defaults.headers.common.Authorization = `Bearer ${newAcessToken}`;
-          }
-          return { acessToken: newAcessToken };
-        }
-        throw new Error('Erro ao atualizar o token: resposta inválida.');
-      } catch (error) {
-        console.error('Erro ao atualizar token:', error);
-        throw error;
+      const result = await authRepository.refreshToken(userId, refreshToken);
+      if (!result) {
+        throw new Error('Erro ao atualizar o token: resposta nula.');
       }
+      // Utilize somente a propriedade "acessToken", pois o schema já faz a transformação
+      const newAcessToken = result.acessToken;
+      if (newAcessToken && typeof newAcessToken === 'string') {
+        console.log('Novo acessToken recebido no refresh:', newAcessToken);
+        if (user) {
+          const updatedUser: AuthUser = {
+            ...user,
+            acessToken: newAcessToken,
+          };
+          setUser(updatedUser);
+          localStorage.setItem('user', JSON.stringify(updatedUser));
+          axiosInstance.defaults.headers.common.Authorization = `Bearer ${newAcessToken}`;
+        }
+        return { acessToken: newAcessToken };
+      }
+      throw new Error('Erro ao atualizar o token: resposta inválida.');
     },
     [user],
   );
