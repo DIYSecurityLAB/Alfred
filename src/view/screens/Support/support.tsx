@@ -1,5 +1,5 @@
-import AlfredWhiteLogo from '@/view/assets/logo/alfred-white-logo.svg';
 import { Loader } from '@/view/components/Loader';
+import { AlfredLogo } from '@/view/components/Logo/AlfredLogo';
 import { PageBackground } from '@/view/components/PageBackground';
 import { useScaleFactor } from '@/view/hooks/useScaleFactor';
 import { useWindowSize } from '@/view/utils/useWindowSize';
@@ -88,11 +88,7 @@ export function Support() {
         <div className="w-full max-w-4xl  p-8 ">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
             <aside className="col-span-full md:col-span-6 flex flex-col items-center">
-              <img
-                src={AlfredWhiteLogo}
-                alt="Alfred Logo"
-                className="pb-8 w-3/4"
-              />
+              <AlfredLogo />
 
               <div className="flex flex-col gap-6 w-full max-w-[368px]">
                 <a

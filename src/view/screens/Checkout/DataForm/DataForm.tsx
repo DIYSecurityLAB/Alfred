@@ -1,4 +1,3 @@
-import AlfredWhiteLogo from '@/view/assets/logo/alfred-white-logo.svg';
 import { PaymentLoader } from '@/view/components/PaymentLoader';
 import { UserLevelBadge } from '@/view/components/UserLevelBadge';
 import classNames from 'classnames';
@@ -44,6 +43,7 @@ type PaymentMethodType =
 
 // Adicionar a importação no topo do arquivo, se necessário
 import { isVipUser } from '@/config/vipUsers';
+import { AlfredLogo } from '@/view/components/Logo/AlfredLogo';
 
 export default function DataForm() {
   const {
@@ -317,7 +317,7 @@ Cupom: ${cupom || 'Nenhum'}`;
       {isLoading && <PaymentLoader />}
 
       <main className="flex flex-col justify-center items-center pt-12 sm:pt-24">
-        <img src={AlfredWhiteLogo} alt="Alfred Logo" className="w-64 sm:w-96" />
+        <AlfredLogo />
 
         {/* Exibir o nível do usuário */}
         {loggedUser && (

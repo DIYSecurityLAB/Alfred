@@ -1,11 +1,11 @@
 import { useLanguage } from '@/domain/locales/Language';
-import AlfredWhiteLogo from '@/view/assets/logo/alfred-white-logo.svg';
 import { Background } from '@/view/components/BackgroundAnimatedProduct';
 import { Loader } from '@/view/components/Loader';
+import { AlfredLogo } from '@/view/components/Logo/AlfredLogo';
 import { useAuth } from '@/view/hooks/useAuth';
 import { ROUTES } from '@/view/routes/Routes';
 import { useState } from 'react';
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Ícones de olho
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -65,11 +65,7 @@ export default function LoginPage() {
           <div className="w-full lg:w-1/2 flex flex-col items-center justify-center">
             <div className="mb-10 text-center text-white">
               <h1 className="text-4xl font-bold mb-6">Login Seguro</h1>
-              <img
-                src={AlfredWhiteLogo}
-                alt="Alfred Logo"
-                className="w-44 sm:w-60 mx-auto"
-              />
+              <AlfredLogo />
             </div>
             <div className="w-full">
               <input

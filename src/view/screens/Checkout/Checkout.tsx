@@ -1,9 +1,8 @@
-import AlfredWhiteLogo from '@/view/assets/logo/alfred-white-logo.svg';
+import { AlfredLogo } from '@/view/components/Logo/AlfredLogo';
 import SocialButtons from '@/view/components/SocialButtons';
 import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { FaPlay } from 'react-icons/fa';
 import { useCheckout } from './useCheckout';
 import { ValuesForm } from './ValuesForm/ValuesForm';
 
@@ -53,11 +52,7 @@ Quantidade de ${checkoutData.cryptoType}: ${checkoutData.cryptoAmount}`;
       <main className="flex flex-col justify-center items-center w-full max-w-screen-xl px-6 sm:px-12 md:px-20 lg:px-32 xl:px-40 pt-12 sm:pt-28 mx-auto">
         <section className="w-full max-w-screen-lg flex flex-col lg:flex-row items-center justify-center mx-auto">
           <article className="w-full lg:w-1/2 flex flex-col items-center justify-center gap-y-4">
-            <img
-              src={AlfredWhiteLogo}
-              alt="Alfred Logo"
-              className="w-44 sm:w-60"
-            />
+            <AlfredLogo />
 
             <FormProvider {...form}>
               <form className="flex flex-col justify-center items-center w-full max-w-2xl space-y-2">
@@ -68,14 +63,14 @@ Quantidade de ${checkoutData.cryptoType}: ${checkoutData.cryptoAmount}`;
                 )}
 
                 <div className="flex justify-center w-full items-center">
-                  {isAlfred24h && (
+                  {/* {isAlfred24h && (
                     <div className="ml-4">
                       <div className="flex items-center gap-2 text-lg font-bold text-green-500">
                         <FaPlay size={24} />
                         <span className="text-3xl">24H</span>
                       </div>
                     </div>
-                  )}
+                  )} */}
                 </div>
 
                 {steps.current === 1 && (
