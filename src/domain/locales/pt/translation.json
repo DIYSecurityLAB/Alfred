@@ -44,7 +44,7 @@
     "payment_error_above_5000": "Para pagamentos via Pix com valor superior a 5.000 BRL, é necessário preencher o formulário 'Validação para transações anônimas'.",
     "first_purchase_limit_error": "Sua primeira compra está limitada a 500 BRL.",
     "bitcoin_message": "BITCOIN na sua mão, sem complicação e com privacidade.",
-    "opening_hours": "Alfred disponível 24h!",
+    "opening_hours": "24H por dia, 7 dias por semana.",
     "tooltip_btc": {
       "title": "Transações com BTC:",
       "minimum_value": "O valor mínimo para transações com Bitcoin é de R$ 200.",

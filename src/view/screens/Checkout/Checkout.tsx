@@ -3,6 +3,7 @@ import SocialButtons from '@/view/components/SocialButtons';
 import { useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import relogio from '../../assets/relogio.svg';
 import { useCheckout } from './useCheckout';
 import { ValuesForm } from './ValuesForm/ValuesForm';
 
@@ -94,16 +95,11 @@ Quantidade de ${checkoutData.cryptoType}: ${checkoutData.cryptoAmount}`;
                       </button>
                     </div>
 
-                    <section className="hidden lg:flex items-center justify-center text-center">
-                      <p className="text-white">
-                        {t('checkout.bitcoin_message')}
-                      </p>
-                    </section>
-
                     {isAlfred24h && (
                       <section className="hidden lg:flex items-center justify-center text-center">
-                        <p className="text-white">
-                          {t('checkout.opening_hours')}
+                        <p className="text-white flex items-center gap-1">
+                          <img src={relogio} alt="Relogio" className="w-4" />
+                          <span>{t('checkout.opening_hours')}</span>
                         </p>
                       </section>
                     )}
@@ -120,15 +116,14 @@ Quantidade de ${checkoutData.cryptoType}: ${checkoutData.cryptoAmount}`;
               className="w-full h-auto scale-100 sm:scale-125 md:scale-135 lg:scale-150 xl:scale-165 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-none transition-transform duration-300 image-step"
             />
           </article> */}
-
-          <section className="lg:hidden mt-4 mb-4 text-center">
-            <p className="text-white">{t('checkout.bitcoin_message')}</p>
-          </section>
         </section>
 
         {isAlfred24h && (
           <section className="lg:hidden mt-4 mb-4 text-center">
-            <p className="text-white">{t('checkout.opening_hours')}</p>
+            <p className="text-white flex items-center gap-1">
+              <img src={relogio} alt="Relogio" className="w-4" />
+              <span>{t('checkout.opening_hours')}</span>
+            </p>
           </section>
         )}
 

@@ -17,8 +17,10 @@ export function AboutBuyBitcoin() {
     <>
       <PageBackground />
       <div className="container mx-auto p-6 pt-[10%] sm:pt-16 pb-16 px-8">
-        <div className="pb-4 text-center">
-          <h1 className="text-3xl font-bold text-white">{t('about.title')}</h1>
+        <div className="pb-4 text-justify">
+          <h1 className="text-4xl font-bold text-[#F39200] font-pixelade">
+            {t('about.title')}
+          </h1>
         </div>
 
         <div className="text-white text-justify">
