@@ -1,5 +1,6 @@
 import AlfredWhiteLogo from '@/view/assets/logo/alfred-white-logo.svg';
 import { Loader } from '@/view/components/Loader';
+import { PageBackground } from '@/view/components/PageBackground';
 import { useScaleFactor } from '@/view/hooks/useScaleFactor';
 import { useWindowSize } from '@/view/utils/useWindowSize';
 import axios from 'axios';
@@ -76,6 +77,7 @@ export function Support() {
 
   return (
     <>
+      <PageBackground />
       {isLoading && <Loader />}
       <section
         className={classNames(

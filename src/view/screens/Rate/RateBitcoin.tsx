@@ -1,4 +1,5 @@
 import WhatsAppButton from '@/view/components/buttonWhatsApp';
+import { PageBackground } from '@/view/components/PageBackground';
 import { useTranslation } from 'react-i18next';
 
 export function Fees() {
@@ -6,6 +7,7 @@ export function Fees() {
 
   return (
     <>
+      <PageBackground />
       <div className="container mx-auto p-6 pt-[10%] sm:pt-16 pb-16">
         <h1 className="text-2xl font-bold pb-6 text-white">
           {t('fees.title')}
