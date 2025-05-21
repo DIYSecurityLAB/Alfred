@@ -120,7 +120,6 @@ export default function DataForm() {
   };
 
   const handleOpenModal = async () => {
-    console.log('[DataForm] handleOpenModal chamado.');
     if (!username || (!loggedUser && !password)) {
       toast.error(t('checkout.missingLogin'));
       return;
@@ -146,11 +145,9 @@ export default function DataForm() {
       return;
     }
 
-    // Para usuários VIP, pular o modal e ir direto para o processamento
     try {
-      console.log('[DataForm] Chamando isVipUser para verificar status VIP.');
-      const isVip = await isVipUser(); // Corrigido para usar await
-      console.log('[DataForm] Resultado de isVipUser:', isVip);
+      const isVip = await isVipUser();
+
       if (isVip) {
         handleProcessPayment(username, password);
         return;
@@ -161,23 +158,6 @@ export default function DataForm() {
       return;
     }
 
-    // const numericValue = parseInt(fiatAmount.replace(/\D/g, ''), 10);
-
-    // // Verificar limites baseados no nível - agora apenas alertamos
-    // if (numericValue > restrictions.dailyLimit) {
-    //   toast.warning(
-    //     `Atenção: Valor excede seu limite diário como ${userLevelName} (${new Intl.NumberFormat(
-    //       'pt-BR',
-    //       {
-    //         style: 'currency',
-    //         currency: 'BRL',
-    //       },
-    //     ).format(restrictions.dailyLimit)}).`,
-    //   );
-    //   // Não retornamos mais aqui, permitimos que o usuário continue
-    // }
-
-    // Verificar o limite para nível Madeira (2 transações diárias) - agora apenas alertamos
     if (userLevel === 0 && localStorage.getItem('dailyTransactions')) {
       const dailyTransactions = parseInt(
         localStorage.getItem('dailyTransactions') || '0',
@@ -187,7 +167,6 @@ export default function DataForm() {
         toast.warning(
           'Você já atingiu o limite de 2 transações diárias para nível Madeira. O sistema bancário poderá recusar a transação.',
         );
-        // Não retornamos mais aqui, permitimos que o usuário continue
       }
     }
 
@@ -235,10 +214,8 @@ Cupom: ${cupom || 'Nenhum'}`;
     setIsModalOpen(true);
   };
 
-  // Adicionar um estado para controlar a exibição da mensagem de manutenção
   const [, setMaintenanceMessage] = useState<string | null>(null);
 
-  // Adicionar novos métodos de pagamento:
   const allPaymentMethods = [
     {
       id: 'PIX',
@@ -297,7 +274,7 @@ Cupom: ${cupom || 'Nenhum'}`;
         />
       ),
     },
-    // Novos métodos com restrições de nível
+
     {
       id: 'TED',
       label: t('buycheckout.paymentMethod.TED'),
@@ -319,7 +296,6 @@ Cupom: ${cupom || 'Nenhum'}`;
       <main className="flex flex-col justify-center items-center pt-12 sm:pt-24">
         <AlfredLogo />
 
-        {/* Exibir o nível do usuário */}
         {loggedUser && (
           <div className="mb-4 mt-2">
             <UserLevelBadge />

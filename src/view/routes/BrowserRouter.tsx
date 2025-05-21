@@ -31,8 +31,6 @@ import AdminLogin from '../screens/admin/AdminLogin';
 import ProtectedRoute from '../screens/admin/ProtectedRoute';
 // Páginas protegidas do usuário
 import { UserProtectedRoute } from '../components/UserProtectedRoute';
-import KYCForm from '../screens/kyc/KYCForm';
-import { FormOtcSuccess } from '../screens/kyc/pageSucces';
 
 const NotFound = lazy(() =>
   import('../screens/NotFound').then((module) => ({
@@ -83,11 +81,6 @@ export function BrowserRouter() {
               <Route path={ROUTES.term.path} element={<TermsOfUse />} />
               {/* Rotas protegidas */}
               <Route element={<UserProtectedRoute />}>
-                <Route path={ROUTES.kycForm.path} element={<KYCForm />} />
-                <Route
-                  path={ROUTES.otcsuccess.path}
-                  element={<FormOtcSuccess />}
-                />
                 <Route
                   path={ROUTES.paymentAlfredStatus.success.path}
                   element={<PaymentAlfredSuccess />}

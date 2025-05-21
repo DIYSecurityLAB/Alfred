@@ -249,7 +249,6 @@ export function useDataForm() {
   })();
 
   const handleProcessPayment = async (username: string, password: string) => {
-    console.log('Iniciando handleProcessPayment com username:', username);
     setIsLoading(true);
 
     if (!user) {
@@ -284,16 +283,10 @@ export function useDataForm() {
           return;
         }
       }
-    } else {
-      console.log('Usuário já autenticado:', user.username);
     }
 
     if (user) {
       try {
-        console.log(
-          'Tentando atualizar o token via refresh para o usuário:',
-          user.username,
-        );
         await refreshAccessToken(user.id, user.acessToken);
         console.log('Token atualizado.');
       } catch (refreshError) {
@@ -467,7 +460,6 @@ Cupom: ${cupom}`;
       // Armazenar transactionId em todos os casos
       if (transactionId) {
         localStorage.setItem('transactionId', transactionId);
-        console.log('transactionId salvo:', transactionId);
       }
 
       if (status) {
@@ -481,14 +473,12 @@ Cupom: ${cupom}`;
         if (pixKeyResponse) {
           localStorage.setItem('pixKey', pixKeyResponse);
           setPixKey(pixKeyResponse);
-          console.log('pixKey salvo:', pixKeyResponse);
         }
 
         setTimeLeft(150);
         setIsLoading(false);
 
         if (pixKeyResponse) {
-          console.log('Navegando para checkoutPix.');
           navigate(ROUTES.checkoutPix.call(currentLang));
         }
 
