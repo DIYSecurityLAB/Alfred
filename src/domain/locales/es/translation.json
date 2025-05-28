@@ -79,7 +79,10 @@
     "title": "Pago en Revisión",
     "description": "Su pago está en revisión para aumentar la seguridad y evitar fraudes. Estamos esperando la aprobación para garantizar la protección de su transacción. En pocas horas, el pago será procesado. Manténgase tranquilo.",
     "redirectButton": "VOLVER AL SITIO",
-    "whatsapp": "CONTÁCTENOS"
+    "whatsapp": "CONTÁCTENOS",
+    "saveIdMessage": "Guarde este ID de transacción para referencia futura:",
+    "idCopied": "¡ID copiado con éxito!",
+    "copyId": "Copiar ID"
   },
   "fees": {
     "title": "Tarifas",

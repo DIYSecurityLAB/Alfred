@@ -79,7 +79,10 @@
     "title": "Payment Under Review",
     "description": "Your payment is under review to enhance security and prevent fraud. We are awaiting approval to ensure the protection of your transaction. In a few hours, the payment will be processed. Rest assured.",
     "redirectButton": "BACK TO THE SITE",
-    "whatsapp": "CONTACT US"
+    "whatsapp": "CONTACT US",
+    "saveIdMessage": "Save this transaction ID for future reference:",
+    "idCopied": "ID copied successfully!",
+    "copyId": "Copy ID"
   },
   "fees": {
     "title": "Fees",

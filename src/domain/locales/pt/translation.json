@@ -79,7 +79,10 @@
     "title": "Pagamento em Revisão",
     "description": "Seu pagamento está em revisão para aumentar a segurança e evitar golpes. Estamos aguardando uma aprovação para garantir a proteção da sua transação. Em poucas horas, o pagamento será processado. Fique tranquilo.",
     "redirectButton": "VOLTAR PARA O SITE",
-    "whatsapp": "FALE CONOSCO"
+    "whatsapp": "FALE CONOSCO",
+    "saveIdMessage": "Guarde este ID da transação para referência futura:",
+    "idCopied": "ID copiado com sucesso!",
+    "copyId": "Copiar ID"
   },
   "fees": {
     "title": "Taxas",

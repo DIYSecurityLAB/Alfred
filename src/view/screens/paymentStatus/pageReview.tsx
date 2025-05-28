@@ -1,5 +1,7 @@
 import { Background } from '@/view/components/BackgroundAnimatedProduct';
+import { TransactionIdDisplay } from '@/view/components/TransactionIdDisplay';
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FaClock, FaWhatsapp } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +12,14 @@ export function PaymentAlfredReview() {
   const { t } = useTranslation();
   const { currentLang } = useCurrentLang();
   const navigate = useNavigate();
+  const [transactionId, setTransactionId] = useState<string>('');
+
+  useEffect(() => {
+    const storedTransactionId = localStorage.getItem('transactionId');
+    if (storedTransactionId) {
+      setTransactionId(storedTransactionId);
+    }
+  }, []);
 
   const handleOnLink = (path: string) => {
     navigate(path);
@@ -51,6 +61,8 @@ export function PaymentAlfredReview() {
         {t('paymentReview.description')}
       </motion.p>
 
+      <TransactionIdDisplay delay={0.75} />
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -66,7 +78,9 @@ export function PaymentAlfredReview() {
         <button
           onClick={() =>
             window.open(
-              'https://api.whatsapp.com/send?phone=+5511911872097&text=Meu%20pagamento%20no%20Alfred%20est%C3%A1%20em%20revis%C3%A3o.%20Poderia%20me%20ajudar%3F',
+              `https://api.whatsapp.com/send?phone=+5511911872097&text=${encodeURIComponent(
+                `Meu pagamento no Alfred está em revisão. ID da transação: ${transactionId}. Poderia me ajudar?`,
+              )}`,
               '_blank',
             )
           }

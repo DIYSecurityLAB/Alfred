@@ -1,4 +1,5 @@
 import { Background } from '@/view/components/BackgroundAnimatedProduct';
+import { TransactionIdDisplay } from '@/view/components/TransactionIdDisplay';
 import { motion } from 'framer-motion';
 import { CSSProperties, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,11 +16,19 @@ export function PaymentAlfredSuccess() {
   const { currentLang } = useCurrentLang();
   const navigate = useNavigate();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [transactionId, setTransactionId] = useState<string>('');
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const storedTransactionId = localStorage.getItem('transactionId');
+    if (storedTransactionId) {
+      setTransactionId(storedTransactionId);
+    }
   }, []);
 
   const handleOnLink = (path: string, callback?: () => void) => {
@@ -149,6 +158,8 @@ export function PaymentAlfredSuccess() {
         <strong>{t('paymentSuccess.transactionTime')}</strong>
       </motion.p>
 
+      <TransactionIdDisplay delay={0.75} />
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -164,7 +175,9 @@ export function PaymentAlfredSuccess() {
         <button
           onClick={() =>
             window.open(
-              'https://api.whatsapp.com/send?phone=+5511911872097&text=Meu%20pagamento%20no%20Alfred%20foi%20conclu%C3%ADdo%20e%20tenho%20algumas%20d%C3%BAvidas.%20Poderia%20me%20ajudar%3F',
+              `https://api.whatsapp.com/send?phone=+5511911872097&text=${encodeURIComponent(
+                `Meu pagamento no Alfred foi concluído. ID da transação: ${transactionId}. Tenho algumas dúvidas. Poderia me ajudar?`,
+              )}`,
               '_blank',
             )
           }
