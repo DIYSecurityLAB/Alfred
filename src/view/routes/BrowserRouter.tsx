@@ -8,8 +8,15 @@ import {
 import { AcceptedLanguages, useLanguage } from '../../domain/locales/Language';
 import { Loader } from '../components/Loader';
 import ScrollToTop from '../components/ScrollToTop';
+import { UserProtectedRoute } from '../components/UserProtectedRoute';
 import { DefaultLayout } from '../layout/DefaultyLayout';
 import { AboutBuyBitcoin } from '../screens/About/AboutBuyBitcoin';
+import AdminDashboard from '../screens/admin/AdminDashboard';
+import KYCDetail from '../screens/admin/AdminDetail';
+import AdminLogin from '../screens/admin/AdminLogin';
+import ProtectedRoute from '../screens/admin/ProtectedRoute';
+import LoginPage from '../screens/auth/LoginPage';
+import RegisterPage from '../screens/auth/RegisterPage';
 import BuyBitcoin from '../screens/Checkout/Checkout';
 import { CheckoutPix } from '../screens/Checkout/CheckoutPix';
 import DataForm from '../screens/Checkout/DataForm/DataForm';
@@ -19,18 +26,6 @@ import { PaymentAlfredSuccess } from '../screens/paymentStatus/pageSucces';
 import { Fees } from '../screens/Rate/RateBitcoin';
 import { TermsOfUse } from '../screens/Terms/TermsUse';
 import { ROUTES } from './Routes';
-
-// Importação das páginas de login e registro
-import LoginPage from '../screens/auth/LoginPage';
-import RegisterPage from '../screens/auth/RegisterPage';
-
-// Componentes de administração
-import AdminDashboard from '../screens/admin/AdminDashboard';
-import KYCDetail from '../screens/admin/AdminDetail';
-import AdminLogin from '../screens/admin/AdminLogin';
-import ProtectedRoute from '../screens/admin/ProtectedRoute';
-// Páginas protegidas do usuário
-import { UserProtectedRoute } from '../components/UserProtectedRoute';
 
 const NotFound = lazy(() =>
   import('../screens/NotFound').then((module) => ({
