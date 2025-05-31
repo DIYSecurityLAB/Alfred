@@ -4,7 +4,7 @@ import {
   isPaymentMethodInMaintenance,
 } from '@/config/paymentMaintenance';
 import { generateVipPixCode, isVipUser } from '@/config/vipUsers';
-
+import { axiosInstance } from '@/infrastructure/api/axiosInstance';
 import { useAuth } from '@/view/hooks/useAuth';
 import { useUserLevel } from '@/view/hooks/useUserLevel';
 import axios from 'axios';
@@ -419,8 +419,8 @@ Cupom: ${cupom}`;
 
     try {
       // Todos os métodos salvam no backend antes de redirecionar
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/deposit`,
+      const response = await axiosInstance.post(
+        `/deposit`,
         {
           valorBRL: valorToSend,
           valorBTC: parseFloat(cryptoAmount),
@@ -440,7 +440,6 @@ Cupom: ${cupom}`;
             Authorization: userObj?.acessToken
               ? `Bearer ${userObj.acessToken}`
               : '',
-            'x-api-key': import.meta.env.VITE_API_KEY,
           },
         },
       );
@@ -639,12 +638,6 @@ Cupom: ${cupom}`;
 
     try {
       setIsLoading(true);
-      const axiosInstance = axios.create({
-        baseURL: import.meta.env.VITE_API_URL,
-        headers: {
-          'x-api-key': import.meta.env.VITE_API_KEY,
-        },
-      });
 
       const response = await axiosInstance.post(`coupons/is-valid`, {
         code: cupom.trim().toUpperCase(),

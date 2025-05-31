@@ -1,6 +1,6 @@
+import { axiosInstance } from '@/infrastructure/api/axiosInstance';
 import { ROUTES } from '@/view/routes/Routes';
 import { useCurrentLang } from '@/view/utils/useCurrentLang';
-import axios from 'axios';
 import { t } from 'i18next';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -40,13 +40,8 @@ export const usePaymentStatusPolling = () => {
     setIsLoadingPayment(true);
 
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_URL}/deposit-status?transactionId=${transaction}`,
-        {
-          headers: {
-            'x-api-key': import.meta.env.VITE_API_KEY,
-          },
-        },
+      const response = await axiosInstance.get(
+        `/deposit-status?transactionId=${transaction}`,
       );
       const status = response.data.status;
 
