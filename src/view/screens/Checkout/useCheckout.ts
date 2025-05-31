@@ -58,13 +58,6 @@ export function useCheckout() {
   }, [form]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetch(import.meta.env.VITE_API_URL);
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     const fetchCryptoRates = async () => {
       try {
         const { result } = await usecases.bitcoinRate.list.execute();
