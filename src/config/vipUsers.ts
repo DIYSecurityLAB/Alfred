@@ -1,3 +1,4 @@
+import { axiosInstance } from '@/infrastructure/api/axiosInstance';
 import axios from 'axios';
 
 /**
@@ -40,8 +41,8 @@ export const isVipUser = async (): Promise<boolean> => {
       return false;
     }
 
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/auth/is-vip`,
+    const response = await axiosInstance.post(
+      `/auth/is-vip`,
       {},
       {
         headers: {
