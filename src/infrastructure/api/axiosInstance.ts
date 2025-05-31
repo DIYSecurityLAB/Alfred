@@ -1,4 +1,3 @@
-import { getCsrfToken } from '@/utils/Csrf';
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
@@ -9,16 +8,6 @@ export const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use(
-  (config) => {
-    config.headers['X-CSRF-Token'] = getCsrfToken();
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
-
 export const axiosCoupon = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: {
@@ -26,16 +15,6 @@ export const axiosCoupon = axios.create({
   },
   withCredentials: true,
 });
-
-axiosCoupon.interceptors.request.use(
-  (config) => {
-    config.headers['X-CSRF-Token'] = getCsrfToken();
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  },
-);
 
 export const setAuthToken = (token: string | null) => {
   if (token) {
