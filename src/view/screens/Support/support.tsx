@@ -1,9 +1,9 @@
+import { axiosInstance } from '@/infrastructure/api/axiosInstance';
 import { Loader } from '@/view/components/Loader';
 import { AlfredLogo } from '@/view/components/Logo/AlfredLogo';
 import { PageBackground } from '@/view/components/PageBackground';
 import { useScaleFactor } from '@/view/hooks/useScaleFactor';
 import { useWindowSize } from '@/view/utils/useWindowSize';
-import axios from 'axios';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -35,10 +35,7 @@ export function Support() {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/support`,
-        data,
-      );
+      const response = await axiosInstance.post(`/support`, data);
 
       if (response.status === 200 || response.status === 201) {
         toast.success(t('support.successMessage'), {
