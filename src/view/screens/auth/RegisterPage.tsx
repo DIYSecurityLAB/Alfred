@@ -20,11 +20,30 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const { currentLang } = useLanguage();
 
+  // Remove espaços automaticamente quando o usuário digita
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\s+/g, '');
+    setUsername(value);
+  };
+
+  // Remove espaços automaticamente quando o usuário digita a senha
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\s+/g, '');
+    setPassword(value);
+  };
+
   const handleRegister = async () => {
+    // Verifica se há espaços no nome de usuário ou senha
+    if (username.includes(' ') || password.includes(' ')) {
+      toast.error('Nome de usuário e senha não podem conter espaços.');
+      return;
+    }
+
     if (username.length < 6 || password.length < 6) {
       toast.error('Nome de usuário e senha devem ter pelo menos 6 caracteres.');
       return;
     }
+
     setIsLoading(true);
     try {
       await register(username, password);
@@ -41,7 +60,7 @@ export default function RegisterPage() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (error as any).response?.status === 409
       ) {
-        toast.error('Erro no registro. este nome de usuário ja existe.');
+        toast.error('Erro no registro. Este nome de usuário já existe.');
       } else {
         toast.error('Erro no registro. Contate o suporte.');
       }
@@ -70,7 +89,7 @@ export default function RegisterPage() {
                   placeholder="Usuário"
                   value={username}
                   autoComplete="username"
-                  onChange={(e) => setUsername(e.target.value)}
+                  onChange={handleUsernameChange}
                 />
                 <div className="relative">
                   <input
@@ -79,7 +98,7 @@ export default function RegisterPage() {
                     placeholder="Senha"
                     value={password}
                     autoComplete="current-password"
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={handlePasswordChange}
                   />
                   <button
                     type="button"
@@ -96,6 +115,10 @@ export default function RegisterPage() {
                 <p className="text-white text-xs mt-4 text-center">
                   Este registro é para sua segurança. Como é um sistema anônimo,
                   não há recuperação de senha. Guarde bem suas credenciais.
+                  <br />
+                  <span className="text-yellow-400">
+                    Atenção: usuário e senha não podem conter espaços.
+                  </span>
                 </p>
                 <button
                   className="w-full p-4 bg-[#F39200] text-white font-bold rounded-3xl hover:bg-[#e68800] transition-colors duration-200"

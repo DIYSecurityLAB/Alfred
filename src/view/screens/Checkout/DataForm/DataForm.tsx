@@ -111,6 +111,17 @@ export default function DataForm() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // Funções para remover espaços dos campos de usuário e senha
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\s+/g, '');
+    setUsername(value);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\s+/g, '');
+    setPassword(value);
+  };
+
   const handleApplyCoupon = async () => {
     await checkCouponValidity();
     if (!errors.cupom) {
@@ -122,6 +133,12 @@ export default function DataForm() {
   const handleOpenModal = async () => {
     if (!username || (!loggedUser && !password)) {
       toast.error(t('checkout.missingLogin'));
+      return;
+    }
+
+    // Verificar se há espaços no nome de usuário ou senha
+    if (username.includes(' ') || password.includes(' ')) {
+      toast.error('Nome de usuário e senha não podem conter espaços.');
       return;
     }
 
@@ -551,11 +568,10 @@ Cupom: ${cupom || 'Nenhum'}`;
                         <input
                           type="text"
                           value={username}
-                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            setUsername(e.target.value)
-                          }
+                          onChange={handleUsernameChange}
                           placeholder={
-                            t('buycheckout.usernamePlaceholder') || 'Usuário'
+                            t('buycheckout.usernamePlaceholder') ||
+                            'Usuário (sem espaços)'
                           }
                           className="border-2 pl-10 px-8 py-3 rounded-3xl text-base sm:text-lg text-white placeholder-white bg-black text-center w-full"
                         />
@@ -563,7 +579,7 @@ Cupom: ${cupom || 'Nenhum'}`;
                           <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-gray-900 text-white text-sm p-3 rounded-lg shadow-lg z-10">
                             <p>
                               {t('buycheckout.loginTooltip.message') ||
-                                'Por segurança, informe seu usuário e senha para acessar a plataforma.'}
+                                'Por segurança, informe seu usuário e senha para acessar a plataforma. Não use espaços no usuário ou senha.'}
                             </p>
                           </div>
                         )}
@@ -572,11 +588,10 @@ Cupom: ${cupom || 'Nenhum'}`;
                         <input
                           type={showPassword ? 'text' : 'password'}
                           value={password}
-                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            setPassword(e.target.value)
-                          }
+                          onChange={handlePasswordChange}
                           placeholder={
-                            t('buycheckout.passwordPlaceholder') || 'Senha'
+                            t('buycheckout.passwordPlaceholder') ||
+                            'Senha (sem espaços)'
                           }
                           className="border-2 px-8 py-3 rounded-3xl text-base sm:text-lg text-white placeholder-white bg-black text-center w-full"
                         />
