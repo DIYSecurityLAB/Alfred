@@ -17,8 +17,7 @@ export const paymentMaintenanceConfig = {
     'O pagamento por PIX está temporariamente em manutenção. Sua compra será processada via WhatsApp.',
 
   // Permite adicionar outros métodos de pagamento em manutenção no futuro
-  // TICKET_MAINTENANCE: false,
-  // WISE_MAINTENANCE: false,
+  // NOMAD_MAINTENANCE: false,
 };
 
 /**

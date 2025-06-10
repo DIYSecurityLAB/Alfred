@@ -14,11 +14,10 @@ import {
 import { FaPix } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
 import BankTransf from '../../../assets/bankIcon.png';
-import BoletoIcon from '../../../assets/BoletoIcon.png';
 import AlfredImg from '../../../assets/c1b28810-5a23-4e7c-bcce-bd1f42b271c5.png';
+import NomadIcon from '../../../assets/nomadIcon.png';
 import PayPalIcon from '../../../assets/paypalIcon.png';
 import SwiftIcon from '../../../assets/swiftIcon.png';
-import WiseIcon from '../../../assets/wiseIcon.png';
 import { ROUTES } from '../../../routes/Routes';
 import ConfirmInfosModal from '../modal/ConfirmInfos';
 import { useDataForm } from './useDataForm';
@@ -33,8 +32,7 @@ import {
 type PaymentMethodType =
   | 'PIX'
   | 'PIX_MAINTENANCE'
-  | 'TICKET'
-  | 'WISE'
+  | 'NOMAD'
   | 'SWIFT'
   | 'PAYPAL'
   | 'BANK_TRANSFER'
@@ -93,8 +91,7 @@ export default function DataForm() {
   // Adicionamos os novos rótulos para os métodos de pagamento
   const paymentMethodLabels = {
     PIX: t('buycheckout.paymentMethod.PIX'),
-    WISE: t('buycheckout.paymentMethod.WISE'),
-    TICKET: t('buycheckout.paymentMethod.TICKET'),
+    NOMAD: t('buycheckout.paymentMethod.NOMAD'),
     SWIFT: t('buycheckout.paymentMethod.SWIFT'),
     PAYPAL: t('buycheckout.paymentMethod.PAYPAL'),
     BANK_TRANSFER: t('buycheckout.paymentMethod.BANK_TRANSFER'),
@@ -241,19 +238,12 @@ Cupom: ${cupom || 'Nenhum'}`;
       maintenance: isPaymentMethodInMaintenance('PIX'),
     },
     {
-      id: 'WISE',
-      label: t('buycheckout.paymentMethod.WISE'),
-      icon: (
-        <img src={WiseIcon} alt="Wise" className="w-6 h-6 mt-1 rounded-full" />
-      ),
-    },
-    {
-      id: 'TICKET',
-      label: t('buycheckout.paymentMethod.TICKET'),
+      id: 'NOMAD',
+      label: t('buycheckout.paymentMethod.NOMAD'),
       icon: (
         <img
-          src={BoletoIcon}
-          alt="Boleto Bancário"
+          src={NomadIcon}
+          alt="Nomad"
           className="w-6 h-6 mt-1 rounded-full"
         />
       ),
@@ -408,16 +398,10 @@ Cupom: ${cupom || 'Nenhum'}`;
                     >
                       {paymentMethod === 'PIX' ? (
                         <FaPix className="w-8 h-8 sm:w-10 sm:h-10" />
-                      ) : paymentMethod === 'WISE' ? (
+                      ) : paymentMethod === 'NOMAD' ? (
                         <img
-                          src={WiseIcon}
-                          alt="Wise"
-                          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
-                        />
-                      ) : paymentMethod === 'TICKET' ? (
-                        <img
-                          src={BoletoIcon}
-                          alt="Boleto Bancário"
+                          src={NomadIcon}
+                          alt="Nomad"
                           className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
                         />
                       ) : paymentMethod === 'SWIFT' ? (

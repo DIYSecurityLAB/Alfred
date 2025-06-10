@@ -242,8 +242,7 @@
     "copyPixKey": "Copiar clave PIX",
     "paymentMethod": {
       "PIX": "PIX",
-      "WISE": "Wise",
-      "TICKET": "Boleto Bancario",
+      "NOMAD": "Nomad",
       "SWIFT": "Swift",
       "PAYPAL": "PayPal",
       "BANK_TRANSFER": "Transferencia Bancaria"

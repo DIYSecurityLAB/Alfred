@@ -122,14 +122,12 @@ export function useUserLevel() {
     switch (method) {
       case 'PIX':
         return true; // PIX disponível para todos os níveis
-      case 'TICKET':
-        return true; // Boleto disponível para todos os níveis
       case 'TED':
       case 'BANK_TRANSFER':
         return restrictions.canUseTed;
       case 'CASH':
         return restrictions.canUseCash;
-      case 'WISE':
+      case 'NOMAD':
       case 'SWIFT':
       case 'PAYPAL':
         return true; // Métodos internacionais disponíveis para todos

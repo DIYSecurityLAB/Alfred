@@ -24,8 +24,7 @@ import { useCurrentLang } from '../../../utils/useCurrentLang';
 type PaymentMethodType =
   | 'PIX'
   | 'PIX_MAINTENANCE'
-  | 'TICKET'
-  | 'WISE'
+  | 'NOMAD'
   | 'SWIFT'
   | 'PAYPAL'
   | 'BANK_TRANSFER'
@@ -514,11 +513,8 @@ Cupom: ${cupom}`;
         case 'CASH':
           message = `Olá! Sou usuário nível ${userLevelName} e gostaria de fazer um depósito em espécie:\n\nValor: ${fiatAmount}\nCripto: ${cryptoAmount} ${cryptoType}\nRede: ${network}\nCarteira: ${coldWallet}\nTelefone: ${transactionNumber}\nCupom: ${cupom || 'Nenhum'}\nID da transação: ${transactionId}\n\nPor favor, me envie as instruções para o depósito em espécie.`;
           break;
-        case 'WISE':
-          message = `Olá! Aqui estão os detalhes do pedido Wise:\n\nValor ${fiatType}: ${fiatAmount}\n${cryptoType}: ${cryptoAmount}\nRede: ${network}\nCold Wallet: ${coldWallet}\nMétodo: Wise\nTelefone: ${transactionNumber}\nCupom: ${cupom}\nID da transação: ${transactionId}`;
-          break;
-        case 'TICKET':
-          message = `Olá! Aqui estão os detalhes do pedido Boleto Bancário:\n\nValor ${fiatType}: ${fiatAmount}\n${cryptoType}: ${cryptoAmount}\nRede: ${network}\nCold Wallet: ${coldWallet}\nMétodo: Boleto Bancário\nTelefone: ${transactionNumber}\nCupom: ${cupom}\nID da transação: ${transactionId}`;
+        case 'NOMAD':
+          message = `Olá! Aqui estão os detalhes do pedido Nomad:\n\nValor ${fiatType}: ${fiatAmount}\n${cryptoType}: ${cryptoAmount}\nRede: ${network}\nCold Wallet: ${coldWallet}\nMétodo: Nomad\nTelefone: ${transactionNumber}\nCupom: ${cupom}\nID da transação: ${transactionId}`;
           break;
         default:
           message = `Olá! Aqui estão os detalhes do meu pedido:\n\nValor BRL: ${fiatAmount}\n${cryptoType}: ${cryptoAmount}\nRede: ${network}\nCold Wallet: ${coldWallet}\nMétodo: ${paymentMethod}\nTelefone: ${transactionNumber}\nCupom: ${cupom}\nID da transação: ${transactionId}`;
