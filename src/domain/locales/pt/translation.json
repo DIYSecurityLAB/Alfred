@@ -1,6 +1,12 @@
 {
   "header": {
-    "links": ["Início", "Sobre", "Taxas", "Termos", "Suporte"]
+    "links": [
+      "Início",
+      "Sobre",
+      "Taxas",
+      "Termos",
+      "Suporte"
+    ]
   },
   "about": {
     "title": "Compra e venda de Bitcoin sem burocracia, com total liberdade",
@@ -41,7 +47,7 @@
     "min_value_error": "O valor mínimo para compra em BTC é 200 BRL.",
     "min_value_error_usdt": "O valor mínimo para compra em USDT é 500 BRL.",
     "wallet_error_below_700": "Para valores abaixo de 700 BRL, apenas carteiras Liquid e Lightning são permitidas.",
-    "payment_error_above_5000": "Para pagamentos via Pix com valor superior a 5.000 BRL, é necessário preencher o formulário 'Validação para transações anônimas'.",
+    "payment_error_above_5000": "Para pagamentos via Pix acima de 5.000 BRL, entre em contato com nosso suporte via WhatsApp.",
     "first_purchase_limit_error": "Sua primeira compra está limitada a 500 BRL.",
     "bitcoin_message": "BITCOIN na sua mão, sem complicação e com privacidade.",
     "opening_hours": "24H por dia, 7 dias por semana.",

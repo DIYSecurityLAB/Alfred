@@ -1,6 +1,12 @@
 {
   "header": {
-    "links": ["Home", "About", "Fees", "Terms", "Support"]
+    "links": [
+      "Home",
+      "About",
+      "Fees",
+      "Terms",
+      "Support"
+    ]
   },
   "about": {
     "title": "Buy and sell Bitcoin without bureaucracy, with total freedom",
@@ -40,7 +46,7 @@
     "min_value_error": "The minimum purchase amount for BTC is 200 BRL.",
     "min_value_error_usdt": "The minimum purchase amount for USDT is 550 BRL.",
     "wallet_error_below_700": "For amounts below 700 BRL, only Liquid and Lightning wallets are allowed.",
-    "payment_error_above_5000": "For Pix payments with amounts over 5,000 BRL, it is necessary to fill out the 'Validation for Anonymous Transactions' form.",
+    "payment_error_above_5000": "For Pix payments over 5,000 BRL, please contact our support via WhatsApp.",
     "first_purchase_limit_error": "Your first purchase is limited to 500 BRL.",
     "bitcoin_message": "BITCOIN in your hand, hassle-free and with privacy.",
     "opening_hours": "24H a day, 7 days a week.",
