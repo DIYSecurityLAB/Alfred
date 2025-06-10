@@ -1,6 +1,12 @@
 {
   "header": {
-    "links": ["Início", "Sobre", "Taxas", "Termos", "Suporte"]
+    "links": [
+      "Início",
+      "Sobre",
+      "Taxas",
+      "Termos",
+      "Suporte"
+    ]
   },
   "about": {
     "title": "Compra e venda de Bitcoin sem burocracia, com total liberdade",
@@ -41,7 +47,7 @@
     "min_value_error": "O valor mínimo para compra em BTC é 200 BRL.",
     "min_value_error_usdt": "O valor mínimo para compra em USDT é 500 BRL.",
     "wallet_error_below_700": "Para valores abaixo de 700 BRL, apenas carteiras Liquid e Lightning são permitidas.",
-    "payment_error_above_5000": "Para pagamentos via Pix com valor superior a 5.000 BRL, é necessário preencher o formulário 'Validação para transações anônimas'.",
+    "payment_error_above_5000": "Para pagamentos via Pix acima de 5.000 BRL, entre em contato com nosso suporte via WhatsApp.",
     "first_purchase_limit_error": "Sua primeira compra está limitada a 500 BRL.",
     "bitcoin_message": "BITCOIN na sua mão, sem complicação e com privacidade.",
     "opening_hours": "24H por dia, 7 dias por semana.",
@@ -193,7 +199,11 @@
     "coldWalletError": "O endereço da carteira não pode estar vazio.",
     "invalidColdWalletErrorLiquid": "Endereço da carteira Liquid inválido.",
     "invalidColdWalletErrorOnchain": "Endereço da carteira Onchain inválido.",
-    "invalidColdWalletErrorLightning": "Endereço da carteira Lightning inválido.",
+    "invalidColdWalletErrorLightning": "Endereço da carteira Lightning inválido. Use uma fatura Lightning (lnbc...), um LNURL ou um e-mail Lightning.",
+    "invalidLnurl": "LNURL inválido. Verifique o endereço e tente novamente.",
+    "invalidLnurlResponse": "Resposta inválida do servidor LNURL.",
+    "fixedAmountLnurlNotSupported": "LNURLs com valor fixo não são suportados. Use um LNURL que permita valores personalizados.",
+    "fixedAmountInvoiceNotSupported": "Faturas Lightning com valor fixo não são suportadas. Use uma fatura sem valor específico.",
     "transactionNumberError": "O número de telefone é obrigatório.",
     "invalidTransactionNumberError": "Insira um número de telefone válido (9 a 15 dígitos).",
     "termsAndFeesAlert": "Você precisa aceitar as taxas, termos de uso e a confirmação dos dados enviados",
@@ -236,8 +246,7 @@
     "copyPixKey": "Copiar chave PIX",
     "paymentMethod": {
       "PIX": "PIX",
-      "WISE": "Wise",
-      "TICKET": "Boleto Bancário",
+      "NOMAD": "Nomad",
       "SWIFT": "Swift",
       "PAYPAL": "PayPal",
       "BANK_TRANSFER": "Transferência Bancária",

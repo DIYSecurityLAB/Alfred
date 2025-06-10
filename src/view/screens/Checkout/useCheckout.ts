@@ -20,7 +20,7 @@ export type Checkout = {
 };
 
 export type WalletType = 'liquid' | 'lightning' | 'onchain';
-export type PaymentMethod = 'pix' | 'wise' | 'boleto';
+export type PaymentMethod = 'pix' | 'nomad' | 'swift';
 
 export function useCheckout() {
   const navigate = useNavigate();
