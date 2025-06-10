@@ -42,6 +42,7 @@ type PaymentMethodType =
 // Adicionar a importação no topo do arquivo, se necessário
 import { isVipUser } from '@/config/vipUsers';
 import { AlfredLogo } from '@/view/components/Logo/AlfredLogo';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 export default function DataForm() {
   const {
@@ -300,7 +301,7 @@ Cupom: ${cupom || 'Nenhum'}`;
     <>
       {isLoading && <PaymentLoader />}
 
-      <main className="flex flex-col justify-center items-center pt-12 sm:pt-24">
+      <main className="flex flex-col justify-center items-center pt-12 sm:pt-24 px-4 sm:px-6">
         <AlfredLogo />
 
         {loggedUser && (
@@ -518,12 +519,13 @@ Cupom: ${cupom || 'Nenhum'}`;
                       className="border-2 px-8 py-3 rounded-3xl text-base sm:text-lg text-white placeholder-white bg-black text-center w-full"
                     />
                     {errors.coldWallet && (
-                      <p className="text-red-500 text-sm">
+                      <p className="text-white text-sm mt-2 p-3 bg-red-900 bg-opacity-40 rounded-lg border-2 border-red-500 shadow-md">
                         {errors.coldWallet}
                       </p>
                     )}
                   </div>
                 </div>
+
                 {/* Campos de login */}
                 {loggedUser ? (
                   <div className="flex justify-center items-center pt-4">
@@ -612,49 +614,90 @@ Cupom: ${cupom || 'Nenhum'}`;
                     {t('buycheckout.apply')}
                   </button>
                 </div>
-                <div className="flex flex-col justify-center items-start pt-4">
-                  <label className="flex items-center text-white">
-                    <input
-                      type="checkbox"
-                      checked={acceptFees}
-                      onChange={() => setAcceptFees(!acceptFees)}
-                      className="mr-2"
-                    />
-                    <span
-                      onClick={() =>
-                        window.open(
-                          ROUTES.fee.call(currentLang),
-                          '_blank',
-                          'noopener,noreferrer',
-                        )
-                      }
-                      className="text-xs sm:text-base cursor-pointer text-blue-500 hover:underline"
-                    >
-                      {t('buycheckout.acceptFees')}
-                    </span>
-                  </label>
-                  <label className="flex items-center text-white">
-                    <input
-                      type="checkbox"
-                      checked={acceptTerms}
-                      onChange={() => setAcceptTerms(!acceptTerms)}
-                      className="mr-2"
-                    />
-                    <span
-                      onClick={() =>
-                        window.open(
-                          ROUTES.term.call(currentLang),
-                          '_blank',
-                          'noopener,noreferrer',
-                        )
-                      }
-                      className="text-xs sm:text-base cursor-pointer text-blue-500 hover:underline"
-                    >
-                      {t('buycheckout.acceptTerms')}
-                    </span>
-                  </label>
+                {errors.cupom && (
+                  <div className="w-full">
+                    <p className="text-white text-sm mt-2 p-3 bg-red-900 bg-opacity-40 rounded-lg border-2 border-red-500 shadow-md">
+                      {errors.cupom}
+                    </p>
+                  </div>
+                )}
+
+                {/* Seção de termos e taxas com toggles melhorados */}
+                <div className="flex flex-col justify-center space-y-3 pt-6 max-w-md mx-auto w-full">
+                  <div className="bg-gray-800 bg-opacity-50 rounded-xl p-3 transition-all hover:bg-opacity-70">
+                    <label className="flex items-center text-white cursor-pointer">
+                      <div className="relative">
+                        <input
+                          type="checkbox"
+                          checked={acceptFees}
+                          onChange={() => setAcceptFees(!acceptFees)}
+                          className="sr-only"
+                        />
+                        <div
+                          className={`w-10 h-5 ${
+                            acceptFees ? 'bg-[#F39200]' : 'bg-gray-600'
+                          } rounded-full shadow-inner transition-colors duration-300`}
+                        ></div>
+                        <div
+                          className={`absolute w-4 h-4 bg-white rounded-full shadow top-0.5 left-0.5 transition-transform transform ${
+                            acceptFees ? 'translate-x-5' : ''
+                          }`}
+                        ></div>
+                      </div>
+                      <div
+                        onClick={() =>
+                          window.open(
+                            ROUTES.fee.call(currentLang),
+                            '_blank',
+                            'noopener,noreferrer',
+                          )
+                        }
+                        className="ml-3 text-sm sm:text-base cursor-pointer text-blue-500 hover:text-blue-400 transition-colors flex items-center"
+                      >
+                        {t('buycheckout.acceptFees')}
+                        <FaExternalLinkAlt className="ml-1 text-blue-500 text-xs" />
+                      </div>
+                    </label>
+                  </div>
+
+                  <div className="bg-gray-800 bg-opacity-50 rounded-xl p-3 transition-all hover:bg-opacity-70">
+                    <label className="flex items-center text-white cursor-pointer">
+                      <div className="relative">
+                        <input
+                          type="checkbox"
+                          checked={acceptTerms}
+                          onChange={() => setAcceptTerms(!acceptTerms)}
+                          className="sr-only"
+                        />
+                        <div
+                          className={`w-10 h-5 ${
+                            acceptTerms ? 'bg-[#F39200]' : 'bg-gray-600'
+                          } rounded-full shadow-inner transition-colors duration-300`}
+                        ></div>
+                        <div
+                          className={`absolute w-4 h-4 bg-white rounded-full shadow top-0.5 left-0.5 transition-transform transform ${
+                            acceptTerms ? 'translate-x-5' : ''
+                          }`}
+                        ></div>
+                      </div>
+                      <div
+                        onClick={() =>
+                          window.open(
+                            ROUTES.term.call(currentLang),
+                            '_blank',
+                            'noopener,noreferrer',
+                          )
+                        }
+                        className="ml-3 text-sm sm:text-base cursor-pointer text-blue-500 hover:text-blue-400 transition-colors flex items-center"
+                      >
+                        {t('buycheckout.acceptTerms')}
+                        <FaExternalLinkAlt className="ml-1 text-blue-500 text-xs" />
+                      </div>
+                    </label>
+                  </div>
                 </div>
-                <div className="flex justify-center items-center pt-4">
+
+                <div className="flex justify-center items-center pt-6">
                   <button
                     onClick={handleOpenModal}
                     type="button"

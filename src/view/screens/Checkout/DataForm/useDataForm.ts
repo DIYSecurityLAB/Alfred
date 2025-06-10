@@ -8,6 +8,7 @@ import { axiosInstance } from '@/infrastructure/api/axiosInstance';
 import { useAuth } from '@/view/hooks/useAuth';
 import { useUserLevel } from '@/view/hooks/useUserLevel';
 import axios from 'axios';
+import { bech32 } from 'bech32';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -144,7 +145,94 @@ export function useDataForm() {
     setIsDropdownOpenMethod(false);
   };
 
-  const validateFields = () => {
+  // Função auxiliar para decodificar LNURL bech32 para URL
+  function decodeLnurl(lnurl: string): string {
+    try {
+      // Remover prefixo 'lnurl'
+      const words = bech32.decode(lnurl, 1023);
+      const data = bech32.fromWords(words.words);
+      const url = Buffer.from(data).toString();
+
+      return url.startsWith('http') ? url : `https://${url}`;
+    } catch (error) {
+      console.error('Erro ao decodificar LNURL:', error);
+      throw new Error('LNURL inválido');
+    }
+  }
+
+  // Função para verificar se um invoice BOLT11 tem valor fixo
+  function isBolt11Fixed(invoice: string): boolean {
+    // Padrão para invoice com valor fixo: começa com lnbc seguido de números (2-9) e uma unidade (m, u, n, p)
+    // Por exemplo: lnbc10u, lnbc500n, etc.
+    const fixedAmountPattern = /^lnbc([2-9]|[1-9]\d+)[munp]/i;
+
+    // Padrão para invoice sem valor fixo: começa com lnbc1 seguido de 'p'
+    // Por exemplo: lnbc1p...
+    const noAmountPattern = /^lnbc1p/i;
+
+    if (noAmountPattern.test(invoice)) {
+      return false; // Não tem valor fixo (lnbc1p...)
+    }
+
+    return fixedAmountPattern.test(invoice); // Retorna true se tiver valor fixo
+  }
+
+  // Função assíncrona para validar carteira Lightning
+  async function validateLightningWallet(
+    coldWallet: string,
+    t: (key: string) => string,
+  ): Promise<string | null> {
+    // Verificar formato de invoice Lightning (lnbc...)
+    if (/^lnbc[0-9]{1,}[a-zA-Z0-9]+$/.test(coldWallet)) {
+      // Verificar se o invoice tem valor fixo
+      if (isBolt11Fixed(coldWallet)) {
+        return t('buycheckout.fixedAmountInvoiceNotSupported');
+      }
+      return null; // Válido
+    }
+
+    // Verificar formato de email Lightning
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(coldWallet)) {
+      return null; // Válido
+    }
+
+    // Verificar formato LNURL
+    if (/^lnurl1[a-z0-9]+$/i.test(coldWallet)) {
+      try {
+        // Decodificar LNURL para URL
+        const decodedUrl = decodeLnurl(coldWallet);
+
+        // Fazer requisição HTTP para a URL
+        const response = await fetch(decodedUrl);
+
+        if (!response.ok) {
+          return t('buycheckout.invalidLnurlResponse');
+        }
+
+        const lnurlData = await response.json();
+
+        // Verificar se é um payRequest com valor fixo
+        if (
+          lnurlData.tag === 'payRequest' &&
+          lnurlData.minSendable === lnurlData.maxSendable &&
+          lnurlData.minSendable > 0
+        ) {
+          return t('buycheckout.fixedAmountLnurlNotSupported');
+        }
+
+        return null; // LNURL válido
+      } catch (error) {
+        console.error('Erro na validação de LNURL:', error);
+        return t('buycheckout.invalidLnurl');
+      }
+    }
+
+    // Se não corresponder a nenhum formato válido
+    return t('buycheckout.invalidColdWalletErrorLightning');
+  }
+
+  // Modificação da função validateFields para incluir validação assíncrona de LNURL
+  const validateFields = async () => {
     const newErrors: Record<string, string> = {};
 
     if (!coldWallet) {
@@ -205,17 +293,14 @@ export function useDataForm() {
               );
             }
             break;
-          case 'Lightning':
-            if (
-              !/^lnbc[0-9]{1,}[a-zA-Z0-9]+$/.test(coldWallet) &&
-              !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(coldWallet) &&
-              !/^lnurl1[a-z0-9]+$/i.test(coldWallet)
-            ) {
-              newErrors.coldWallet = t(
-                'buycheckout.invalidColdWalletErrorLightning',
-              );
+          case 'Lightning': {
+            // Nova validação assíncrona para Lightning
+            const lightningError = await validateLightningWallet(coldWallet, t);
+            if (lightningError) {
+              newErrors.coldWallet = lightningError;
             }
             break;
+          }
           default:
             newErrors.coldWallet = t('buycheckout.invalidColdWalletError');
             break;
@@ -310,7 +395,7 @@ export function useDataForm() {
       return;
     }
 
-    if (!validateFields()) {
+    if (!(await validateFields())) {
       console.log('Falha na validação dos campos.');
       setIsLoading(false);
       return;
