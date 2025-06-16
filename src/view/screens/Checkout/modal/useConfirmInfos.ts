@@ -83,13 +83,22 @@ export function useConfirmInfos(
   // - Para valores acima de 6000 BRL:
   //   - Sem cupom: 5.99% (0.0599)
   //   - Com cupom: 4.99% (0.0499)
-  let alfredFeeRate: number;
-
+  // NOVA LÓGICA DE CUPOM: decrementa o valor do cupom da taxa base
+  let baseFeeRate: number;
   if (amountBRL < 6000) {
-    alfredFeeRate =
-      cupom && cupom.trim() !== '' ? localAlfredFeePercentage / 100 : 0.0499;
+    baseFeeRate = 0.0499;
   } else {
-    alfredFeeRate = cupom && cupom.trim() !== '' ? 0.0499 : 0.0599;
+    baseFeeRate = 0.0599;
+  }
+
+  let alfredFeeRate: number = baseFeeRate;
+  if (cupom && cupom.trim() !== '' && localAlfredFeePercentage > 0) {
+    const cupomDiscountPercentage = localAlfredFeePercentage / 100;
+    if (amountBRL < 6000) {
+      alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage);
+    } else {
+      alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage / 2);
+    }
   }
 
   const alfredFee = amountBRL * alfredFeeRate;
