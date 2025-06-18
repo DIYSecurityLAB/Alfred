@@ -544,6 +544,29 @@ Cupom: ${cupom}`;
         setTimeLeft(150);
         setIsLoading(false);
 
+        // Verificar se deve redirecionar para WhatsApp após processamento (valores > 5k)
+        const shouldRedirectToWhatsApp = localStorage.getItem(
+          'redirectToWhatsAppAfterPayment',
+        );
+        if (shouldRedirectToWhatsApp === 'true') {
+          localStorage.removeItem('redirectToWhatsAppAfterPayment');
+
+          // Preparar mensagem para WhatsApp
+          const message = `
+Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Validação para Transações Anônimas.
+
+- Valor: ${fiatAmount} (${fiatType})
+- Valor Crypto: ${cryptoAmount} ${cryptoType.toUpperCase()}
+- Rede: ${network}
+- Endereço da carteira: ${coldWallet}
+- Método de pagamento: PIX
+- ID da transação: ${transactionId}
+          `;
+
+          const whatsappURL = `https://wa.me/5511911872097?text=${encodeURIComponent(message)}`;
+          window.open(whatsappURL, '_blank');
+        }
+
         if (pixKeyResponse) {
           navigate(ROUTES.checkoutPix.call(currentLang));
         }
@@ -751,6 +774,7 @@ Cupom: ${cupom}`;
     paymentMethod,
     pixKey,
     isLoading,
+    setIsLoading,
     errors,
     fiatAmount,
     fiatType,
