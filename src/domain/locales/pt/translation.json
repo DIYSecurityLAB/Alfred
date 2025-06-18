@@ -197,20 +197,24 @@
   },
   "buycheckout": {
     "coldWalletError": "O endereço da carteira não pode estar vazio.",
-    "invalidColdWalletErrorLiquid": "Endereço da carteira Liquid inválido.",
-    "invalidColdWalletErrorOnchain": "Endereço da carteira Onchain inválido.",
-    "invalidColdWalletErrorLightning": "Endereço da carteira Lightning inválido. Use uma fatura Lightning (lnbc...), um LNURL ou um e-mail Lightning.",
+    "invalidColdWalletErrorLiquid": "Endereço da carteira Liquid inválido. Verifique se o endereço está correto e tente novamente.",
+    "invalidColdWalletErrorOnchain": "Endereço da carteira Onchain inválido. Use um endereço Bitcoin válido (bc1... ou 1... ou 3...).",
+    "invalidColdWalletErrorLightning": "Endereço da carteira Lightning inválido. Use apenas um LNURL ou um e-mail Lightning válido.",
     "invalidLnurl": "LNURL inválido. Verifique o endereço e tente novamente.",
     "invalidLnurlResponse": "Resposta inválida do servidor LNURL.",
     "fixedAmountLnurlNotSupported": "LNURLs com valor fixo não são suportados. Use um LNURL que permita valores personalizados.",
-    "fixedAmountInvoiceNotSupported": "Faturas Lightning com valor fixo não são suportadas. Use uma fatura sem valor específico.",
+    "lightningInvoiceNotSupported": "Faturas Lightning (bolt11) não são mais suportadas. Use apenas LNURL ou e-mail Lightning.",
+    "invalidEmailLightning": "E-mail Lightning inválido. Use um formato válido como: usuario@exemplo.com",
+    "networkNotAvailable": "Esta rede não está disponível temporariamente. Tente outra rede ou aguarde alguns minutos.",
+    "walletAddressRequired": "Por favor, insira o endereço da sua carteira antes de continuar.",
+    "selectNetworkFirst": "Selecione uma rede antes de inserir o endereço da carteira.",
     "transactionNumberError": "O número de telefone é obrigatório.",
     "invalidTransactionNumberError": "Insira um número de telefone válido (9 a 15 dígitos).",
     "termsAndFeesAlert": "Você precisa aceitar as taxas, termos de uso e a confirmação dos dados enviados",
     "networkSelectionAlert": "Você precisa selecionar uma rede de Bitcoin antes de prosseguir.",
     "paymentError": "Erro ao processar o pagamento.",
-    "invalidColdWalletErrorPolygon": "Endereço de carteira inválido para a rede Polygon.",
-    "invalidColdWalletErrorTron": "Endereço de carteira inválido para a rede Tron.",
+    "invalidColdWalletErrorPolygon": "Endereço de carteira inválido para a rede Polygon. Use um endereço válido (0x...).",
+    "invalidColdWalletErrorTron": "Endereço de carteira inválido para a rede Tron. Use um endereço válido (T...).",
     "invalidNetworkForUSDT": "Para USDT, selecione apenas Liquid, Polygon ou Tron.",
     "pixKeyCopied": "Chave PIX copiada para a área de transferência!",
     "makePayment": "Confirmar pagamento",
@@ -220,6 +224,7 @@
     "couponUsageLimitReached": "O cupom atingiu o limite de uso.",
     "couponValid": "O cupom é válido!",
     "couponCheckError": "Cupom inválido. Entre em contato.",
+    "usernamePasswordSpaceError": "Nome de usuário e senha não podem conter espaços.",
     "value": "Valor",
     "valueCrypto": "Valor Convertido",
     "selectNetwork": "Selecione a Rede",
@@ -263,11 +268,11 @@
       "alternative": "Se não quiser informar seu número real, pode inserir um fictício, como 1111111111."
     },
     "loginTooltip": {
-      "message": "Por segurança, é necessário realizar o login com seu usuário e senha para que você possa acessar a plataforma em qualquer dispositivo e liberar futuras compras, e valores maiores.",
+      "message": "Por segurança, é necessário realizar o login com seu usuário e senha para que você possa acessar a plataforma em qualquer dispositivo e liberar futuras compras, e valores maiores. Não use espaços no usuário ou senha.",
       "alternative": "Suas credenciais serão usadas apenas para autenticação."
     },
-    "usernamePlaceholder": "Usuário",
-    "passwordPlaceholder": "Senha"
+    "usernamePlaceholder": "Usuário (sem espaços)",
+    "passwordPlaceholder": "Senha (sem espaços)"
   },
   "confirm_infos": {
     "title": "Confirmar Informações",
