@@ -160,39 +160,22 @@ export function useDataForm() {
     }
   }
 
-  // Função para verificar se um invoice BOLT11 tem valor fixo
-  function isBolt11Fixed(invoice: string): boolean {
-    // Padrão para invoice com valor fixo: começa com lnbc seguido de números (2-9) e uma unidade (m, u, n, p)
-    // Por exemplo: lnbc10u, lnbc500n, etc.
-    const fixedAmountPattern = /^lnbc([2-9]|[1-9]\d+)[munp]/i;
-
-    // Padrão para invoice sem valor fixo: começa com lnbc1 seguido de 'p'
-    // Por exemplo: lnbc1p...
-    const noAmountPattern = /^lnbc1p/i;
-
-    if (noAmountPattern.test(invoice)) {
-      return false; // Não tem valor fixo (lnbc1p...)
-    }
-
-    return fixedAmountPattern.test(invoice); // Retorna true se tiver valor fixo
-  }
-
   // Função assíncrona para validar carteira Lightning
   async function validateLightningWallet(
     coldWallet: string,
     t: (key: string) => string,
   ): Promise<string | null> {
-    // Verificar formato de invoice Lightning (lnbc...)
+    // Verificar se é um invoice Lightning (bolt11) - não mais suportado
     if (/^lnbc[0-9]{1,}[a-zA-Z0-9]+$/.test(coldWallet)) {
-      // Verificar se o invoice tem valor fixo
-      if (isBolt11Fixed(coldWallet)) {
-        return t('buycheckout.fixedAmountInvoiceNotSupported');
-      }
-      return null; // Válido
+      return t('buycheckout.lightningInvoiceNotSupported');
     }
 
     // Verificar formato de email Lightning
     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(coldWallet)) {
+      // Validação adicional para email Lightning
+      if (coldWallet.length < 5 || !coldWallet.includes('.')) {
+        return t('buycheckout.invalidEmailLightning');
+      }
       return null; // Válido
     }
 
@@ -561,6 +544,29 @@ Cupom: ${cupom}`;
         setTimeLeft(150);
         setIsLoading(false);
 
+        // Verificar se deve redirecionar para WhatsApp após processamento (valores > 5k)
+        const shouldRedirectToWhatsApp = localStorage.getItem(
+          'redirectToWhatsAppAfterPayment',
+        );
+        if (shouldRedirectToWhatsApp === 'true') {
+          localStorage.removeItem('redirectToWhatsAppAfterPayment');
+
+          // Preparar mensagem para WhatsApp
+          const message = `
+Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Validação para Transações Anônimas.
+
+- Valor: ${fiatAmount} (${fiatType})
+- Valor Crypto: ${cryptoAmount} ${cryptoType.toUpperCase()}
+- Rede: ${network}
+- Endereço da carteira: ${coldWallet}
+- Método de pagamento: PIX
+- ID da transação: ${transactionId}
+          `;
+
+          const whatsappURL = `https://wa.me/5511911872097?text=${encodeURIComponent(message)}`;
+          window.open(whatsappURL, '_blank');
+        }
+
         if (pixKeyResponse) {
           navigate(ROUTES.checkoutPix.call(currentLang));
         }
@@ -768,6 +774,7 @@ Cupom: ${cupom}`;
     paymentMethod,
     pixKey,
     isLoading,
+    setIsLoading,
     errors,
     fiatAmount,
     fiatType,

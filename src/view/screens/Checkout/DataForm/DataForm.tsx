@@ -1,4 +1,3 @@
-import { PaymentLoader } from '@/view/components/PaymentLoader';
 import { UserLevelBadge } from '@/view/components/UserLevelBadge';
 import classNames from 'classnames';
 import { t } from 'i18next';
@@ -42,6 +41,7 @@ type PaymentMethodType =
 // Adicionar a importação no topo do arquivo, se necessário
 import { isVipUser } from '@/config/vipUsers';
 import { AlfredLogo } from '@/view/components/Logo/AlfredLogo';
+import { PaymentLoader } from '@/view/components/PaymentLoader';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
 export default function DataForm() {
@@ -78,7 +78,7 @@ export default function DataForm() {
     userLevelName,
     // restrictions,
     isPaymentMethodAllowed,
-    isVipTransaction, // Adicionar esta propriedade aos valores que vêm do useDataForm
+    isVipTransaction,
   } = useDataForm();
 
   // Verifica se há um usuário logado via localStorage
@@ -199,31 +199,10 @@ Cupom: ${cupom || 'Nenhum'}`;
       return;
     }
 
-    if (paymentMethod === 'PIX') {
-      if (numericFiat > 5000) {
-        let taxaAlfred = '';
-        if (numericFiat >= 6000) {
-          taxaAlfred = cupom.trim() !== '' ? '4.99' : '6';
-        } else {
-          taxaAlfred = alfredFeePercentage.toString();
-        }
-
-        const message = `
-    Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Validação para Transações Anônimas.
-
-    - Valor: ${fiatAmount} (${fiatType})
-    - Valor Crypto: ${cryptoAmount} ${cryptoType.toUpperCase()}
-    - Rede: ${network}
-    - Endereço da carteira: ${coldWallet}
-    - Método de pagamento: ${paymentMethodLabels[paymentMethod]}
-    - Usuário: ${username}
-    - Cupom: ${cupom || 'Nenhum'}
-    - Taxa Alfred (%): ${taxaAlfred}
-        `;
-        const whatsappURL = `https://wa.me/5511911872097?text=${encodeURIComponent(message)}`;
-        window.open(whatsappURL, '_blank');
-        return;
-      }
+    // Para valores acima de 5k, processar normalmente e depois redirecionar
+    if (paymentMethod === 'PIX' && numericFiat > 5000) {
+      // Salva um flag para redirecionar após o processamento
+      localStorage.setItem('redirectToWhatsAppAfterPayment', 'true');
     }
 
     setIsModalOpen(true);
@@ -300,7 +279,6 @@ Cupom: ${cupom || 'Nenhum'}`;
   return (
     <>
       {isLoading && <PaymentLoader />}
-
       <main className="flex flex-col justify-center items-center pt-12 sm:pt-24 px-4 sm:px-6">
         <AlfredLogo />
 

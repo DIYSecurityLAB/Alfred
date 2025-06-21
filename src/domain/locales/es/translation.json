@@ -198,18 +198,22 @@
   },
   "buycheckout": {
     "coldWalletError": "La dirección de la billetera no puede estar vacía.",
-    "invalidColdWalletErrorLiquid": "Dirección de billetera Liquid inválida.",
-    "invalidColdWalletErrorOnchain": "Dirección de billetera Onchain inválida.",
-    "invalidColdWalletErrorLightning": "Dirección de billetera Lightning inválida. Use una factura Lightning (lnbc...), un LNURL o un correo electrónico Lightning.",
-    "invalidLnurl": "LNURL inválido. Por favor, verifique la dirección e intente nuevamente.",
+    "invalidColdWalletErrorLiquid": "Dirección de billetera Liquid inválida. Verifique que la dirección sea correcta e intente nuevamente.",
+    "invalidColdWalletErrorOnchain": "Dirección de billetera Onchain inválida. Use una dirección Bitcoin válida (bc1... o 1... o 3...).",
+    "invalidColdWalletErrorLightning": "Dirección de billetera Lightning inválida. Use solo un LNURL o un correo electrónico Lightning válido.",
+    "invalidLnurl": "LNURL inválido. Verifique la dirección e intente nuevamente.",
     "invalidLnurlResponse": "Respuesta inválida del servidor LNURL.",
-    "fixedAmountLnurlNotSupported": "Los LNURL con monto fijo no son compatibles. Por favor, use un LNURL que permita montos personalizados.",
-    "fixedAmountInvoiceNotSupported": "Las facturas Lightning con monto fijo no son compatibles. Por favor, use una factura sin un monto específico.",
+    "fixedAmountLnurlNotSupported": "Los LNURL con monto fijo no son compatibles. Use un LNURL que permita montos personalizados.",
+    "lightningInvoiceNotSupported": "Las facturas Lightning (bolt11) ya no son compatibles. Use solo LNURL o correo electrónico Lightning.",
+    "invalidEmailLightning": "Correo electrónico Lightning inválido. Use un formato válido como: usuario@ejemplo.com",
+    "networkNotAvailable": "Esta red no está disponible temporalmente. Pruebe otra red o espere unos minutos.",
+    "walletAddressRequired": "Por favor, ingrese la dirección de su billetera antes de continuar.",
+    "selectNetworkFirst": "Seleccione una red antes de ingresar la dirección de la billetera.",
     "transactionNumberError": "El número de teléfono es obligatorio.",
     "invalidTransactionNumberError": "Ingrese un número de teléfono válido (9 a 15 dígitos).",
     "termsAndFeesAlert": "Debe aceptar las tarifas, los términos de uso y la confirmación de los datos enviados.",
-    "invalidColdWalletErrorPolygon": "Dirección de cartera inválida para la red Polygon.",
-    "invalidColdWalletErrorTron": "Dirección de cartera inválida para la red Tron.",
+    "invalidColdWalletErrorPolygon": "Dirección de cartera inválida para la red Polygon. Use una dirección válida (0x...).",
+    "invalidColdWalletErrorTron": "Dirección de cartera inválida para la red Tron. Use una dirección válida (T...).",
     "invalidNetworkForUSDT": "Para USDT, seleccione únicamente Liquid, Polygon o Tron.",
     "networkSelectionAlert": "Debe seleccionar una red de Bitcoin antes de continuar.",
     "paymentError": "Error al procesar el pago.",
@@ -221,8 +225,10 @@
     "couponUsageLimitReached": "El cupón ha alcanzado su límite de uso.",
     "couponValid": "¡El cupón es válido!",
     "couponCheckError": "Cupón inválido. Contáctenos.",
+    "usernamePasswordSpaceError": "El nombre de usuario y la contraseña no pueden contener espacios.",
     "value": "Valor",
     "valueCrypto": "Valor Convertido",
+    "selectNetwork": "Seleccionar Red",
     "selectPaymentMethod": "Seleccionar Método de Pago",
     "bitcoinWallet": "Billetera",
     "contactNumber": "Número de contacto",
@@ -249,12 +255,25 @@
       "NOMAD": "Nomad",
       "SWIFT": "Swift",
       "PAYPAL": "PayPal",
-      "BANK_TRANSFER": "Transferencia Bancaria"
+      "BANK_TRANSFER": "Transferencia Bancaria",
+      "TED": "TED",
+      "CASH": "Depósito en Efectivo"
+    },
+    "paymentLevelRestriction": {
+      "ted": "TED disponible solo para nivel Plata (2) o superior",
+      "cash": "Depósito en efectivo disponible solo para nivel Oro (3) o superior",
+      "general": "Este método de pago no está disponible para su nivel actual"
     },
     "contactTooltip": {
-      "message": "Solicitamos tu número para ponernos en contacto en caso de que ocurra algún inconveniente durante la transacción, garantizando mayor seguridad para tu compra.",
-      "alternative": "Si no quieres proporcionar tu número real, puedes ingresar uno ficticio, como 1111111111."
-    }
+      "message": "Por seguridad, es necesario iniciar sesión con su usuario y contraseña para que pueda acceder a la plataforma en cualquier dispositivo y desbloquear futuras compras con montos mayores.",
+      "alternative": "Si no quiere proporcionar su número real, puede ingresar uno ficticio, como 1111111111."
+    },
+    "loginTooltip": {
+      "message": "Por seguridad, es necesario iniciar sesión con su usuario y contraseña para que pueda acceder a la plataforma en cualquier dispositivo y desbloquear futuras compras con montos mayores. No use espacios en el usuario o contraseña.",
+      "alternative": "Sus credenciales solo se usarán para autenticación."
+    },
+    "usernamePlaceholder": "Usuario (sin espacios)",
+    "passwordPlaceholder": "Contraseña (sin espacios)"
   },
   "confirm_infos": {
     "title": "Confirmar Información",
