@@ -112,7 +112,7 @@ export function useCheckout() {
     }
   }, [isAlfred24h, t]);
 
-  async function ValidateValues(data: Checkout) {
+  async function ValidateValues(data: Checkout, selectedNetwork?: string) {
     if (!isTransactionAllowed) {
       toast.error(t('checkout.transaction_error'));
       return;
@@ -133,6 +133,14 @@ export function useCheckout() {
       return;
     }
 
+    // Validação específica para Lightning Network
+    if (selectedNetwork === 'Lightning' && data.fiatType === 'BRL') {
+      if (numericValue < 25) {
+        toast.warning('O valor mínimo para Lightning é R$ 25');
+        return;
+      }
+    }
+
     if (data.cryptoType === 'USDT') {
       const minValue = data.fiatType === 'BRL' ? 500 : 100;
       if (numericValue < minValue) {
@@ -140,7 +148,7 @@ export function useCheckout() {
         return;
       }
     } else {
-      const minValue = data.fiatType === 'BRL' ? 200 : 50;
+      const minValue = data.fiatType === 'BRL' ? 25 : 50;
       if (numericValue < minValue) {
         toast.warning(t('checkout.min_value_error'));
         return;

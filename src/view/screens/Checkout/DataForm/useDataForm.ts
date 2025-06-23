@@ -378,6 +378,27 @@ export function useDataForm() {
       return;
     }
 
+    // Declarar valorBRL apenas uma vez no início da função
+    const valorBRL = parseFloat(fiatAmount.replace(/\D/g, ''));
+
+    // Validação específica para Lightning Network
+    if (network === 'Lightning' && fiatType === 'BRL' && valorBRL < 25) {
+      console.log('Valor menor que mínimo para Lightning.');
+      toast.warning('O valor mínimo para Lightning é R$ 25');
+      setIsLoading(false);
+      return;
+    }
+
+    // Validação para outras redes com valores abaixo de 200 reais
+    if (fiatType === 'BRL' && valorBRL < 200 && network !== 'Lightning') {
+      console.log('Valor menor que mínimo para rede selecionada.');
+      toast.warning(
+        'Para valores abaixo de R$ 200, apenas a rede Lightning está disponível',
+      );
+      setIsLoading(false);
+      return;
+    }
+
     if (!(await validateFields())) {
       console.log('Falha na validação dos campos.');
       setIsLoading(false);
@@ -406,7 +427,6 @@ Cupom: ${cupom}`;
     // Fluxo especial para usuários VIP - Não enviar para API, gerar QR code localmente
     if (isVipTransaction) {
       try {
-        const valorBRL = parseFloat(fiatAmount.replace(/\D/g, ''));
         const pixCodeVip = generateVipPixCode(valorBRL);
 
         // Salvar no localStorage para usar na tela de pagamento
@@ -437,7 +457,6 @@ Cupom: ${cupom}`;
       4 * 60 * 1000,
     );
 
-    const valorBRL = parseFloat(fiatAmount.replace(/\D/g, ''));
     console.log('Valor BRL calculado:', valorBRL);
 
     // // Verificar se o valor está dentro do limite diário do usuário

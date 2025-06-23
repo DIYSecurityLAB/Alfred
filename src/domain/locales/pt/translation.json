@@ -53,7 +53,7 @@
     "opening_hours": "24H por dia, 7 dias por semana.",
     "tooltip_btc": {
       "title": "Transações com BTC:",
-      "minimum_value": "O valor mínimo para transações com Bitcoin é de R$ 200.",
+      "minimum_value": "O valor mínimo para transações com Bitcoin é de R$ 25,00 na rede Lightning e R$ 200,00 nas demais rede.",
       "pix_limit": "Para pagamentos via Pix com valores superiores a R$ 5.000, é necessário preencher o formulário 'Validação para transações anônimas', que comprova sua renda e autenticidade."
     },
     "tooltip_usdt": {

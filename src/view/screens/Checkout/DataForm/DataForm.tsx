@@ -326,28 +326,52 @@ Cupom: ${cupom || 'Nenhum'}`;
                     <div className="absolute left-0 top-full mt-2 w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10 transition-all duration-300 ease-out transform scale-100 opacity-100">
                       <ul className="w-full">
                         {networks.map((net) => {
-                          const isOnchainDisabled = false;
+                          // Verificar se o valor é menor que 200 reais e bloquear outras redes que não sejam Lightning
+                          const isValueTooLow =
+                            fiatType === 'BRL' &&
+                            numericFiat < 200 &&
+                            net.name !== 'Lightning';
+                          // Verificar se o valor é menor que 25 reais para Lightning
+                          const isLightningValueTooLow =
+                            fiatType === 'BRL' &&
+                            numericFiat < 25 &&
+                            net.name === 'Lightning';
+                          const isDisabled =
+                            isValueTooLow || isLightningValueTooLow;
+
                           return (
                             <li
                               key={net.name}
                               onClick={() => {
-                                if (isOnchainDisabled) {
-                                  toast.info(
-                                    t('checkout.wallet_error_below_700'),
-                                  );
+                                if (isDisabled) {
+                                  if (isLightningValueTooLow) {
+                                    toast.info(
+                                      'O valor mínimo para Lightning é R$ 25',
+                                    );
+                                  } else if (isValueTooLow) {
+                                    toast.info(
+                                      'Para valores abaixo de R$ 200, apenas a rede Lightning está disponível',
+                                    );
+                                  }
                                 } else {
                                   selectNetwork(net.name);
                                 }
                               }}
                               className={`flex flex-col items-center justify-center px-4 py-2 cursor-pointer text-white ${
-                                isOnchainDisabled
-                                  ? 'opacity-50'
+                                isDisabled
+                                  ? 'opacity-50 cursor-not-allowed'
                                   : 'hover:bg-gray-800'
                               }`}
                             >
-                              <span className="w-full text-center">
-                                {net.name}
-                              </span>
+                              <div className="flex items-center gap-2 w-full justify-center">
+                                <span className="text-center">{net.name}</span>
+                                {isDisabled && (
+                                  <FaLock
+                                    size={12}
+                                    className="text-yellow-500"
+                                  />
+                                )}
+                              </div>
                               <img
                                 src={net.icon}
                                 alt={net.name}
