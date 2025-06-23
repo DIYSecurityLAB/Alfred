@@ -52,7 +52,7 @@
     "opening_hours": "24H a day, 7 days a week.",
     "tooltip_btc": {
       "title": "BTC Transactions:",
-      "minimum_value": "The minimum amount for Bitcoin transactions is 200 BRL.",
+      "minimum_value": "The minimum value for Bitcoin transactions is R$25.00 on the Lightning network and R$200.00 on other networks.",
       "pix_limit": "For Pix payments with amounts over 5,000 BRL, it is necessary to complete the 'Validation for Anonymous Transactions' form, which verifies your income and authenticity."
     },
     "tooltip_usdt": {
