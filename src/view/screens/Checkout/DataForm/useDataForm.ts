@@ -533,14 +533,9 @@ Cupom: ${cupom}`;
       const pixKeyResponse = response.data.response?.qrCopyPaste;
       const status = response.data.response?.status;
       const transactionId = response.data.response?.id;
-      console.log(
-        'Response:',
-        response.data.response,
-        'status:',
-        status,
-        'transactionId:',
-        transactionId,
-      );
+      const depositId = response.data.depositId;
+
+      console.log('date:', response.data);
 
       // Armazenar transactionId em todos os casos
       if (transactionId) {
@@ -579,7 +574,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
 - Rede: ${network}
 - Endereço da carteira: ${coldWallet}
 - Método de pagamento: PIX
-- ID da transação: ${transactionId}
+- ID da transação: ${depositId}
           `;
 
           const whatsappURL = `https://wa.me/5511911872097?text=${encodeURIComponent(message)}`;
