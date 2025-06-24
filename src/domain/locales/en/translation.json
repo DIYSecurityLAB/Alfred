@@ -43,7 +43,7 @@
     "sell": "Sell",
     "proceed_button": "Proceed",
     "transaction_error": "Transactions are only allowed every day from 8:00 AM to 10:00 PM Brasília time.",
-    "min_value_error": "The minimum purchase amount for BTC is 200 BRL.",
+    "min_value_error": "The minimum value for Bitcoin transactions is R$25.00 on the Lightning network and R$200.00 on other networks.",
     "min_value_error_usdt": "The minimum purchase amount for USDT is 550 BRL.",
     "wallet_error_below_700": "For amounts below 700 BRL, only Liquid and Lightning wallets are allowed.",
     "payment_error_above_5000": "For Pix payments over 5,000 BRL, please contact our support via WhatsApp.",
