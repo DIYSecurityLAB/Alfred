@@ -55,7 +55,7 @@ export function useDataForm() {
   const [cryptoType, setCryptoType] = useState(''); // Valores possíveis: "BITCOIN", "USDT", "BTC_USDT", etc.
   const [acceptFees, setAcceptFees] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [alfredFeePercentage, setAlfredFeePercentage] = useState(5);
+  const [alfredFeePercentage, setAlfredFeePercentage] = useState(0); // Alterado para iniciar com 0 (sem desconto)
   const [isVipTransaction, setIsVipTransaction] = useState(false); // Novo estado para controlar transações VIP
 
   // Obtenção de dados de autenticação
