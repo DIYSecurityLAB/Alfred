@@ -653,6 +653,14 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
 
       if (
         axios.isAxiosError(error) &&
+        error.response?.data?.code === 'LIMIT_EXCEEDED_COUPON'
+      ) {
+        toast.error(
+          `Limite excedido para seu nível ${userLevelName}. Por favor, aguarde a validação do seu perfil ou entre em contato com o suporte para aumentar seus limites.`,
+        );
+      }
+      if (
+        axios.isAxiosError(error) &&
         error.response?.data?.code === 'DAILY_LIMIT_EXCEEDED'
       ) {
         toast.error(`Limite diário excedido para seu nível ${userLevelName}.`);
@@ -765,6 +773,26 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
       toast.success(t('buycheckout.couponValid'));
     } catch (error) {
       console.error('Erro ao verificar o cupom:', error);
+
+      // Verificação específica para erro de limite de uso do cupom excedido
+      if (
+        axios.isAxiosError(error) &&
+        error.response?.data?.code === 'LIMIT_EXCEEDED_COUPON'
+      ) {
+        setErrors((prev) => ({
+          ...prev,
+          cupom:
+            error.response?.data?.message ||
+            t('Você usou o cupom "ZERO" mais de 1 vez.'),
+        }));
+        setCupom('');
+        toast.error(
+          error.response?.data?.message ||
+            t('Você usou o cupom "ZERO" mais de 1 vez.'),
+        );
+        return;
+      }
+
       setErrors((prev) => ({
         ...prev,
         cupom: t('buycheckout.couponCheckError'),
