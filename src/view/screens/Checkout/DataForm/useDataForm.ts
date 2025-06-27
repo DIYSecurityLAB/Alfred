@@ -655,9 +655,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
         axios.isAxiosError(error) &&
         error.response?.data?.code === 'LIMIT_EXCEEDED_COUPON'
       ) {
-        toast.error(
-          `Limite excedido para seu nível ${userLevelName}. Por favor, aguarde a validação do seu perfil ou entre em contato com o suporte para aumentar seus limites.`,
-        );
+        toast.error(`Você usou o cupom "ZERO" mais de 1 vez.`);
       }
       if (
         axios.isAxiosError(error) &&
