@@ -655,9 +655,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
         axios.isAxiosError(error) &&
         error.response?.data?.code === 'LIMIT_EXCEEDED_COUPON'
       ) {
-        toast.error(
-          `Limite excedido para seu nível ${userLevelName}. Por favor, aguarde a validação do seu perfil ou entre em contato com o suporte para aumentar seus limites.`,
-        );
+        toast.error(`Você usou o cupom "ZERO" mais de 1 vez.`);
       }
       if (
         axios.isAxiosError(error) &&
@@ -667,7 +665,12 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
         setIsLoading(false);
         return;
       }
-
+      if (
+        axios.isAxiosError(error) &&
+        error.response?.data?.code === 'TIME_LIMIT'
+      ) {
+        toast.error(`Você precisa aguardar 20 minutos entre transações.`);
+      }
       // Adicionar tratamento para o erro LIMIT_EXCEEDED
       if (
         axios.isAxiosError(error) &&
@@ -788,7 +791,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
         setCupom('');
         toast.error(
           error.response?.data?.message ||
-            t('Você usou o cupom "ZERO" mais de 1 vez.'),
+          t('Você usou o cupom "ZERO" mais de 1 vez.'),
         );
         return;
       }
