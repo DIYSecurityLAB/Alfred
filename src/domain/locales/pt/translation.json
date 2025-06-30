@@ -68,9 +68,10 @@
     "usdt_to_usd_error": "Não é possível comprar USDT com USDT."
   },
   "paymentFailure": {
-    "title": "Falha no pagamento",
-    "description": "Houve um problema ao processar seu pagamento. Tente novamente ou entre em contato com o suporte.",
-    "retryButton": "TENTAR NOVAMENTE",
+    "title": "Tempo para pagamento esgotado",
+    "description": "O tempo limite para realizar o pagamento se esgotou.",
+    "timeoutMessage": "Caso você tenha realizado o pagamento via Pix para a chave fornecida, não se preocupe! Sua transação será processada assim que recebermos a confirmação do banco.",
+    "retryButton": "NOVA COMPRA",
     "whatsapp": "FALE CONOSCO"
   },
   "paymentSuccess": {

@@ -68,9 +68,10 @@
     "eur_placeholder": "Ingrese el monto en EUR"
   },
   "paymentFailure": {
-    "title": "Fallo en el Pago",
-    "description": "Hubo un problema al procesar su pago. Intente nuevamente o entre en contacto con el soporte.",
-    "retryButton": "INTENTAR DE NUEVO",
+    "title": "Tiempo de pago agotado",
+    "description": "El tiempo límite para realizar el pago se ha agotado.",
+    "timeoutMessage": "Si ha realizado el pago via Pix a la clave proporcionada, ¡no se preocupe! Su transacción será procesada tan pronto como recibamos la confirmación del banco.",
+    "retryButton": "NUEVA COMPRA",
     "whatsapp": "HABLA CON NOSOTROS"
   },
   "paymentSuccess": {
