@@ -73,10 +73,6 @@ export function BrowserRouter() {
                 path={ROUTES.aboutBitcoin.path}
                 element={<AboutBuyBitcoin />}
               />
-              <Route
-                path={ROUTES.paymentAlfredStatus.failure.path}
-                element={<PaymentAlfredFailure />}
-              />
               <Route path={ROUTES.term.path} element={<TermsOfUse />} />
               {/* Rotas protegidas */}
               <Route element={<UserProtectedRoute />}>
@@ -84,7 +80,10 @@ export function BrowserRouter() {
                   path={ROUTES.paymentAlfredStatus.success.path}
                   element={<PaymentAlfredSuccess />}
                 />
-
+                <Route
+                  path={ROUTES.paymentAlfredStatus.failure.path}
+                  element={<PaymentAlfredFailure />}
+                />
                 <Route
                   path={ROUTES.paymentAlfredStatus.review.path}
                   element={<PaymentAlfredReview />}
