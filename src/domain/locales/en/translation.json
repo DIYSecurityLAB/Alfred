@@ -68,9 +68,10 @@
     "eur_placeholder": "Enter the amount in EUR"
   },
   "paymentFailure": {
-    "title": "Payment Failure",
-    "description": "There was a problem processing your payment. Please try again or contact support.",
-    "retryButton": "TRY AGAIN",
+    "title": "Payment time expired",
+    "description": "The time limit to make the payment has expired.",
+    "timeoutMessage": "If you have made the payment via Pix to the provided key, don't worry! Your transaction will be processed as soon as we receive confirmation from the bank.",
+    "retryButton": "NEW PURCHASE",
     "whatsapp": "CONTACT US"
   },
   "paymentSuccess": {
