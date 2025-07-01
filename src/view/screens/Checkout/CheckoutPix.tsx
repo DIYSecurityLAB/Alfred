@@ -52,9 +52,9 @@ export function CheckoutPix() {
         {t('buycheckout.instruction')}
       </p>
       <p className="text-center text-red-600">
-        {t('buycheckout.timeRemaining')}: {Math.floor(timeLeft / 60)}:
-        {timeLeft % 60 < 10 && '0'}
-        {timeLeft % 60} {t('buycheckout.minutes')}
+        {t('buycheckout.timeRemaining')}: {Math.floor((timeLeft ?? 0) / 60)}:
+        {(timeLeft ?? 0) % 60 < 10 && '0'}
+        {(timeLeft ?? 0) % 60} {t('buycheckout.minutes')}
       </p>
 
       {!isVipTransaction && (
