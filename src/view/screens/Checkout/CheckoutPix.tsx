@@ -1,16 +1,49 @@
 import { t } from 'i18next';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AlfredQr from '../../assets/_DIY SEC LAB - Apresentação Comercial (1).png';
+import { ROUTES } from '../../routes/Routes';
+import { useCurrentLang } from '../../utils/useCurrentLang';
 import { useDataForm } from './DataForm/useDataForm';
 import { usePaymentStatusPolling } from './usePaymentStatusPolling';
 
 export function CheckoutPix() {
-  const { timeLeft, pixKey } = useDataForm();
+  const { pixKey } = useDataForm();
   const { isLoadingPayment, verifyPaymentStatus } = usePaymentStatusPolling();
   const [cryptoType, setCryptoType] = useState('');
   const [isVipTransaction, setIsVipTransaction] = useState(false);
+  const [localTimeLeft, setLocalTimeLeft] = useState(210);
+  const navigate = useNavigate();
+  const { currentLang } = useCurrentLang();
+
+  useEffect(() => {
+    const storedTimeLeft = localStorage.getItem('timeLeft');
+    if (storedTimeLeft) {
+      setLocalTimeLeft(parseInt(storedTimeLeft, 10));
+    } else {
+      localStorage.setItem('timeLeft', '210');
+    }
+
+    const timer = setInterval(() => {
+      setLocalTimeLeft((prevTime) => {
+        const newTime = prevTime - 1;
+        localStorage.setItem('timeLeft', newTime.toString());
+
+        if (newTime <= 0) {
+          clearInterval(timer);
+          navigate(ROUTES.paymentAlfredStatus.failure.call(currentLang));
+        }
+
+        return newTime;
+      });
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [navigate, currentLang]);
 
   useEffect(() => {
     const storedCryptoType = localStorage.getItem('cryptoType');
@@ -18,7 +51,6 @@ export function CheckoutPix() {
       setCryptoType(storedCryptoType);
     }
 
-    // Verificar se é uma transação VIP com base no pixKey
     const vipFlag = localStorage.getItem('isVipTransaction');
     if (vipFlag === 'true' && pixKey?.includes('vip@depix.info')) {
       setIsVipTransaction(true);
@@ -27,7 +59,6 @@ export function CheckoutPix() {
     }
   }, [pixKey]);
 
-  // Função para copiar a chave PIX
   const handleCopyToClipboard = () => {
     navigator.clipboard.writeText(pixKey ?? '');
     toast.success(t('buycheckout.copyPixKey'));
@@ -52,9 +83,9 @@ export function CheckoutPix() {
         {t('buycheckout.instruction')}
       </p>
       <p className="text-center text-red-600">
-        {t('buycheckout.timeRemaining')}: {Math.floor(timeLeft / 60)}:
-        {timeLeft % 60 < 10 && '0'}
-        {timeLeft % 60} {t('buycheckout.minutes')}
+        {t('buycheckout.timeRemaining')}: {Math.floor(localTimeLeft / 60)}:
+        {localTimeLeft % 60 < 10 && '0'}
+        {localTimeLeft % 60} {t('buycheckout.minutes')}
       </p>
 
       {!isVipTransaction && (

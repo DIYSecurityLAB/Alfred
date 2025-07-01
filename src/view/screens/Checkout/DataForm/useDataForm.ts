@@ -1,4 +1,3 @@
-// useDataForm.tsx
 import {
   getMaintenanceMessage,
   isPaymentMethodInMaintenance,
@@ -21,7 +20,6 @@ import Tron from '../../../assets/tron.svg';
 import { ROUTES } from '../../../routes/Routes';
 import { useCurrentLang } from '../../../utils/useCurrentLang';
 
-// Definindo um tipo para os métodos de pagamento
 type PaymentMethodType =
   | 'PIX'
   | 'PIX_MAINTENANCE'
@@ -35,7 +33,7 @@ type PaymentMethodType =
 export function useDataForm() {
   // Estados do formulário
   const [network, setNetwork] = useState<string>('');
-  const [timeLeft, setTimeLeft] = useState(150);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null); // Alterado para null inicialmente
   const [isTransactionTimedOut, setIsTransactionTimedOut] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [coldWallet, setColdWallet] = useState<string>('');
@@ -316,6 +314,8 @@ export function useDataForm() {
   })();
 
   const handleProcessPayment = async (username: string, password: string) => {
+    // Limpar possível valor antigo do temporizador
+    localStorage.removeItem('timeLeft');
     setIsLoading(true);
 
     if (!user) {
@@ -434,7 +434,7 @@ Cupom: ${cupom}`;
         localStorage.setItem('isVipTransaction', 'true');
         setPixKey(pixCodeVip);
 
-        setTimeLeft(150);
+        setTimeLeft(210); // Alterado de 150 para 210 segundos
         setIsLoading(false);
 
         // Navegar para tela de pagamento
@@ -555,7 +555,7 @@ Cupom: ${cupom}`;
           setPixKey(pixKeyResponse);
         }
 
-        setTimeLeft(150);
+        setTimeLeft(210); // Alterado de 150 para 210 segundos
         setIsLoading(false);
 
         // Verificar se deve redirecionar para WhatsApp após processamento (valores > 5k)
@@ -686,7 +686,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
     }
   };
 
-  // Sincroniza o pixKey e o tempo restante com o localStorage
+  // Sincroniza o pixKey com o localStorage
   useEffect(() => {
     if (pixKey) {
       localStorage.setItem('pixKey', pixKey);
@@ -707,17 +707,19 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
     }
   };
 
+  // O timer só deve iniciar quando estivermos na página CheckoutPix
+  // Identificamos isso verificando a URL atual
   useEffect(() => {
-    const storedTimeLeft = localStorage.getItem('timeLeft');
-    if (storedTimeLeft) {
-      setTimeLeft(parseInt(storedTimeLeft, 10));
+    // Verificar se estamos na página CheckoutPix
+    const isOnCheckoutPixPage = window.location.pathname.includes('/pix');
+
+    // Não iniciar o timer se não estivermos na página CheckoutPix
+    if (!isOnCheckoutPixPage) {
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    if (!pixKey) return;
-
-    if (timeLeft <= 0) {
+    // Se estamos na página de CheckoutPix, iniciar o timer
+    if (timeLeft !== null && timeLeft <= 0) {
       setIsTransactionTimedOut(true);
       localStorage.removeItem('timeLeft');
       navigate(ROUTES.paymentAlfredStatus.failure.call(currentLang));
@@ -726,14 +728,14 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
 
     const timer = setTimeout(() => {
       setTimeLeft((prevTime) => {
-        const newTime = prevTime - 1;
+        const newTime = (prevTime ?? 0) - 1;
         localStorage.setItem('timeLeft', newTime.toString());
         return newTime;
       });
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [timeLeft, navigate, currentLang, pixKey]);
+  }, [timeLeft, navigate, currentLang]);
 
   useEffect(() => {
     return () => {
