@@ -7,12 +7,15 @@ import { FaTimesCircle, FaWhatsapp } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { ROUTES } from '../../routes/Routes';
 import { useCurrentLang } from '../../utils/useCurrentLang';
+import { usePaymentStatusPolling } from '../Checkout/usePaymentStatusPolling';
 
 export function PaymentAlfredFailure() {
   const { t } = useTranslation();
   const { currentLang } = useCurrentLang();
   const navigate = useNavigate();
   const [transactionId, setTransactionId] = useState<string>('');
+  // Polling funcionando em segundo plano sem mostrar o botão
+  usePaymentStatusPolling();
 
   useEffect(() => {
     const storedTransactionId = localStorage.getItem('transactionId');
@@ -56,22 +59,33 @@ export function PaymentAlfredFailure() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7, duration: 0.5 }}
-        className="text-lg md:text-xl mb-6 max-w-2xl text-gray-100"
+        className="text-lg md:text-xl mb-4 max-w-2xl text-gray-100"
       >
         {t('paymentFailure.description')}
       </motion.p>
 
-      <TransactionIdDisplay delay={0.75} />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.75, duration: 0.5 }}
+        className="mb-6 p-4 rounded-lg max-w-2xl bg-orange-600/20 border-l-4 border-orange-600"
+      >
+        <p className="text-base text-white">
+          {t('paymentFailure.timeoutMessage')}
+        </p>
+      </motion.div>
+
+      <TransactionIdDisplay delay={0.8} />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, duration: 0.5 }}
+        transition={{ delay: 0.85, duration: 0.5 }}
         className="flex flex-col md:flex-row gap-4"
       >
         <button
           onClick={() => handleOnLink(ROUTES.buyBitcoin.call(currentLang))}
-          className="w-[220px] h-[50px] text-lg bg-[#F49300] border-[3px] border-white rounded-[40px] "
+          className="w-[220px] h-[50px] text-lg bg-[#F49300] text-white border-[3px] border-white rounded-[40px]"
         >
           {t('paymentFailure.retryButton')}
         </button>

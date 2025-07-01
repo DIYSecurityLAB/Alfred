@@ -82,8 +82,7 @@ export function useConfirmInfos(
   // - Para valores acima de 6000 BRL:
   //   - Taxa base: 5.99% (0.0599)
   // - Se houver cupom válido com percentual > 0:
-  //   - Para valores até 6000 BRL: aplica desconto completo
-  //   - Para valores acima de 6000 BRL: aplica metade do desconto
+  //   - Para qualquer valor: aplica desconto completo
   let baseFeeRate: number;
   if (amountBRL < 6000) {
     baseFeeRate = 0.0499;
@@ -94,11 +93,7 @@ export function useConfirmInfos(
   let alfredFeeRate: number = baseFeeRate;
   if (cupom && cupom.trim() !== '' && localAlfredFeePercentage > 0) {
     const cupomDiscountPercentage = localAlfredFeePercentage / 100;
-    if (amountBRL < 6000) {
-      alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage);
-    } else {
-      alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage / 2);
-    }
+    alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage);
   }
 
   const alfredFee = amountBRL * alfredFeeRate;
