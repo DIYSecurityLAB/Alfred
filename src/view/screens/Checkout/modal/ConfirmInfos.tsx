@@ -22,11 +22,10 @@ const Button = ({
 }) => (
   <button
     onClick={onClick}
-    className={`px-6 py-3 rounded-3xl font-bold text-sm sm:text-base transition duration-300 ${
-      variant === 'outline'
-        ? 'border-2 border-[#F39200] text-[#F39200] hover:bg-[#F39200] hover:text-white'
-        : 'bg-[#F39200] text-white hover:bg-orange-600'
-    }`}
+    className={`px-6 py-3 rounded-3xl font-bold text-sm sm:text-base transition duration-300 ${variant === 'outline'
+      ? 'border-2 border-[#F39200] text-[#F39200] hover:bg-[#F39200] hover:text-white'
+      : 'bg-[#F39200] text-white hover:bg-orange-600'
+      }`}
   >
     {children}
   </button>
@@ -245,8 +244,7 @@ export default function ConfirmInfosModal({
                 )}
                 <p>
                   <strong>{t('confirm_infos.fees_section.alfred_fee')}:</strong>{' '}
-                  R$ {alfredFee.toFixed(2)} ({(alfredFeeRate * 100).toFixed(2)}
-                  %)
+                  R$ {alfredFee.toFixed(2)} ({(alfredFeeRate * 100).toFixed(2)}%)
                 </p>
                 <p>
                   <strong>{t('confirm_infos.fees_section.total_fees')}:</strong>{' '}

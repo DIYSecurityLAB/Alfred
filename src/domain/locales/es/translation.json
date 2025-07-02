@@ -93,13 +93,13 @@
   },
   "fees": {
     "title": "Tarifas",
-    "dailyLimit1": "De 200 BRL a 6,000 BRL por día:",
-    "above1000": "4,99% para transacciones hasta 6,000 BRL.",
+    "dailyLimit1": "De 200 BRL a 5,000 BRL por día:",
+    "above1000": "4,99% para transacciones hasta 5,000 BRL.",
     "below1000": "Tarifa variable con cupón de influencer.",
     "dailyLimit2": "De 6,001 BRL en adelante:",
     "fixedRate": "5,99% de tarifa fija.",
     "couponsTitle": "Cupón",
-    "coupons": "Para valores hasta 6.000 BRL, al utilizar un cupón, la tarifa varía según el influencer. Para valores superiores a 6.000 BRL, al utilizar un cupón, la tarifa se reduce a 4,99%.",
+    "coupons": "Para valores hasta 5.000 BRL, al utilizar un cupón, la tarifa varía según el influencer. Para valores superiores a 5.000 BRL, al utilizar un cupón, la tarifa se reduce a 4,99%.",
     "convertibilityRates": "Las tarifas son variables para transacciones que involucran Pix a LBTC y transferencias de Bitcoin en cadena.",
     "convertibilityRatesTile": "Tarifas de Convertibilidad",
     "userLevelsTitle": "Programa de Niveles AlfredP2P",
@@ -114,7 +114,7 @@
     "level1": {
       "title": "Nivel 1 — Bronce",
       "howToEnter": "Cómo entrar: Después de completar 2 transacciones en el nivel Madera y esperar 24 horas.",
-      "transactionLimit": "Límite de transacciones: Hasta R$6,000 por día.",
+      "transactionLimit": "Límite de transacciones: Hasta R$5,000 por día.",
       "levelUp": "Para subir de nivel: Acumular movimientos totales de R$10,000."
     },
     "level2": {
