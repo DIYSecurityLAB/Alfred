@@ -1,4 +1,3 @@
-import { PaymentLoader } from '@/view/components/PaymentLoader';
 import { UserLevelBadge } from '@/view/components/UserLevelBadge';
 import classNames from 'classnames';
 import { t } from 'i18next';
@@ -42,6 +41,7 @@ type PaymentMethodType =
 // Adicionar a importação no topo do arquivo, se necessário
 import { isVipUser } from '@/config/vipUsers';
 import { AlfredLogo } from '@/view/components/Logo/AlfredLogo';
+import { PaymentLoader } from '@/view/components/PaymentLoader';
 import { FaExternalLinkAlt } from 'react-icons/fa';
 
 export default function DataForm() {
@@ -78,7 +78,7 @@ export default function DataForm() {
     userLevelName,
     // restrictions,
     isPaymentMethodAllowed,
-    isVipTransaction, // Adicionar esta propriedade aos valores que vêm do useDataForm
+    isVipTransaction,
   } = useDataForm();
 
   // Verifica se há um usuário logado via localStorage
@@ -199,31 +199,10 @@ Cupom: ${cupom || 'Nenhum'}`;
       return;
     }
 
-    if (paymentMethod === 'PIX') {
-      if (numericFiat > 5000) {
-        let taxaAlfred = '';
-        if (numericFiat >= 6000) {
-          taxaAlfred = cupom.trim() !== '' ? '4.99' : '6';
-        } else {
-          taxaAlfred = alfredFeePercentage.toString();
-        }
-
-        const message = `
-    Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Validação para Transações Anônimas.
-
-    - Valor: ${fiatAmount} (${fiatType})
-    - Valor Crypto: ${cryptoAmount} ${cryptoType.toUpperCase()}
-    - Rede: ${network}
-    - Endereço da carteira: ${coldWallet}
-    - Método de pagamento: ${paymentMethodLabels[paymentMethod]}
-    - Usuário: ${username}
-    - Cupom: ${cupom || 'Nenhum'}
-    - Taxa Alfred (%): ${taxaAlfred}
-        `;
-        const whatsappURL = `https://wa.me/5511911872097?text=${encodeURIComponent(message)}`;
-        window.open(whatsappURL, '_blank');
-        return;
-      }
+    // Para valores acima de 5k, processar normalmente e depois redirecionar
+    if (paymentMethod === 'PIX' && numericFiat > 5000) {
+      // Salva um flag para redirecionar após o processamento
+      localStorage.setItem('redirectToWhatsAppAfterPayment', 'true');
     }
 
     setIsModalOpen(true);
@@ -300,7 +279,6 @@ Cupom: ${cupom || 'Nenhum'}`;
   return (
     <>
       {isLoading && <PaymentLoader />}
-
       <main className="flex flex-col justify-center items-center pt-12 sm:pt-24 px-4 sm:px-6">
         <AlfredLogo />
 
@@ -348,28 +326,52 @@ Cupom: ${cupom || 'Nenhum'}`;
                     <div className="absolute left-0 top-full mt-2 w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10 transition-all duration-300 ease-out transform scale-100 opacity-100">
                       <ul className="w-full">
                         {networks.map((net) => {
-                          const isOnchainDisabled = false;
+                          // Verificar se o valor é menor que 200 reais e bloquear outras redes que não sejam Lightning
+                          const isValueTooLow =
+                            fiatType === 'BRL' &&
+                            numericFiat < 200 &&
+                            net.name !== 'Lightning';
+                          // Verificar se o valor é menor que 25 reais para Lightning
+                          const isLightningValueTooLow =
+                            fiatType === 'BRL' &&
+                            numericFiat < 25 &&
+                            net.name === 'Lightning';
+                          const isDisabled =
+                            isValueTooLow || isLightningValueTooLow;
+
                           return (
                             <li
                               key={net.name}
                               onClick={() => {
-                                if (isOnchainDisabled) {
-                                  toast.info(
-                                    t('checkout.wallet_error_below_700'),
-                                  );
+                                if (isDisabled) {
+                                  if (isLightningValueTooLow) {
+                                    toast.info(
+                                      'O valor mínimo para Lightning é R$ 25',
+                                    );
+                                  } else if (isValueTooLow) {
+                                    toast.info(
+                                      'Para valores abaixo de R$ 200, apenas a rede Lightning está disponível',
+                                    );
+                                  }
                                 } else {
                                   selectNetwork(net.name);
                                 }
                               }}
                               className={`flex flex-col items-center justify-center px-4 py-2 cursor-pointer text-white ${
-                                isOnchainDisabled
-                                  ? 'opacity-50'
+                                isDisabled
+                                  ? 'opacity-50 cursor-not-allowed'
                                   : 'hover:bg-gray-800'
                               }`}
                             >
-                              <span className="w-full text-center">
-                                {net.name}
-                              </span>
+                              <div className="flex items-center gap-2 w-full justify-center">
+                                <span className="text-center">{net.name}</span>
+                                {isDisabled && (
+                                  <FaLock
+                                    size={12}
+                                    className="text-yellow-500"
+                                  />
+                                )}
+                              </div>
                               <img
                                 src={net.icon}
                                 alt={net.name}

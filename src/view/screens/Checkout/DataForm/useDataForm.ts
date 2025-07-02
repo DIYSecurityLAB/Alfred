@@ -1,4 +1,3 @@
-// useDataForm.tsx
 import {
   getMaintenanceMessage,
   isPaymentMethodInMaintenance,
@@ -21,7 +20,6 @@ import Tron from '../../../assets/tron.svg';
 import { ROUTES } from '../../../routes/Routes';
 import { useCurrentLang } from '../../../utils/useCurrentLang';
 
-// Definindo um tipo para os métodos de pagamento
 type PaymentMethodType =
   | 'PIX'
   | 'PIX_MAINTENANCE'
@@ -35,7 +33,7 @@ type PaymentMethodType =
 export function useDataForm() {
   // Estados do formulário
   const [network, setNetwork] = useState<string>('');
-  const [timeLeft, setTimeLeft] = useState(150);
+  const [timeLeft, setTimeLeft] = useState<number | null>(null); // Alterado para null inicialmente
   const [isTransactionTimedOut, setIsTransactionTimedOut] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [coldWallet, setColdWallet] = useState<string>('');
@@ -55,7 +53,7 @@ export function useDataForm() {
   const [cryptoType, setCryptoType] = useState(''); // Valores possíveis: "BITCOIN", "USDT", "BTC_USDT", etc.
   const [acceptFees, setAcceptFees] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [alfredFeePercentage, setAlfredFeePercentage] = useState(5);
+  const [alfredFeePercentage, setAlfredFeePercentage] = useState(0); // Alterado para iniciar com 0 (sem desconto)
   const [isVipTransaction, setIsVipTransaction] = useState(false); // Novo estado para controlar transações VIP
 
   // Obtenção de dados de autenticação
@@ -160,39 +158,22 @@ export function useDataForm() {
     }
   }
 
-  // Função para verificar se um invoice BOLT11 tem valor fixo
-  function isBolt11Fixed(invoice: string): boolean {
-    // Padrão para invoice com valor fixo: começa com lnbc seguido de números (2-9) e uma unidade (m, u, n, p)
-    // Por exemplo: lnbc10u, lnbc500n, etc.
-    const fixedAmountPattern = /^lnbc([2-9]|[1-9]\d+)[munp]/i;
-
-    // Padrão para invoice sem valor fixo: começa com lnbc1 seguido de 'p'
-    // Por exemplo: lnbc1p...
-    const noAmountPattern = /^lnbc1p/i;
-
-    if (noAmountPattern.test(invoice)) {
-      return false; // Não tem valor fixo (lnbc1p...)
-    }
-
-    return fixedAmountPattern.test(invoice); // Retorna true se tiver valor fixo
-  }
-
   // Função assíncrona para validar carteira Lightning
   async function validateLightningWallet(
     coldWallet: string,
     t: (key: string) => string,
   ): Promise<string | null> {
-    // Verificar formato de invoice Lightning (lnbc...)
+    // Verificar se é um invoice Lightning (bolt11) - não mais suportado
     if (/^lnbc[0-9]{1,}[a-zA-Z0-9]+$/.test(coldWallet)) {
-      // Verificar se o invoice tem valor fixo
-      if (isBolt11Fixed(coldWallet)) {
-        return t('buycheckout.fixedAmountInvoiceNotSupported');
-      }
-      return null; // Válido
+      return t('buycheckout.lightningInvoiceNotSupported');
     }
 
     // Verificar formato de email Lightning
     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(coldWallet)) {
+      // Validação adicional para email Lightning
+      if (coldWallet.length < 5 || !coldWallet.includes('.')) {
+        return t('buycheckout.invalidEmailLightning');
+      }
       return null; // Válido
     }
 
@@ -333,6 +314,8 @@ export function useDataForm() {
   })();
 
   const handleProcessPayment = async (username: string, password: string) => {
+    // Limpar possível valor antigo do temporizador
+    localStorage.removeItem('timeLeft');
     setIsLoading(true);
 
     if (!user) {
@@ -395,6 +378,27 @@ export function useDataForm() {
       return;
     }
 
+    // Declarar valorBRL apenas uma vez no início da função
+    const valorBRL = parseFloat(fiatAmount.replace(/\D/g, ''));
+
+    // Validação específica para Lightning Network
+    if (network === 'Lightning' && fiatType === 'BRL' && valorBRL < 25) {
+      console.log('Valor menor que mínimo para Lightning.');
+      toast.warning('O valor mínimo para Lightning é R$ 25');
+      setIsLoading(false);
+      return;
+    }
+
+    // Validação para outras redes com valores abaixo de 200 reais
+    if (fiatType === 'BRL' && valorBRL < 200 && network !== 'Lightning') {
+      console.log('Valor menor que mínimo para rede selecionada.');
+      toast.warning(
+        'Para valores abaixo de R$ 200, apenas a rede Lightning está disponível',
+      );
+      setIsLoading(false);
+      return;
+    }
+
     if (!(await validateFields())) {
       console.log('Falha na validação dos campos.');
       setIsLoading(false);
@@ -423,7 +427,6 @@ Cupom: ${cupom}`;
     // Fluxo especial para usuários VIP - Não enviar para API, gerar QR code localmente
     if (isVipTransaction) {
       try {
-        const valorBRL = parseFloat(fiatAmount.replace(/\D/g, ''));
         const pixCodeVip = generateVipPixCode(valorBRL);
 
         // Salvar no localStorage para usar na tela de pagamento
@@ -431,7 +434,7 @@ Cupom: ${cupom}`;
         localStorage.setItem('isVipTransaction', 'true');
         setPixKey(pixCodeVip);
 
-        setTimeLeft(150);
+        setTimeLeft(210); // Alterado de 150 para 210 segundos
         setIsLoading(false);
 
         // Navegar para tela de pagamento
@@ -454,7 +457,6 @@ Cupom: ${cupom}`;
       4 * 60 * 1000,
     );
 
-    const valorBRL = parseFloat(fiatAmount.replace(/\D/g, ''));
     console.log('Valor BRL calculado:', valorBRL);
 
     // // Verificar se o valor está dentro do limite diário do usuário
@@ -531,14 +533,9 @@ Cupom: ${cupom}`;
       const pixKeyResponse = response.data.response?.qrCopyPaste;
       const status = response.data.response?.status;
       const transactionId = response.data.response?.id;
-      console.log(
-        'Response:',
-        response.data.response,
-        'status:',
-        status,
-        'transactionId:',
-        transactionId,
-      );
+      const depositId = response.data.depositId;
+
+      console.log('date:', response.data);
 
       // Armazenar transactionId em todos os casos
       if (transactionId) {
@@ -558,8 +555,31 @@ Cupom: ${cupom}`;
           setPixKey(pixKeyResponse);
         }
 
-        setTimeLeft(150);
+        setTimeLeft(210); // Alterado de 150 para 210 segundos
         setIsLoading(false);
+
+        // Verificar se deve redirecionar para WhatsApp após processamento (valores > 5k)
+        const shouldRedirectToWhatsApp = localStorage.getItem(
+          'redirectToWhatsAppAfterPayment',
+        );
+        if (shouldRedirectToWhatsApp === 'true') {
+          localStorage.removeItem('redirectToWhatsAppAfterPayment');
+
+          // Preparar mensagem para WhatsApp
+          const message = `
+Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Validação para Transações Anônimas.
+
+- Valor: ${fiatAmount} (${fiatType})
+- Valor Crypto: ${cryptoAmount} ${cryptoType.toUpperCase()}
+- Rede: ${network}
+- Endereço da carteira: ${coldWallet}
+- Método de pagamento: PIX
+- ID da transação: ${depositId}
+          `;
+
+          const whatsappURL = `https://wa.me/5511911872097?text=${encodeURIComponent(message)}`;
+          window.open(whatsappURL, '_blank');
+        }
 
         if (pixKeyResponse) {
           navigate(ROUTES.checkoutPix.call(currentLang));
@@ -633,13 +653,24 @@ Cupom: ${cupom}`;
 
       if (
         axios.isAxiosError(error) &&
+        error.response?.data?.code === 'LIMIT_EXCEEDED_COUPON'
+      ) {
+        toast.error(`Você usou o cupom "ZERO" mais de 1 vez.`);
+      }
+      if (
+        axios.isAxiosError(error) &&
         error.response?.data?.code === 'DAILY_LIMIT_EXCEEDED'
       ) {
         toast.error(`Limite diário excedido para seu nível ${userLevelName}.`);
         setIsLoading(false);
         return;
       }
-
+      if (
+        axios.isAxiosError(error) &&
+        error.response?.data?.code === 'TIME_LIMIT'
+      ) {
+        toast.error(`Você precisa aguardar 20 minutos entre transações.`);
+      }
       // Adicionar tratamento para o erro LIMIT_EXCEEDED
       if (
         axios.isAxiosError(error) &&
@@ -655,7 +686,7 @@ Cupom: ${cupom}`;
     }
   };
 
-  // Sincroniza o pixKey e o tempo restante com o localStorage
+  // Sincroniza o pixKey com o localStorage
   useEffect(() => {
     if (pixKey) {
       localStorage.setItem('pixKey', pixKey);
@@ -676,17 +707,19 @@ Cupom: ${cupom}`;
     }
   };
 
+  // O timer só deve iniciar quando estivermos na página CheckoutPix
+  // Identificamos isso verificando a URL atual
   useEffect(() => {
-    const storedTimeLeft = localStorage.getItem('timeLeft');
-    if (storedTimeLeft) {
-      setTimeLeft(parseInt(storedTimeLeft, 10));
+    // Verificar se estamos na página CheckoutPix
+    const isOnCheckoutPixPage = window.location.pathname.includes('/pix');
+
+    // Não iniciar o timer se não estivermos na página CheckoutPix
+    if (!isOnCheckoutPixPage) {
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    if (!pixKey) return;
-
-    if (timeLeft <= 0) {
+    // Se estamos na página de CheckoutPix, iniciar o timer
+    if (timeLeft !== null && timeLeft <= 0) {
       setIsTransactionTimedOut(true);
       localStorage.removeItem('timeLeft');
       navigate(ROUTES.paymentAlfredStatus.failure.call(currentLang));
@@ -695,14 +728,14 @@ Cupom: ${cupom}`;
 
     const timer = setTimeout(() => {
       setTimeLeft((prevTime) => {
-        const newTime = prevTime - 1;
+        const newTime = (prevTime ?? 0) - 1;
         localStorage.setItem('timeLeft', newTime.toString());
         return newTime;
       });
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [timeLeft, navigate, currentLang, pixKey]);
+  }, [timeLeft, navigate, currentLang]);
 
   useEffect(() => {
     return () => {
@@ -745,6 +778,26 @@ Cupom: ${cupom}`;
       toast.success(t('buycheckout.couponValid'));
     } catch (error) {
       console.error('Erro ao verificar o cupom:', error);
+
+      // Verificação específica para erro de limite de uso do cupom excedido
+      if (
+        axios.isAxiosError(error) &&
+        error.response?.data?.code === 'LIMIT_EXCEEDED_COUPON'
+      ) {
+        setErrors((prev) => ({
+          ...prev,
+          cupom:
+            error.response?.data?.message ||
+            t('Você usou o cupom "ZERO" mais de 1 vez.'),
+        }));
+        setCupom('');
+        toast.error(
+          error.response?.data?.message ||
+          t('Você usou o cupom "ZERO" mais de 1 vez.'),
+        );
+        return;
+      }
+
       setErrors((prev) => ({
         ...prev,
         cupom: t('buycheckout.couponCheckError'),
@@ -768,6 +821,7 @@ Cupom: ${cupom}`;
     paymentMethod,
     pixKey,
     isLoading,
+    setIsLoading,
     errors,
     fiatAmount,
     fiatType,

@@ -78,12 +78,11 @@ export function useConfirmInfos(
 
   // Lógica atualizada de definição da taxa (alfredFeeRate):
   // - Para valores até 6000 BRL:
-  //   - Sem cupom: 4.99% (0.0499)
-  //   - Com cupom: Taxa do influencer (alfredFeePercentage/100)
+  //   - Taxa base: 4.99% (0.0499)
   // - Para valores acima de 6000 BRL:
-  //   - Sem cupom: 5.99% (0.0599)
-  //   - Com cupom: 4.99% (0.0499)
-  // NOVA LÓGICA DE CUPOM: decrementa o valor do cupom da taxa base
+  //   - Taxa base: 5.99% (0.0599)
+  // - Se houver cupom válido com percentual > 0:
+  //   - Para qualquer valor: aplica desconto completo
   let baseFeeRate: number;
   if (amountBRL < 6000) {
     baseFeeRate = 0.0499;
@@ -94,11 +93,7 @@ export function useConfirmInfos(
   let alfredFeeRate: number = baseFeeRate;
   if (cupom && cupom.trim() !== '' && localAlfredFeePercentage > 0) {
     const cupomDiscountPercentage = localAlfredFeePercentage / 100;
-    if (amountBRL < 6000) {
-      alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage);
-    } else {
-      alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage / 2);
-    }
+    alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage);
   }
 
   const alfredFee = amountBRL * alfredFeeRate;

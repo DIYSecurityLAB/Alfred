@@ -43,7 +43,7 @@
     "sell": "Sell",
     "proceed_button": "Proceed",
     "transaction_error": "Transactions are only allowed every day from 8:00 AM to 10:00 PM Brasília time.",
-    "min_value_error": "The minimum purchase amount for BTC is 200 BRL.",
+    "min_value_error": "The minimum value for Bitcoin transactions is R$25.00 on the Lightning network and R$200.00 on other networks.",
     "min_value_error_usdt": "The minimum purchase amount for USDT is 550 BRL.",
     "wallet_error_below_700": "For amounts below 700 BRL, only Liquid and Lightning wallets are allowed.",
     "payment_error_above_5000": "For Pix payments over 5,000 BRL, please contact our support via WhatsApp.",
@@ -52,7 +52,7 @@
     "opening_hours": "24H a day, 7 days a week.",
     "tooltip_btc": {
       "title": "BTC Transactions:",
-      "minimum_value": "The minimum amount for Bitcoin transactions is 200 BRL.",
+      "minimum_value": "The minimum value for Bitcoin transactions is R$25.00 on the Lightning network and R$200.00 on other networks.",
       "pix_limit": "For Pix payments with amounts over 5,000 BRL, it is necessary to complete the 'Validation for Anonymous Transactions' form, which verifies your income and authenticity."
     },
     "tooltip_usdt": {
@@ -68,9 +68,10 @@
     "eur_placeholder": "Enter the amount in EUR"
   },
   "paymentFailure": {
-    "title": "Payment Failure",
-    "description": "There was a problem processing your payment. Please try again or contact support.",
-    "retryButton": "TRY AGAIN",
+    "title": "Payment time expired",
+    "description": "The time limit to make the payment has expired.",
+    "timeoutMessage": "If you have made the payment via Pix to the provided key, don't worry! Your transaction will be processed as soon as we receive confirmation from the bank.",
+    "retryButton": "NEW PURCHASE",
     "whatsapp": "CONTACT US"
   },
   "paymentSuccess": {
@@ -197,21 +198,25 @@
   },
   "buycheckout": {
     "coldWalletError": "The wallet address cannot be empty.",
-    "invalidColdWalletErrorLiquid": "Invalid Liquid wallet address.",
-    "invalidColdWalletErrorOnchain": "Invalid Onchain wallet address.",
-    "invalidColdWalletErrorLightning": "Invalid Lightning wallet address. Use a Lightning invoice (lnbc...), a LNURL, or a Lightning email.",
+    "invalidColdWalletErrorLiquid": "Invalid Liquid wallet address. Please verify the address is correct and try again.",
+    "invalidColdWalletErrorOnchain": "Invalid Onchain wallet address. Use a valid Bitcoin address (bc1... or 1... or 3...).",
+    "invalidColdWalletErrorLightning": "Invalid Lightning wallet address. Use only a LNURL or a valid Lightning email.",
     "invalidLnurl": "Invalid LNURL. Please check the address and try again.",
     "invalidLnurlResponse": "Invalid response from LNURL server.",
     "fixedAmountLnurlNotSupported": "Fixed amount LNURLs are not supported. Please use a LNURL that allows custom amounts.",
-    "fixedAmountInvoiceNotSupported": "Fixed amount Lightning invoices are not supported. Please use an invoice without a specific amount.",
+    "lightningInvoiceNotSupported": "Lightning invoices (bolt11) are no longer supported. Use only LNURL or Lightning email.",
+    "invalidEmailLightning": "Invalid Lightning email. Use a valid format like: user@example.com",
+    "networkNotAvailable": "This network is temporarily unavailable. Try another network or wait a few minutes.",
+    "walletAddressRequired": "Please enter your wallet address before continuing.",
+    "selectNetworkFirst": "Select a network before entering the wallet address.",
     "transactionNumberError": "The phone number is required.",
     "invalidTransactionNumberError": "Enter a valid phone number (9 to 15 digits).",
     "termsAndFeesAlert": "You must accept the fees, terms of use, and confirmation of the submitted data.",
-    "invalidColdWalletErrorPolygon": "Invalid wallet address for the Polygon network.",
-    "invalidColdWalletErrorTron": "Invalid wallet address for the Tron network.",
-    "invalidNetworkForUSDT": "For USDT, please select only Liquid, Polygon or Tron .",
     "networkSelectionAlert": "You must select a Bitcoin network before proceeding.",
     "paymentError": "Error processing the payment.",
+    "invalidColdWalletErrorPolygon": "Invalid wallet address for the Polygon network. Use a valid address (0x...).",
+    "invalidColdWalletErrorTron": "Invalid wallet address for the Tron network. Use a valid address (T...).",
+    "invalidNetworkForUSDT": "For USDT, please select only Liquid, Polygon or Tron.",
     "pixKeyCopied": "PIX key copied to clipboard!",
     "makePayment": "Confirm Payment",
     "paymentNotConfirmed": "Payment not yet confirmed. Please try again.",
@@ -220,6 +225,7 @@
     "couponUsageLimitReached": "The coupon has reached its usage limit.",
     "couponValid": "The coupon is valid!",
     "couponCheckError": "Invalid coupon. Please contact us.",
+    "usernamePasswordSpaceError": "Username and password cannot contain spaces.",
     "value": "Amount",
     "valueCrypto": "Converted Amount",
     "selectNetwork": "Select Network",
@@ -249,12 +255,25 @@
       "NOMAD": "Nomad",
       "SWIFT": "Swift",
       "PAYPAL": "PayPal",
-      "BANK_TRANSFER": "Bank Transfer"
+      "BANK_TRANSFER": "Bank Transfer",
+      "TED": "Wire Transfer",
+      "CASH": "Cash Deposit"
+    },
+    "paymentLevelRestriction": {
+      "ted": "Wire Transfer available only for Silver level (2) or higher",
+      "cash": "Cash deposit available only for Gold level (3) or higher",
+      "general": "This payment method is not available for your current level"
     },
     "contactTooltip": {
-      "message": "We request your number to contact you in case something goes wrong during the transaction, ensuring greater security for your purchase.",
+      "message": "For security, it is necessary to log in with your username and password so you can access the platform on any device and unlock future purchases with higher amounts.",
       "alternative": "If you don't want to provide your real number, you can enter a fictitious one, like 1111111111."
-    }
+    },
+    "loginTooltip": {
+      "message": "For security, it is necessary to log in with your username and password so you can access the platform on any device and unlock future purchases with higher amounts. Do not use spaces in username or password.",
+      "alternative": "Your credentials will only be used for authentication."
+    },
+    "usernamePlaceholder": "Username (no spaces)",
+    "passwordPlaceholder": "Password (no spaces)"
   },
   "confirm_infos": {
     "title": "Confirm Information",
