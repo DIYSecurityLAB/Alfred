@@ -90,32 +90,6 @@ export default function ConfirmInfosModal({
     cupom,
   );
 
-  // Funçao pra parsear o valor de volta para um número
-  function extractNumericValue(input: string): number {
-    let n = "";
-    for (let i = 0; i < input.length; i++) {
-      let c = input.charAt(i);
-      if (c >= '0' && c <= '9') {
-        n += c;
-      }
-    }
-    return parseFloat(n);
-  }
-
-  const fiatAmountNumber = extractNumericValue(fiatAmount);
-  const hasValidCupom = !!cupom;
-  const isAbove6000WithCupom = hasValidCupom && fiatAmountNumber > 6000;
-
-  const fixedFeeRate = 0.0499; // 4.99%
-
-  const alfredFeeFinal = isAbove6000WithCupom
-    ? fiatAmountNumber * fixedFeeRate
-    : alfredFee;
-
-  const alfredFeeRateFinal = isAbove6000WithCupom
-    ? 4.99
-    : alfredFeeRate * 100;
-
   const [isDataVisible, setIsDataVisible] = useState(false);
   const [isTaxVisible, setIsTaxVisible] = useState(false);
 
@@ -270,7 +244,7 @@ export default function ConfirmInfosModal({
                 )}
                 <p>
                   <strong>{t('confirm_infos.fees_section.alfred_fee')}:</strong>{' '}
-                  R$ {alfredFeeFinal.toFixed(2)} ({alfredFeeRateFinal.toFixed(2)}%)
+                  R$ {alfredFee.toFixed(2)} ({(alfredFeeRate * 100).toFixed(2)}%)
                 </p>
                 <p>
                   <strong>{t('confirm_infos.fees_section.total_fees')}:</strong>{' '}

@@ -76,24 +76,26 @@ export function useConfirmInfos(
       ? fiatAmountNum
       : fiatAmountNum * (usdToBrl || 0);
 
-  // Lógica atualizada de definição da taxa (alfredFeeRate):
-  // - Para valores até 6000 BRL:
-  //   - Taxa base: 4.99% (0.0499)
-  // - Para valores acima de 6000 BRL:
-  //   - Taxa base: 5.99% (0.0599)
-  // - Se houver cupom válido com percentual > 0:
-  //   - Para qualquer valor: aplica desconto completo
+
   let baseFeeRate: number;
-  if (amountBRL < 6000) {
-    baseFeeRate = 0.0499;
+
+  if (amountBRL <= 5000) {
+    baseFeeRate = 0.0499; // 4,99% para valores até 5.000 BRL
   } else {
-    baseFeeRate = 0.0599;
+    baseFeeRate = 0.0599; // 5,99% fixo para valores acima de 5.000 BRL
   }
 
   let alfredFeeRate: number = baseFeeRate;
-  if (cupom && cupom.trim() !== '' && localAlfredFeePercentage > 0) {
-    const cupomDiscountPercentage = localAlfredFeePercentage / 100;
-    alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage);
+
+  if (cupom && cupom.trim() !== '') {
+    if (amountBRL <= 5000 && localAlfredFeePercentage > 0) {
+      // Desconto do influenciador apenas para valores até 5.000 BRL
+      const cupomDiscountPercentage = localAlfredFeePercentage / 100;
+      alfredFeeRate = Math.max(0, baseFeeRate - cupomDiscountPercentage);
+    } else if (amountBRL > 5000) {
+      // Taxa reduzida para 4,99% para valores acima de 5.000 BRL com cupom
+      alfredFeeRate = 0.0499;
+    }
   }
 
   const alfredFee = amountBRL * alfredFeeRate;
