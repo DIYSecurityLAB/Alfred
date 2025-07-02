@@ -21,10 +21,11 @@ export function CheckoutPix() {
 
   const qrCodeSize = easyReadMode ? 340 : 280;
 
-  // Mock de pixKey para teste
-  const mockPixKey =
-    '00020126580014br.gov.bcb.pix013636401f28-9a12-4c4a-b5d5-1234567890ab5204000053039865802BR5925TESTE ALFRED BITCOIN6009SAO PAULO62140510ABC12345676304ABCD';
-  const displayPixKey = pixKey || mockPixKey;
+  // Remover mock de pixKey para teste
+  // const mockPixKey =
+  //   '00020126580014br.gov.bcb.pix013636401f28-9a12-4c4a-b5d5-1234567890ab5204000053039865802BR5925TESTE ALFRED BITCOIN6009SAO PAULO62140510ABC12345676304ABCD';
+  // const displayPixKey = pixKey || mockPixKey;
+  const displayPixKey = pixKey;
 
   useEffect(() => {
     const storedTimeLeft = localStorage.getItem('timeLeft');
