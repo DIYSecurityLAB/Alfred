@@ -250,6 +250,8 @@
     "bitcoinPurchaseWarning": "Attention: You are purchasing",
     "alfredLogoAlt": "Alfred Logo",
     "copyPixKey": "Copy PIX Key",
+    "normalQrMode": "Back to normal",
+    "easyQrMode": "Having trouble reading the QR Code? Click here",
     "paymentMethod": {
       "PIX": "PIX",
       "NOMAD": "Nomad",

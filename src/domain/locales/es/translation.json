@@ -251,6 +251,8 @@
     "bitcoinPurchaseWarning": "Atención: Está comprando",
     "alfredLogoAlt": "Logo de Alfred",
     "copyPixKey": "Copiar clave PIX",
+    "normalQrMode": "Volver al normal",
+    "easyQrMode": "¿Dificultad para leer el QR? Haga clic aquí",
     "paymentMethod": {
       "PIX": "PIX",
       "NOMAD": "Nomad",
