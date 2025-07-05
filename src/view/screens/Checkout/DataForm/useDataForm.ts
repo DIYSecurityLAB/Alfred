@@ -419,8 +419,6 @@ Cupom: ${cupom}`;
       4 * 60 * 1000,
     );
 
-    console.log('Valor BRL calculado:', valorBRL);
-
     // // Verificar se o valor está dentro do limite diário do usuário
     // // Agora apenas alertamos, mas permitimos prosseguir
     // if (!isWithinDailyLimit(valorBRL)) {
@@ -577,7 +575,6 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
       const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
       window.location.href = whatsappLink;
     } catch (error) {
-      console.error('Erro ao processar pagamento:', error);
       if (
         axios.isAxiosError(error) &&
         error.response?.data?.code === 'FIRST_PURCHASE'
