@@ -27,7 +27,6 @@ export const AuthContext = createContext<AuthContextType>(
   {} as AuthContextType,
 );
 
-// Instância única para chamadas à API
 const apiKey = import.meta.env.VITE_API_KEY;
 
 const remoteDataSource = new RemoteDataSource(import.meta.env.VITE_API_URL, {
@@ -49,15 +48,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return null;
   });
 
-  // Atualiza o header de autorização do axios sempre que o usuário for atualizado
   useEffect(() => {
     if (user?.acessToken) {
       axiosInstance.defaults.headers.common.Authorization = `Bearer ${user.acessToken}`;
     }
   }, [user]);
 
-  // Declaração única da função refreshAccessToken
-  // Defina o tipo de resposta que pode vir do backend:
   const refreshAccessToken = useCallback(
     async (
       userId: string,
@@ -67,10 +63,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (!result) {
         throw new Error('Erro ao atualizar o token: resposta nula.');
       }
-      // Utilize somente a propriedade "acessToken", pois o schema já faz a transformação
+
       const newAcessToken = result.acessToken;
       if (newAcessToken && typeof newAcessToken === 'string') {
-        console.log('Novo acessToken recebido no refresh:', newAcessToken);
         if (user) {
           const updatedUser: AuthUser = {
             ...user,
@@ -127,7 +122,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Registro: apenas registra o usuário; o login deve ser feito separadamente
   const register = async (username: string, password: string) => {
     try {
       const result = await authRepository.register(username, password);
