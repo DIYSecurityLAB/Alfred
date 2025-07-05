@@ -497,7 +497,6 @@ Cupom: ${cupom}`;
 
       if (status) {
         localStorage.setItem('status', status);
-        console.log('status salvo:', status);
       }
 
       if (paymentMethod === 'PIX' && !isPaymentMethodInMaintenance('PIX')) {
@@ -512,7 +511,9 @@ Cupom: ${cupom}`;
         const shouldRedirectToWhatsApp = localStorage.getItem(
           'redirectToWhatsAppAfterPayment',
         );
-        if (shouldRedirectToWhatsApp === 'true') {
+        const valorNumerico = parseFloat(fiatAmount.replace(/\D/g, ''));
+
+        if (shouldRedirectToWhatsApp === 'true' && valorNumerico >= 5000) {
           localStorage.removeItem('redirectToWhatsAppAfterPayment');
 
           const message = `
