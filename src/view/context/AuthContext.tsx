@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return null;
   });
 
-
   useEffect(() => {
     if (user?.acessToken) {
       axiosInstance.defaults.headers.common.Authorization = `Bearer ${user.acessToken}`;
@@ -67,7 +66,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       const newAcessToken = result.acessToken;
       if (newAcessToken && typeof newAcessToken === 'string') {
-
         if (user) {
           const updatedUser: AuthUser = {
             ...user,

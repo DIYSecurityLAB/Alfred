@@ -31,9 +31,8 @@ type PaymentMethodType =
   | 'CASH';
 
 export function useDataForm() {
-  // Estados do formulário
   const [network, setNetwork] = useState<string>('');
-  const [timeLeft, setTimeLeft] = useState<number | null>(null); // Alterado para null inicialmente
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [isTransactionTimedOut, setIsTransactionTimedOut] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [coldWallet, setColdWallet] = useState<string>('');
@@ -41,35 +40,26 @@ export function useDataForm() {
   const [cupom, setCupom] = useState<string>('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropdownOpenMethod, setIsDropdownOpenMethod] = useState(false);
-  // Ajustando a tipagem do estado para usar o novo tipo
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethodType>();
   const [pixKey, setPixKey] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  // Valores fiat e crypto
   const [fiatAmount, setfiatAmount] = useState('');
-  const [fiatType, setFiatType] = useState('BRL'); // Agora armazenamos o tipo fiat (padrão BRL)
+  const [fiatType, setFiatType] = useState('BRL');
   const [cryptoAmount, setCryptoAmount] = useState('');
-  const [cryptoType, setCryptoType] = useState(''); // Valores possíveis: "BITCOIN", "USDT", "BTC_USDT", etc.
+  const [cryptoType, setCryptoType] = useState('');
   const [acceptFees, setAcceptFees] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
-  const [alfredFeePercentage, setAlfredFeePercentage] = useState(0); // Alterado para iniciar com 0 (sem desconto)
-  const [isVipTransaction, setIsVipTransaction] = useState(false); // Novo estado para controlar transações VIP
+  const [alfredFeePercentage, setAlfredFeePercentage] = useState(0);
+  const [isVipTransaction, setIsVipTransaction] = useState(false);
 
-  // Obtenção de dados de autenticação
   const { user, login, register, refreshAccessToken } = useAuth();
-  const {
-    userLevel,
-    userLevelName,
-    restrictions,
-    // isWithinDailyLimit,
-    isPaymentMethodAllowed,
-  } = useUserLevel();
+  const { userLevel, userLevelName, restrictions, isPaymentMethodAllowed } =
+    useUserLevel();
   const navigate = useNavigate();
   const { currentLang } = useCurrentLang();
   const { t } = useTranslation();
 
-  // Recupera valores salvos no localStorage (incluindo fiatType)
   useEffect(() => {
     const storedBrl = localStorage.getItem('fiatAmount');
     const storedFiatType = localStorage.getItem('fiatType');
@@ -81,7 +71,6 @@ export function useDataForm() {
     if (storedCryptoType) setCryptoType(storedCryptoType);
   }, []);
 
-  // Verificar se o usuário atual é VIP logo ao carregar o hook
   useEffect(() => {
     const checkVipStatus = async () => {
       try {
@@ -97,7 +86,6 @@ export function useDataForm() {
     checkVipStatus();
   }, []);
 
-  // Funções de dropdown
   const toggleDropdown = () => {
     setIsDropdownOpen((prevState) => !prevState);
   };
@@ -112,16 +100,13 @@ export function useDataForm() {
   };
 
   const selectPaymentMethod = (method: PaymentMethodType) => {
-    // Verificar se o método está em manutenção
     if (method === 'PIX' && isPaymentMethodInMaintenance('PIX')) {
-      // Se o PIX estiver em manutenção, definimos como PIX_MAINTENANCE
       toast.warning(getMaintenanceMessage('PIX'));
       setPaymentMethod('PIX_MAINTENANCE');
       setIsDropdownOpenMethod(false);
       return;
     }
 
-    // Verificar se o método é permitido para o nível do usuário
     if (!isPaymentMethodAllowed(method)) {
       if (method === 'TED' || method === 'BANK_TRANSFER') {
         toast.warning(
@@ -143,10 +128,8 @@ export function useDataForm() {
     setIsDropdownOpenMethod(false);
   };
 
-  // Função auxiliar para decodificar LNURL bech32 para URL
   function decodeLnurl(lnurl: string): string {
     try {
-      // Remover prefixo 'lnurl'
       const words = bech32.decode(lnurl, 1023);
       const data = bech32.fromWords(words.words);
       const url = Buffer.from(data).toString();
@@ -158,32 +141,25 @@ export function useDataForm() {
     }
   }
 
-  // Função assíncrona para validar carteira Lightning
   async function validateLightningWallet(
     coldWallet: string,
     t: (key: string) => string,
   ): Promise<string | null> {
-    // Verificar se é um invoice Lightning (bolt11) - não mais suportado
     if (/^lnbc[0-9]{1,}[a-zA-Z0-9]+$/.test(coldWallet)) {
       return t('buycheckout.lightningInvoiceNotSupported');
     }
 
-    // Verificar formato de email Lightning
     if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(coldWallet)) {
-      // Validação adicional para email Lightning
       if (coldWallet.length < 5 || !coldWallet.includes('.')) {
         return t('buycheckout.invalidEmailLightning');
       }
-      return null; // Válido
+      return null;
     }
 
-    // Verificar formato LNURL
     if (/^lnurl1[a-z0-9]+$/i.test(coldWallet)) {
       try {
-        // Decodificar LNURL para URL
         const decodedUrl = decodeLnurl(coldWallet);
 
-        // Fazer requisição HTTP para a URL
         const response = await fetch(decodedUrl);
 
         if (!response.ok) {
@@ -192,7 +168,6 @@ export function useDataForm() {
 
         const lnurlData = await response.json();
 
-        // Verificar se é um payRequest com valor fixo
         if (
           lnurlData.tag === 'payRequest' &&
           lnurlData.minSendable === lnurlData.maxSendable &&
@@ -201,25 +176,22 @@ export function useDataForm() {
           return t('buycheckout.fixedAmountLnurlNotSupported');
         }
 
-        return null; // LNURL válido
+        return null;
       } catch (error) {
         console.error('Erro na validação de LNURL:', error);
         return t('buycheckout.invalidLnurl');
       }
     }
 
-    // Se não corresponder a nenhum formato válido
     return t('buycheckout.invalidColdWalletErrorLightning');
   }
 
-  // Modificação da função validateFields para incluir validação assíncrona de LNURL
   const validateFields = async () => {
     const newErrors: Record<string, string> = {};
 
     if (!coldWallet) {
       newErrors.coldWallet = t('buycheckout.coldWalletError');
     } else {
-      // Validação específica para USDT (compra com USDT ou BTC via USDT)
       if (
         cryptoType.toUpperCase() === 'USDT' ||
         cryptoType.toUpperCase() === 'BTC_USDT'
@@ -249,7 +221,6 @@ export function useDataForm() {
           newErrors.coldWallet = t('buycheckout.invalidNetworkForUSDT');
         }
       } else {
-        // Validações para compra tradicional de Bitcoin
         switch (network) {
           case 'Onchain':
             if (
@@ -275,7 +246,6 @@ export function useDataForm() {
             }
             break;
           case 'Lightning': {
-            // Nova validação assíncrona para Lightning
             const lightningError = await validateLightningWallet(coldWallet, t);
             if (lightningError) {
               newErrors.coldWallet = lightningError;
@@ -293,7 +263,6 @@ export function useDataForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Define as redes disponíveis com base na criptomoeda selecionada.
   const networks = (() => {
     const crypto = cryptoType.toUpperCase();
     if (crypto === 'DEPIX') {
@@ -314,7 +283,6 @@ export function useDataForm() {
   })();
 
   const handleProcessPayment = async (username: string, password: string) => {
-    // Limpar possível valor antigo do temporizador
     localStorage.removeItem('timeLeft');
     setIsLoading(true);
 
@@ -326,10 +294,13 @@ export function useDataForm() {
         await login(username, password);
         console.log('Login realizado com sucesso para:', username);
         toast.success('Login efetuado com sucesso.');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (regError: any) {
+      } catch (regError: unknown) {
         console.error('Erro no registro para usuário:', username, regError);
-        if (regError.response && regError.response.status === 409) {
+        if (
+          axios.isAxiosError(regError) &&
+          regError.response &&
+          regError.response.status === 409
+        ) {
           console.log('Usuário já existe. Tentando login para:', username);
           try {
             await login(username, password);
@@ -355,7 +326,6 @@ export function useDataForm() {
     if (user) {
       try {
         await refreshAccessToken(user.id, user.acessToken);
-        console.log('Token atualizado.');
       } catch (refreshError) {
         console.error('Erro ao atualizar token:', refreshError);
         toast.error('Erro ao atualizar token. Faça login novamente.');
@@ -378,10 +348,8 @@ export function useDataForm() {
       return;
     }
 
-    // Declarar valorBRL apenas uma vez no início da função
     const valorBRL = parseFloat(fiatAmount.replace(/\D/g, ''));
 
-    // Validação específica para Lightning Network
     if (network === 'Lightning' && fiatType === 'BRL' && valorBRL < 25) {
       console.log('Valor menor que mínimo para Lightning.');
       toast.warning('O valor mínimo para Lightning é R$ 25');
@@ -389,7 +357,6 @@ export function useDataForm() {
       return;
     }
 
-    // Validação para outras redes com valores abaixo de 200 reais
     if (fiatType === 'BRL' && valorBRL < 200 && network !== 'Lightning') {
       console.log('Valor menor que mínimo para rede selecionada.');
       toast.warning(
@@ -405,7 +372,6 @@ export function useDataForm() {
       return;
     }
 
-    // Verifica o valor fiat: se fiatType não for "BRL", redireciona para o WhatsApp
     if (fiatType.toUpperCase() !== 'BRL') {
       console.log(
         `Fiat type ${fiatType} não suportado. Redirecionando para WhatsApp.`,
@@ -424,20 +390,17 @@ Cupom: ${cupom}`;
       return;
     }
 
-    // Fluxo especial para usuários VIP - Não enviar para API, gerar QR code localmente
     if (isVipTransaction) {
       try {
         const pixCodeVip = generateVipPixCode(valorBRL);
 
-        // Salvar no localStorage para usar na tela de pagamento
         localStorage.setItem('pixKey', pixCodeVip);
         localStorage.setItem('isVipTransaction', 'true');
         setPixKey(pixCodeVip);
 
-        setTimeLeft(210); // Alterado de 150 para 210 segundos
+        setTimeLeft(210);
         setIsLoading(false);
 
-        // Navegar para tela de pagamento
         navigate(ROUTES.checkoutPix.call(currentLang));
         return;
       } catch {
@@ -447,7 +410,6 @@ Cupom: ${cupom}`;
       }
     }
 
-    console.log('Iniciando processo de pagamento.');
     timeoutRef.current = setTimeout(
       () => {
         console.log('Timeout atingido. Transação expirada.');
@@ -473,22 +435,18 @@ Cupom: ${cupom}`;
     //   );
     // }
 
-    const valorToSend = valorBRL; // Removida a condição especial para 100k
-    console.log('Valor a enviar:', valorToSend);
+    const valorToSend = valorBRL;
 
     const userString = localStorage.getItem('user');
     const userObj = userString ? JSON.parse(userString) : null;
 
-    // Verificar se o método está em manutenção - se estiver, pular a chamada à API
     if (
       paymentMethod !== undefined &&
       (paymentMethod === ('PIX_MAINTENANCE' as PaymentMethodType) ||
         isPaymentMethodInMaintenance(paymentMethod))
     ) {
-      console.log('Método de pagamento em manutenção, pulando chamada à API');
       setIsLoading(false);
 
-      // Configurar a mensagem para WhatsApp (sem ID de transação do banco)
       const whatsappNumber = '5511911872097';
       let message = '';
 
@@ -504,13 +462,12 @@ Cupom: ${cupom}`;
     }
 
     try {
-      // Todos os métodos salvam no backend antes de redirecionar
       const response = await axiosInstance.post(
         `/deposit`,
         {
           valorBRL: valorToSend,
           valorBTC: parseFloat(cryptoAmount),
-          // Se estiver em manutenção, enviar PIX_MAINTENANCE para rastreamento
+
           paymentMethod:
             paymentMethod === 'PIX_MAINTENANCE'
               ? 'PIX_MAINTENANCE'
@@ -535,8 +492,6 @@ Cupom: ${cupom}`;
       const transactionId = response.data.response?.id;
       const depositId = response.data.depositId;
 
-      console.log('date:', response.data);
-
       // Armazenar transactionId em todos os casos
       if (transactionId) {
         localStorage.setItem('transactionId', transactionId);
@@ -547,25 +502,21 @@ Cupom: ${cupom}`;
         console.log('status salvo:', status);
       }
 
-      // Lógica específica para PIX - Modificar para verificar se é PIX normal ou em manutenção
       if (paymentMethod === 'PIX' && !isPaymentMethodInMaintenance('PIX')) {
-        // Lógica normal do PIX
         if (pixKeyResponse) {
           localStorage.setItem('pixKey', pixKeyResponse);
           setPixKey(pixKeyResponse);
         }
 
-        setTimeLeft(210); // Alterado de 150 para 210 segundos
+        setTimeLeft(210);
         setIsLoading(false);
 
-        // Verificar se deve redirecionar para WhatsApp após processamento (valores > 5k)
         const shouldRedirectToWhatsApp = localStorage.getItem(
           'redirectToWhatsAppAfterPayment',
         );
         if (shouldRedirectToWhatsApp === 'true') {
           localStorage.removeItem('redirectToWhatsAppAfterPayment');
 
-          // Preparar mensagem para WhatsApp
           const message = `
 Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Validação para Transações Anônimas.
 
@@ -593,12 +544,10 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
         return;
       }
 
-      // Se for PIX_MAINTENANCE ou qualquer outro método, redirecionamos para WhatsApp
       setIsLoading(false);
       const whatsappNumber = '5511911872097';
       let message = '';
 
-      // Configurar a mensagem específica para cada método
       switch (paymentMethod) {
         case 'PIX_MAINTENANCE' as PaymentMethodType:
           message = `Olá! Gostaria de comprar via PIX (atualmente em manutenção):\n\nValor BRL: ${fiatAmount}\n${cryptoType}: ${cryptoAmount}\nRede: ${network}\nCold Wallet: ${coldWallet}\nMétodo: PIX\nUsuário: ${username}\nNível: ${userLevelName} (${userLevel})\nTelefone: ${transactionNumber}\nCupom: ${cupom || 'Nenhum'}\nID da transação: ${transactionId}`;
@@ -671,7 +620,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
       ) {
         toast.error(`Você precisa aguardar 20 minutos entre transações.`);
       }
-      // Adicionar tratamento para o erro LIMIT_EXCEEDED
+
       if (
         axios.isAxiosError(error) &&
         error.response?.data?.code === 'LIMIT_EXCEEDED'
@@ -686,7 +635,6 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
     }
   };
 
-  // Sincroniza o pixKey com o localStorage
   useEffect(() => {
     if (pixKey) {
       localStorage.setItem('pixKey', pixKey);
@@ -707,18 +655,13 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
     }
   };
 
-  // O timer só deve iniciar quando estivermos na página CheckoutPix
-  // Identificamos isso verificando a URL atual
   useEffect(() => {
-    // Verificar se estamos na página CheckoutPix
     const isOnCheckoutPixPage = window.location.pathname.includes('/pix');
 
-    // Não iniciar o timer se não estivermos na página CheckoutPix
     if (!isOnCheckoutPixPage) {
       return;
     }
 
-    // Se estamos na página de CheckoutPix, iniciar o timer
     if (timeLeft !== null && timeLeft <= 0) {
       setIsTransactionTimedOut(true);
       localStorage.removeItem('timeLeft');
@@ -793,7 +736,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
         setCupom('');
         toast.error(
           error.response?.data?.message ||
-          t('Você usou o cupom "ZERO" mais de 1 vez.'),
+            t('Você usou o cupom "ZERO" mais de 1 vez.'),
         );
         return;
       }
