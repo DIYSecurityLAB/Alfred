@@ -67,7 +67,26 @@ export function TermsOfUse() {
 
         <section className="pb-8">
           <h2 className="text-xl font-semibold pb-4 text-white">
-            5. {t('termsOfUse.kycPoliciesTitle')}
+            5. {t('termsOfUse.transactionLimitsPolicyTitle')}
+          </h2>
+          {t('termsOfUse.transactionLimitsPolicyDescription')
+            .split('\n\n')
+            .map((paragraph, index, array) => (
+              <p key={index} className="text-white">
+                {paragraph}
+                {index < array.length - 1 && (
+                  <>
+                    <br />
+                    <br />
+                  </>
+                )}
+              </p>
+            ))}
+        </section>
+
+        <section className="pb-8">
+          <h2 className="text-xl font-semibold pb-4 text-white">
+            6. {t('termsOfUse.kycPoliciesTitle')}
           </h2>
           <p className="text-white">
             {t('termsOfUse.kycPoliciesDescription')
@@ -88,7 +107,7 @@ export function TermsOfUse() {
 
         <section className="pb-8">
           <h2 className="text-xl font-semibold pb-4 text-white">
-            5. {t('termsOfUse.globalReachTitle')}
+            7. {t('termsOfUse.globalReachTitle')}
           </h2>
           <p className="text-white">
             {t('termsOfUse.globalReachDescription1')}
@@ -103,7 +122,7 @@ export function TermsOfUse() {
 
         <section className="pb-8">
           <h2 className="text-xl font-semibold pb-4 text-white">
-            6. {t('termsOfUse.disputesTitle')}
+            8. {t('termsOfUse.disputesTitle')}
           </h2>
           <ul className="list-disc pl-5 text-white">
             <li>{t('termsOfUse.disputesStep1')}</li>
@@ -115,7 +134,7 @@ export function TermsOfUse() {
 
         <section className="pb-8">
           <h2 className="text-xl font-semibold pb-4 text-white">
-            7. {t('termsOfUse.conductTitle')}
+            9. {t('termsOfUse.conductTitle')}
           </h2>
           <p className="text-white">{t('termsOfUse.conductDescription1')}</p>
           <ul className="list-disc pl-5 pt-4 text-white">
