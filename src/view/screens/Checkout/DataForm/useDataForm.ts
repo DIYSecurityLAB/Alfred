@@ -285,11 +285,10 @@ export function useDataForm() {
 
     if (!user) {
       try {
-        console.log('Tentando registrar usuário:', username);
         await register(username, password);
-        console.log('Registro realizado com sucesso para:', username);
+
         await login(username, password);
-        console.log('Login realizado com sucesso para:', username);
+
         toast.success('Login efetuado com sucesso.');
       } catch (regError: unknown) {
         console.error('Erro no registro para usuário:', username, regError);
@@ -298,10 +297,9 @@ export function useDataForm() {
           regError.response &&
           regError.response.status === 409
         ) {
-          console.log('Usuário já existe. Tentando login para:', username);
           try {
             await login(username, password);
-            console.log('Login realizado com sucesso para:', username);
+
             toast.success('Login efetuado com sucesso.');
           } catch (loginError) {
             console.error('Erro no login:', loginError);
@@ -332,14 +330,12 @@ export function useDataForm() {
     }
 
     if (!acceptFees || !acceptTerms) {
-      console.log('Termos ou taxas não aceitos.');
       toast.warning(t('buycheckout.termsAndFeesAlert'));
       setIsLoading(false);
       return;
     }
 
     if (!network) {
-      console.log('Rede não selecionada.');
       toast.warning(t('buycheckout.networkSelectionAlert'));
       setIsLoading(false);
       return;
@@ -348,14 +344,12 @@ export function useDataForm() {
     const valorBRL = parseFloat(fiatAmount.replace(/\D/g, ''));
 
     if (network === 'Lightning' && fiatType === 'BRL' && valorBRL < 25) {
-      console.log('Valor menor que mínimo para Lightning.');
       toast.warning('O valor mínimo para Lightning é R$ 25');
       setIsLoading(false);
       return;
     }
 
     if (fiatType === 'BRL' && valorBRL < 200 && network !== 'Lightning') {
-      console.log('Valor menor que mínimo para rede selecionada.');
       toast.warning(
         'Para valores abaixo de R$ 200, apenas a rede Lightning está disponível',
       );
@@ -364,15 +358,11 @@ export function useDataForm() {
     }
 
     if (!(await validateFields())) {
-      console.log('Falha na validação dos campos.');
       setIsLoading(false);
       return;
     }
 
     if (fiatType.toUpperCase() !== 'BRL') {
-      console.log(
-        `Fiat type ${fiatType} não suportado. Redirecionando para WhatsApp.`,
-      );
       const whatsappNumber = '5511911872097';
       const message = `Olá! Estou Querendo comprar ${cryptoType.toUpperCase()} com ${fiatType} .
 Valor: ${fiatAmount} (${fiatType})
@@ -409,7 +399,6 @@ Cupom: ${cupom}`;
 
     timeoutRef.current = setTimeout(
       () => {
-        console.log('Timeout atingido. Transação expirada.');
         setIsTransactionTimedOut(true);
         setIsLoading(false);
       },
@@ -534,7 +523,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
 
         if (status === 'depix_sent' || status === 'paid') {
           toast.success(t('Pagamento confirmado'));
-          console.log('Pagamento confirmado, navegando para success.');
+
           navigate(ROUTES.paymentAlfredStatus.success.call(currentLang));
         }
         return;
