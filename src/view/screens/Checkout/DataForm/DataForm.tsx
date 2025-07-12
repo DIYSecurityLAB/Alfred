@@ -38,7 +38,7 @@ type PaymentMethodType =
   | 'BANK_TRANSFER'
   | 'TED'
   | 'CASH'
-  | 'BOLETO';
+  | 'TICKET';
 
 // Adicionar a importação no topo do arquivo, se necessário
 import { isVipUser } from '@/config/vipUsers';
@@ -77,7 +77,7 @@ export default function DataForm() {
     setCupom,
     validateFields,
     userLevel,
-    userLevelName,
+
     // restrictions,
     isPaymentMethodAllowed,
     isVipTransaction,
@@ -101,7 +101,7 @@ export default function DataForm() {
     TED: t('buycheckout.paymentMethod.TED'),
     CASH: t('buycheckout.paymentMethod.CASH'),
     PIX_MAINTENANCE: t('buycheckout.paymentMethod.PIX'),
-    BOLETO: t('buycheckout.paymentMethod.BOLETO'),
+    TICKET: t('buycheckout.paymentMethod.BOLETO'),
   };
 
   const numericFiat = parseInt(fiatAmount.replace(/\D/g, ''), 10);
@@ -278,7 +278,7 @@ Cupom: ${cupom || 'Nenhum'}`;
       icon: <FaMoneyBillWave className="w-6 h-6 mt-1" />,
     },
     {
-      id: 'BOLETO',
+      id: 'TICKET',
       label: t('buycheckout.paymentMethod.BOLETO'),
       icon: (
         <img
@@ -447,7 +447,7 @@ Cupom: ${cupom || 'Nenhum'}`;
                         />
                       ) : paymentMethod === 'CASH' ? (
                         <FaMoneyBillWave className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
-                      ) : paymentMethod === 'BOLETO' ? (
+                      ) : paymentMethod === 'TICKET' ? (
                         <img
                           src={BoletoIcon}
                           alt="Boleto"

@@ -111,11 +111,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(loggedUser);
       localStorage.setItem('user', JSON.stringify(loggedUser));
       axiosInstance.defaults.headers.common.Authorization = `Bearer ${loggedUser.acessToken}`;
-      console.log('Usuário logado:', loggedUser);
-      console.log(
-        'Header Authorization:',
-        axiosInstance.defaults.headers.common.Authorization,
-      );
     } catch (error) {
       console.error('Erro no login:', error);
       throw error;
@@ -124,8 +119,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const register = async (username: string, password: string) => {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const result = await authRepository.register(username, password);
-      console.log('Registro realizado:', result);
     } catch (error) {
       console.error('Erro no registro:', error);
       throw error;
@@ -136,7 +131,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
     localStorage.removeItem('user');
     delete axiosInstance.defaults.headers.common.Authorization;
-    console.log('Usuário deslogado e token removido do header.');
   };
 
   return (

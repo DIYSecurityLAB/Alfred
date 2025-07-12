@@ -141,7 +141,7 @@ export function useUserLevel() {
         return restrictions.canUseTed;
       case 'CASH':
         return restrictions.canUseCash;
-      case 'BOLETO':
+      case 'TICKET':
         return restrictions.canUseBoleto;
       case 'NOMAD':
       case 'SWIFT':
