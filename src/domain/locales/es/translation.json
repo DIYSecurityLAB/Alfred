@@ -262,11 +262,13 @@
       "PAYPAL": "PayPal",
       "BANK_TRANSFER": "Transferencia Bancaria",
       "TED": "TED",
-      "CASH": "Depósito en Efectivo"
+      "CASH": "Depósito en Efectivo",
+      "BOLETO": "Boleto Bancario"
     },
     "paymentLevelRestriction": {
       "ted": "TED disponible solo para nivel Plata (2) o superior",
       "cash": "Depósito en efectivo disponible solo para nivel Oro (3) o superior",
+      "boleto": "Boleto bancario disponible solo para nivel Plata (2) o superior",
       "general": "Este método de pago no está disponible para su nivel actual"
     },
     "contactTooltip": {

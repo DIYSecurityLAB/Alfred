@@ -13,6 +13,7 @@ import {
 import { FaPix } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
 import BankTransf from '../../../assets/bankIcon.png';
+import BoletoIcon from '../../../assets/BoletoIcon.png';
 import AlfredImg from '../../../assets/c1b28810-5a23-4e7c-bcce-bd1f42b271c5.png';
 import NomadIcon from '../../../assets/nomadIcon.png';
 import PayPalIcon from '../../../assets/paypalIcon.png';
@@ -36,7 +37,8 @@ type PaymentMethodType =
   | 'PAYPAL'
   | 'BANK_TRANSFER'
   | 'TED'
-  | 'CASH';
+  | 'CASH'
+  | 'BOLETO';
 
 // Adicionar a importação no topo do arquivo, se necessário
 import { isVipUser } from '@/config/vipUsers';
@@ -99,6 +101,7 @@ export default function DataForm() {
     TED: t('buycheckout.paymentMethod.TED'),
     CASH: t('buycheckout.paymentMethod.CASH'),
     PIX_MAINTENANCE: t('buycheckout.paymentMethod.PIX'),
+    BOLETO: t('buycheckout.paymentMethod.BOLETO'),
   };
 
   const numericFiat = parseInt(fiatAmount.replace(/\D/g, ''), 10);
@@ -274,6 +277,17 @@ Cupom: ${cupom || 'Nenhum'}`;
       label: t('buycheckout.paymentMethod.CASH'),
       icon: <FaMoneyBillWave className="w-6 h-6 mt-1" />,
     },
+    {
+      id: 'BOLETO',
+      label: t('buycheckout.paymentMethod.BOLETO'),
+      icon: (
+        <img
+          src={BoletoIcon}
+          alt="Boleto"
+          className="w-6 h-6 mt-1 rounded-full"
+        />
+      ),
+    },
   ];
 
   return (
@@ -433,6 +447,12 @@ Cupom: ${cupom || 'Nenhum'}`;
                         />
                       ) : paymentMethod === 'CASH' ? (
                         <FaMoneyBillWave className="w-8 h-8 sm:w-10 sm:h-10 text-green-500" />
+                      ) : paymentMethod === 'BOLETO' ? (
+                        <img
+                          src={BoletoIcon}
+                          alt="Boleto"
+                          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full"
+                        />
                       ) : null}
                     </button>
                     {isDropdownOpenMethod && (
@@ -462,11 +482,21 @@ Cupom: ${cupom || 'Nenhum'}`;
                                   } else {
                                     let message = '';
                                     if (method.id === 'TED') {
-                                      message = `TED disponível a partir do nível Prata (2). Seu nível: ${userLevelName} (${userLevel})`;
+                                      message = t(
+                                        'buycheckout.paymentLevelRestriction.ted',
+                                      );
+                                    } else if (method.id === 'BOLETO') {
+                                      message = t(
+                                        'buycheckout.paymentLevelRestriction.boleto',
+                                      );
                                     } else if (method.id === 'CASH') {
-                                      message = `Depósito em espécie disponível a partir do nível Ouro (3). Seu nível: ${userLevelName} (${userLevel})`;
+                                      message = t(
+                                        'buycheckout.paymentLevelRestriction.cash',
+                                      );
                                     } else {
-                                      message = `Método não disponível para seu nível atual: ${userLevelName} (${userLevel})`;
+                                      message = t(
+                                        'buycheckout.paymentLevelRestriction.general',
+                                      );
                                     }
                                     toast.warning(message);
                                   }
