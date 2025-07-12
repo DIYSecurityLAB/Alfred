@@ -29,7 +29,7 @@ type PaymentMethodType =
   | 'BANK_TRANSFER'
   | 'TED'
   | 'CASH'
-  | 'BOLETO';
+  | 'TICKET';
 
 export function useDataForm() {
   const [network, setNetwork] = useState<string>('');
@@ -111,7 +111,7 @@ export function useDataForm() {
     if (!isPaymentMethodAllowed(method)) {
       if (method === 'TED' || method === 'BANK_TRANSFER') {
         toast.warning(t('buycheckout.paymentLevelRestriction.ted'));
-      } else if (method === 'BOLETO') {
+      } else if (method === 'TICKET') {
         toast.warning(t('buycheckout.paymentLevelRestriction.boleto'));
       } else if (method === 'CASH') {
         toast.warning(t('buycheckout.paymentLevelRestriction.cash'));
@@ -552,7 +552,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
         case 'CASH':
           message = `Olá! Sou usuário nível ${userLevelName} e gostaria de fazer um depósito em espécie:\n\nValor: ${fiatAmount}\nCripto: ${cryptoAmount} ${cryptoType}\nRede: ${network}\nCarteira: ${coldWallet}\nTelefone: ${transactionNumber}\nCupom: ${cupom || 'Nenhum'}\nID da transação: ${transactionId}\n\nPor favor, me envie as instruções para o depósito em espécie.`;
           break;
-        case 'BOLETO':
+        case 'TICKET':
           message = `Olá! Sou usuário nível ${userLevelName} e gostaria de realizar uma compra via Boleto Bancário:\n\nValor: ${fiatAmount}\nCripto: ${cryptoAmount} ${cryptoType}\nRede: ${network}\nCarteira: ${coldWallet}\nTelefone: ${transactionNumber}\nCupom: ${cupom || 'Nenhum'}\nID da transação: ${transactionId}\n\nPor favor, me envie as instruções para pagamento via boleto.`;
           break;
         case 'NOMAD':

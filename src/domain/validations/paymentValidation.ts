@@ -7,7 +7,7 @@ export const paymentSchema = z.object({
     'PIX',
     'Cartão de Crédito',
     'Boleto Bancário',
-    'BOLETO',
+    'TICKET',
     'TED',
     'CASH',
     'BANK_TRANSFER',
