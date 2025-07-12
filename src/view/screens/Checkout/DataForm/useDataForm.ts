@@ -28,7 +28,8 @@ type PaymentMethodType =
   | 'PAYPAL'
   | 'BANK_TRANSFER'
   | 'TED'
-  | 'CASH';
+  | 'CASH'
+  | 'BOLETO';
 
 export function useDataForm() {
   const [network, setNetwork] = useState<string>('');
@@ -109,17 +110,13 @@ export function useDataForm() {
 
     if (!isPaymentMethodAllowed(method)) {
       if (method === 'TED' || method === 'BANK_TRANSFER') {
-        toast.warning(
-          `Método TED disponível apenas para nível Prata (2) ou superior. Seu nível: ${userLevelName} (${userLevel})`,
-        );
+        toast.warning(t('buycheckout.paymentLevelRestriction.ted'));
+      } else if (method === 'BOLETO') {
+        toast.warning(t('buycheckout.paymentLevelRestriction.boleto'));
       } else if (method === 'CASH') {
-        toast.warning(
-          `Depósito em espécie disponível apenas para nível Ouro (3) ou superior. Seu nível: ${userLevelName} (${userLevel})`,
-        );
+        toast.warning(t('buycheckout.paymentLevelRestriction.cash'));
       } else {
-        toast.warning(
-          `Método de pagamento não disponível para seu nível atual: ${userLevelName} (${userLevel})`,
-        );
+        toast.warning(t('buycheckout.paymentLevelRestriction.general'));
       }
       return;
     }
@@ -565,6 +562,9 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
           break;
         case 'CASH':
           message = `Olá! Sou usuário nível ${userLevelName} e gostaria de fazer um depósito em espécie:\n\nValor: ${fiatAmount}\nCripto: ${cryptoAmount} ${cryptoType}\nRede: ${network}\nCarteira: ${coldWallet}\nTelefone: ${transactionNumber}\nCupom: ${cupom || 'Nenhum'}\nID da transação: ${transactionId}\n\nPor favor, me envie as instruções para o depósito em espécie.`;
+          break;
+        case 'BOLETO':
+          message = `Olá! Sou usuário nível ${userLevelName} e gostaria de realizar uma compra via Boleto Bancário:\n\nValor: ${fiatAmount}\nCripto: ${cryptoAmount} ${cryptoType}\nRede: ${network}\nCarteira: ${coldWallet}\nTelefone: ${transactionNumber}\nCupom: ${cupom || 'Nenhum'}\nID da transação: ${transactionId}\n\nPor favor, me envie as instruções para pagamento via boleto.`;
           break;
         case 'NOMAD':
           message = `Olá! Aqui estão os detalhes do pedido Nomad:\n\nValor ${fiatType}: ${fiatAmount}\n${cryptoType}: ${cryptoAmount}\nRede: ${network}\nCold Wallet: ${coldWallet}\nMétodo: Nomad\nTelefone: ${transactionNumber}\nCupom: ${cupom}\nID da transação: ${transactionId}`;

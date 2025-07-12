@@ -7,6 +7,7 @@ export interface UserLevelRestrictions {
   canUseTed: boolean;
   canUseWhatsApp: boolean;
   canUseCash: boolean;
+  canUseBoleto: boolean;
   canUseAllPaymentMethods: boolean;
 }
 
@@ -18,6 +19,7 @@ export function useUserLevel() {
     canUseTed: false,
     canUseWhatsApp: false,
     canUseCash: false,
+    canUseBoleto: false,
     canUseAllPaymentMethods: false,
   });
 
@@ -33,6 +35,7 @@ export function useUserLevel() {
           canUseTed: false,
           canUseWhatsApp: false,
           canUseCash: false,
+          canUseBoleto: false,
           canUseAllPaymentMethods: false,
         });
         break;
@@ -43,6 +46,7 @@ export function useUserLevel() {
           canUseTed: false,
           canUseWhatsApp: false,
           canUseCash: false,
+          canUseBoleto: false,
           canUseAllPaymentMethods: false,
         });
         break;
@@ -53,6 +57,7 @@ export function useUserLevel() {
           canUseTed: true,
           canUseWhatsApp: true,
           canUseCash: false,
+          canUseBoleto: true,
           canUseAllPaymentMethods: false,
         });
         break;
@@ -63,6 +68,7 @@ export function useUserLevel() {
           canUseTed: true,
           canUseWhatsApp: true,
           canUseCash: true,
+          canUseBoleto: true,
           canUseAllPaymentMethods: false,
         });
         break;
@@ -73,6 +79,7 @@ export function useUserLevel() {
           canUseTed: true,
           canUseWhatsApp: true,
           canUseCash: true,
+          canUseBoleto: true,
           canUseAllPaymentMethods: true,
         });
         break;
@@ -83,6 +90,7 @@ export function useUserLevel() {
           canUseTed: true,
           canUseWhatsApp: true,
           canUseCash: true,
+          canUseBoleto: true,
           canUseAllPaymentMethods: true,
         });
         break;
@@ -94,6 +102,7 @@ export function useUserLevel() {
           canUseTed: false,
           canUseWhatsApp: false,
           canUseCash: false,
+          canUseBoleto: false,
           canUseAllPaymentMethods: false,
         });
     }
@@ -115,6 +124,11 @@ export function useUserLevel() {
     return restrictions.canUseCash;
   };
 
+  // Função para verificar se o usuário pode usar boleto
+  const canUseBoleto = (): boolean => {
+    return restrictions.canUseBoleto;
+  };
+
   // Função para verificar se um método de pagamento está disponível para o nível do usuário
   const isPaymentMethodAllowed = (method: string): boolean => {
     if (restrictions.canUseAllPaymentMethods) return true;
@@ -127,6 +141,8 @@ export function useUserLevel() {
         return restrictions.canUseTed;
       case 'CASH':
         return restrictions.canUseCash;
+      case 'BOLETO':
+        return restrictions.canUseBoleto;
       case 'NOMAD':
       case 'SWIFT':
       case 'PAYPAL':
@@ -159,6 +175,7 @@ export function useUserLevel() {
     isWithinDailyLimit,
     canUseTed,
     canUseCash,
+    canUseBoleto,
     isPaymentMethodAllowed,
     getUserLevelInfo,
   };

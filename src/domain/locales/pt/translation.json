@@ -261,11 +261,13 @@
       "PAYPAL": "PayPal",
       "BANK_TRANSFER": "Transferência Bancária",
       "TED": "TED",
-      "CASH": "Depósito em Espécie"
+      "CASH": "Depósito em Espécie",
+      "BOLETO": "Boleto Bancário"
     },
     "paymentLevelRestriction": {
       "ted": "TED disponível apenas para nível Prata (2) ou superior",
       "cash": "Depósito em espécie disponível apenas para nível Ouro (3) ou superior",
+      "boleto": "Boleto bancário disponível apenas para nível Prata (2) ou superior",
       "general": "Este método de pagamento não está disponível para seu nível atual"
     },
     "contactTooltip": {

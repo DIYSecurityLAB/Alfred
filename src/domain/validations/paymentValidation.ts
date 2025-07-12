@@ -3,7 +3,18 @@ import { z } from 'zod';
 export const paymentSchema = z.object({
   realValue: z.number().positive(),
   bitcoinValue: z.number().positive(),
-  paymentMethod: z.enum(['PIX', 'Cartão de Crédito', 'Boleto Bancário']),
+  paymentMethod: z.enum([
+    'PIX',
+    'Cartão de Crédito',
+    'Boleto Bancário',
+    'BOLETO',
+    'TED',
+    'CASH',
+    'BANK_TRANSFER',
+    'SWIFT',
+    'PAYPAL',
+    'NOMAD',
+  ]),
   network: z.string().min(1, 'Network is required'),
   phone: z.string().regex(/^\d{9,15}$/, 'Invalid phone number'),
   coldWalletId: z

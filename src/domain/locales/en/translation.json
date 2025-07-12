@@ -261,11 +261,13 @@
       "PAYPAL": "PayPal",
       "BANK_TRANSFER": "Bank Transfer",
       "TED": "Wire Transfer",
-      "CASH": "Cash Deposit"
+      "CASH": "Cash Deposit",
+      "BOLETO": "Bank Slip"
     },
     "paymentLevelRestriction": {
       "ted": "Wire Transfer available only for Silver level (2) or higher",
       "cash": "Cash deposit available only for Gold level (3) or higher",
+      "boleto": "Bank Slip available only for Silver level (2) or higher",
       "general": "This payment method is not available for your current level"
     },
     "contactTooltip": {
