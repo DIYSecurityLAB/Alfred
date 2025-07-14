@@ -10,17 +10,14 @@ const AdminLogin: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('🔑 Tentando login com usuário:', username);
 
     const envUsername = import.meta.env.VITE_ADMIN_USERNAME;
     const envPassword = import.meta.env.VITE_ADMIN_PASSWORD;
 
     if (username === envUsername && password === envPassword) {
-      console.log('✅ Login bem-sucedido');
       localStorage.setItem('isAuthenticated', 'true');
       navigate('/admin/dashboard');
     } else {
-      console.log('❌ Login falhou: credenciais inválidas');
       setError('Credenciais inválidas. Verifique usuário e senha.');
     }
   };

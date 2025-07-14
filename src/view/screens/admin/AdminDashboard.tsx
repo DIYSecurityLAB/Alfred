@@ -27,8 +27,6 @@ const AdminDashboard: React.FC = () => {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/kyc`);
       const data = await response.json();
       if (data.success) {
-        console.log('✅ Registros carregados:', data.data.length);
-        // Ordena os registros pela data de submissão (do mais recente para o mais antigo)
         const sortedRecords = data.data.sort(
           (a: KYCRecord, b: KYCRecord) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
@@ -67,7 +65,7 @@ const AdminDashboard: React.FC = () => {
   const handleStatusUpdate = async (id: string, newStatus: string) => {
     try {
       setActionLoading(true);
-      console.log('🔄 Atualizando status do KYC:', id, 'para', newStatus);
+
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/kyc/${id}`,
         {
@@ -78,7 +76,6 @@ const AdminDashboard: React.FC = () => {
       );
       const data = await response.json();
       if (data.success) {
-        console.log('✅ Status atualizado com sucesso');
         setKycRecords((prev) =>
           prev.map((record) =>
             record.id === id ? { ...record, status: newStatus } : record,
