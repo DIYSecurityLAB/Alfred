@@ -83,6 +83,61 @@ export function ValuesForm({
     return () => clearInterval(timer);
   }, []);
 
+  // Efeito para demonstrar as opções quando activeMao === 2
+  useEffect(() => {
+    // Quando a mão estiver na posição 2, demonstra as opções (primeiro vender, depois comprar)
+    if (activeMao === 2) {
+      // Adiciona um delay para dar tempo do usuário perceber a mão
+      const delayTimer = setTimeout(() => {
+        const button = document.getElementById('transaction-button');
+        if (button) {
+          // Primeiro passo: garante que esteja em "buy" inicialmente e adiciona pulse suave
+          if (transactionType !== 'buy') {
+            toggleTransactionType(); // Muda para "buy" se estiver em "sell"
+          }
+
+          // Adiciona pulsação suave enquanto aguarda
+          button.classList.add('animate-soft-pulse');
+
+          // Após um breve delay, prepara para mudar para "sell" com animação
+          setTimeout(() => {
+            // Remove a pulsação suave
+            button.classList.remove('animate-soft-pulse');
+
+            // Adiciona efeito de scale-bounce mais elaborado
+            button.classList.add('animate-scale-bounce');
+            button.classList.add('animate-color-shift');
+
+            setTimeout(() => {
+              button.classList.remove('animate-scale-bounce');
+              button.classList.remove('animate-color-shift');
+
+              // Transição para "sell"
+              toggleTransactionType(); // Muda para "sell"
+
+              // Depois de um tempo mostrando "sell", prepara para voltar para "buy"
+              setTimeout(() => {
+                // Adiciona efeito de attention mais refinado
+                button.classList.add('animate-attention');
+                button.classList.add('animate-color-shift');
+
+                setTimeout(() => {
+                  button.classList.remove('animate-attention');
+                  button.classList.remove('animate-color-shift');
+
+                  // Transição de volta para "buy"
+                  toggleTransactionType(); // Volta para "buy"
+                }, 800); // Tempo maior para a animação completa
+              }, 1500); // Tempo maior mostrando "sell" para melhor percepção
+            }, 700); // Tempo ajustado para a animação completa
+          }, 800); // Delay maior para dar mais tempo de perceber a mão
+        }
+      }, 700); // Delay inicial
+
+      return () => clearTimeout(delayTimer);
+    }
+  }, [activeMao, toggleTransactionType, transactionType]);
+
   // Função para obter o placeholder correto baseado no tipo de moeda
   const getFiatPlaceholder = () => {
     switch (fiatType) {
@@ -158,9 +213,10 @@ export function ValuesForm({
             <button
               type="button"
               onClick={toggleTransactionType}
+              id="transaction-button"
               className={`absolute left-2 top-1/2 -translate-y-1/2 text-white ${
                 transactionType === 'buy' ? 'bg-green-500' : 'bg-red-500'
-              } px-4 py-2 rounded-full text-sm `}
+              } px-4 py-2 rounded-full text-sm transition-all duration-500 ease-in-out hover:shadow-lg hover:brightness-110`}
             >
               {transactionType === 'buy'
                 ? t('checkout.buy')
