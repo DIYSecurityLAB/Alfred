@@ -200,12 +200,12 @@ export const QRCodeScanner = ({
         // Configurações do scanner
         const config = {
           fps: 10,
-          qrbox: { width: 250, height: 250 },
-          aspectRatio: 1.0,
+          qrbox: 220, // Valor único para largura e altura = caixa quadrada
+          aspectRatio: 1.0, // Proporção 1:1 mantém o formato quadrado
           disableFlip: false,
           videoConstraints: {
-            width: { ideal: 640 },
-            height: { ideal: 480 },
+            width: { ideal: 480 },
+            height: { ideal: 480 }, // Mesmo valor para largura e altura
             facingMode: 'environment',
           },
           formatsToSupport: [0], // QR_CODE
@@ -422,12 +422,19 @@ export const QRCodeScanner = ({
           </button>
         </div>
 
-        <div
-          id="qr-reader"
-          ref={scannerRef}
-          className="w-full h-64 border border-gray-700 rounded overflow-hidden"
-          style={{ position: 'relative' }}
-        ></div>
+        {/* Container do scanner com overlay de mira */}
+        <div className="relative">
+          <div
+            id="qr-reader"
+            ref={scannerRef}
+            className="w-full aspect-square border border-gray-700 rounded overflow-hidden"
+            style={{
+              position: 'relative',
+              maxHeight: '320px',
+              margin: '0 auto',
+            }}
+          ></div>
+        </div>
 
         {/* Seletor de câmeras (mostrar apenas se houver mais de uma câmera) */}
         {cameras.length > 1 && (
