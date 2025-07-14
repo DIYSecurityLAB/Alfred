@@ -121,6 +121,20 @@ export default function DataForm() {
     setIsScannerOpen(false);
   };
 
+  // Função para redirecionamento via pop-up com verificação de bloqueio
+  const redirectViaPopup = (url: string) => {
+    const newWindow = window.open(url, '_blank');
+    if (
+      !newWindow ||
+      newWindow.closed ||
+      typeof newWindow.closed === 'undefined'
+    ) {
+      toast.error(
+        'Redirecionamento bloqueado. Por favor habilite pop-ups no seu navegador.',
+      );
+    }
+  };
+
   // Funções para remover espaços dos campos de usuário e senha
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\s+/g, '');
@@ -207,7 +221,7 @@ Endereço da carteira: ${coldWallet}
 Usuário: ${username}
 Cupom: ${cupom || 'Nenhum'}`;
       const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-      window.open(whatsappLink, '_blank');
+      redirectViaPopup(whatsappLink);
       return;
     }
 
@@ -703,11 +717,7 @@ Cupom: ${cupom || 'Nenhum'}`;
                       </div>
                       <div
                         onClick={() =>
-                          window.open(
-                            ROUTES.fee.call(currentLang),
-                            '_blank',
-                            'noopener,noreferrer',
-                          )
+                          redirectViaPopup(ROUTES.fee.call(currentLang))
                         }
                         className="ml-3 text-sm sm:text-base cursor-pointer text-blue-500 hover:text-blue-400 transition-colors flex items-center"
                       >
@@ -739,11 +749,7 @@ Cupom: ${cupom || 'Nenhum'}`;
                       </div>
                       <div
                         onClick={() =>
-                          window.open(
-                            ROUTES.term.call(currentLang),
-                            '_blank',
-                            'noopener,noreferrer',
-                          )
+                          redirectViaPopup(ROUTES.term.call(currentLang))
                         }
                         className="ml-3 text-sm sm:text-base cursor-pointer text-blue-500 hover:text-blue-400 transition-colors flex items-center"
                       >
