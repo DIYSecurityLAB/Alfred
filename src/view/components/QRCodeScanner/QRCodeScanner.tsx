@@ -427,10 +427,6 @@ export const QRCodeScanner = ({
           {t('buycheckout.qrCodeInstructions') ||
             'Posicione o QR Code em frente à câmera'}
         </p>
-        <p className="text-white text-xs mt-2 text-center opacity-70">
-          {t('buycheckout.qrCodeTip') ||
-            'Certifique-se de que o QR Code está bem iluminado e estável'}
-        </p>
       </div>
     </div>
   );
