@@ -238,14 +238,40 @@ export const QRCodeScanner = ({
                 'Erro não crítico durante leitura do QR Code:',
                 errorMessage,
               );
+
+              // Verifica se é o erro de QR Code não encontrado
+              if (
+                errorMessage.includes('NotFoundException') ||
+                errorMessage.includes('No MultiFormat Readers')
+              ) {
+                // Esse é um erro normal quando não há QR code visível - não mostrar toast a cada frame
+                return;
+              }
+
+              // Para outros erros, pode ser útil registrar no console, mas não exibir para o usuário
+              // para não sobrecarregar com mensagens
             },
           )
           .catch((error) => {
             console.error('Falha ao iniciar a leitura do QR Code:', error);
-            toast.error(
-              t('buycheckout.qrCodeError') ||
-                'Erro ao ler QR Code. Tente novamente.',
-            );
+
+            // Verifica se é um erro de NotFoundException (QR Code não encontrado)
+            if (
+              error.toString().includes('NotFoundException') ||
+              error.toString().includes('No MultiFormat Readers')
+            ) {
+              toast.warning(
+                t('buycheckout.qrCodeNotFound') ||
+                  'Nenhum QR Code detectado. Certifique-se de que o código está visível e bem iluminado.',
+              );
+            } else {
+              // Outros erros gerais
+              toast.error(
+                t('buycheckout.qrCodeError') ||
+                  'Erro ao ler QR Code. Tente novamente.',
+              );
+            }
+
             stopScanner();
           });
       } catch (error) {
@@ -426,6 +452,10 @@ export const QRCodeScanner = ({
         <p className="text-white text-sm mt-4 text-center">
           {t('buycheckout.qrCodeInstructions') ||
             'Posicione o QR Code em frente à câmera'}
+        </p>
+        <p className="text-white text-xs mt-2 text-center opacity-70">
+          {t('buycheckout.qrCodeTip') ||
+            'Certifique-se de que o QR Code está bem iluminado e estável'}
         </p>
       </div>
     </div>
