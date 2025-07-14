@@ -76,7 +76,6 @@ export function useConfirmInfos(
       ? fiatAmountNum
       : fiatAmountNum * (usdToBrl || 0);
 
-
   let baseFeeRate: number;
 
   if (amountBRL <= 5000) {

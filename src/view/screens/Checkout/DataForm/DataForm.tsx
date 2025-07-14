@@ -3,10 +3,12 @@ import classNames from 'classnames';
 import { t } from 'i18next';
 import { ChangeEvent, useState } from 'react';
 import {
+  FaExternalLinkAlt,
   FaEye,
   FaEyeSlash,
   FaLock,
   FaMoneyBillWave,
+  FaQrcode,
   FaQuestionCircle,
   FaTools,
 } from 'react-icons/fa';
@@ -44,7 +46,7 @@ type PaymentMethodType =
 import { isVipUser } from '@/config/vipUsers';
 import { AlfredLogo } from '@/view/components/Logo/AlfredLogo';
 import { PaymentLoader } from '@/view/components/PaymentLoader';
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { QRCodeScanner } from '@/view/components/QRCodeScanner';
 
 export default function DataForm() {
   const {
@@ -111,6 +113,13 @@ export default function DataForm() {
   const closeModal = () => setIsModalOpen(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
+
+  // Função para lidar com o QR code escaneado
+  const handleScan = (value: string) => {
+    setColdWallet(value);
+    setIsScannerOpen(false);
+  };
 
   // Funções para remover espaços dos campos de usuário e senha
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -337,7 +346,7 @@ Cupom: ${cupom || 'Nenhum'}`;
                     )}
                   </button>
                   {isDropdownOpen && (
-                    <div className="absolute left-0 top-full mt-2 w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10 transition-all duration-300 ease-out transform scale-100 opacity-100">
+                    <div className="absolute left-0 top-full mt-2 w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-20 transition-all duration-300 ease-out transform scale-100 opacity-100">
                       <ul className="w-full">
                         {networks.map((net) => {
                           // Verificar se o valor é menor que 200 reais e bloquear outras redes que não sejam Lightning
@@ -456,7 +465,7 @@ Cupom: ${cupom || 'Nenhum'}`;
                       ) : null}
                     </button>
                     {isDropdownOpenMethod && (
-                      <div className="absolute left-0 top-full mt-2 w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-10 transition-all duration-300 ease-out transform scale-100 opacity-100">
+                      <div className="absolute left-0 top-full mt-2 w-full bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-20 transition-all duration-300 ease-out transform scale-100 opacity-100">
                         <ul className="grid grid-cols-2 gap-4 w-full">
                           {allPaymentMethods.map((method) => {
                             const isAllowed = isPaymentMethodAllowed(method.id);
@@ -541,15 +550,31 @@ Cupom: ${cupom || 'Nenhum'}`;
                   </div>
                 </div>
                 <div className="flex justify-center items-center relative w-full pt-4">
-                  <div className="relative w-full">
-                    <input
-                      value={coldWallet}
-                      onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                        setColdWallet(e.target.value)
-                      }
-                      placeholder={t('buycheckout.bitcoinWallet')}
-                      className="border-2 px-8 py-3 rounded-3xl text-base sm:text-lg text-white placeholder-white bg-black text-center w-full"
-                    />
+                  <div className="relative w-full group">
+                    <div className="relative flex items-center">
+                      <input
+                        value={coldWallet}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                          setColdWallet(e.target.value)
+                        }
+                        placeholder={t('buycheckout.bitcoinWallet')}
+                        className="border-2 px-8 pr-16 py-3 rounded-3xl text-base sm:text-lg text-white placeholder-white bg-black text-center w-full overflow-hidden whitespace-nowrap text-ellipsis"
+                        title={coldWallet} // Adiciona tooltip para mostrar o endereço completo ao passar o mouse
+                      />
+                      <div className="absolute right-3 flex items-center pointer-events-none">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsScannerOpen(true);
+                          }}
+                          className="text-white bg-black bg-opacity-50 p-1.5 rounded-full hover:bg-opacity-70 pointer-events-auto"
+                          aria-label="Escanear QR Code"
+                          tabIndex={0}
+                        >
+                          <FaQrcode size={22} />
+                        </button>
+                      </div>
+                    </div>
                     {errors.coldWallet && (
                       <p className="text-white text-sm mt-2 p-3 bg-red-900 bg-opacity-40 rounded-lg border-2 border-red-500 shadow-md">
                         {errors.coldWallet}
@@ -776,6 +801,13 @@ Cupom: ${cupom || 'Nenhum'}`;
           />
         )}
       </main>
+
+      {/* QR Code Scanner Modal */}
+      <QRCodeScanner
+        isOpen={isScannerOpen}
+        onClose={() => setIsScannerOpen(false)}
+        onScan={handleScan}
+      />
     </>
   );
 }
