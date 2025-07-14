@@ -9,11 +9,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
 
   if (!isAuthenticated) {
-    console.log('❌ Usuário não autenticado, redirecionando para login');
     return <Navigate to="/admin/login" />;
   }
 
-  console.log('✅ Usuário autenticado, permitindo acesso');
   return children;
 };
 
