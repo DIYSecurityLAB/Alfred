@@ -16,7 +16,6 @@ import { FaPix } from 'react-icons/fa6';
 import { toast } from 'react-toastify';
 import BankTransf from '../../../assets/bankIcon.png';
 import BoletoIcon from '../../../assets/BoletoIcon.png';
-import AlfredImg from '../../../assets/c1b28810-5a23-4e7c-bcce-bd1f42b271c5.png';
 import NomadIcon from '../../../assets/nomadIcon.png';
 import PayPalIcon from '../../../assets/paypalIcon.png';
 import SwiftIcon from '../../../assets/swiftIcon.png';
@@ -773,15 +772,6 @@ Cupom: ${cupom || 'Nenhum'}`;
                     {t('buycheckout.getPixKey')}
                   </button>
                 </div>
-              </div>
-
-              {/* Imagem do Alfred posicionada à direita, fora do fluxo normal */}
-              <div className="hidden lg:block absolute -right-72 top-0 h-full">
-                <img
-                  src={AlfredImg}
-                  alt="Alfred"
-                  className="h-[400px] w-auto object-contain"
-                />
               </div>
             </div>
           </div>
