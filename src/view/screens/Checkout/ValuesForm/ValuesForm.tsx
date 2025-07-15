@@ -23,13 +23,11 @@ export function ValuesForm({
   const [hasShownToast, setHasShownToast] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  // Controle dos valores do formulário
   const fiatAmount = form.watch('fiatAmount');
   const fiatType = form.watch('fiatType');
   const cryptoAmount = form.watch('cryptoAmount');
   const cryptoType = form.watch('cryptoType');
 
-  // Salva automaticamente no localStorage
   useEffect(() => {
     localStorage.setItem('fiatAmount', fiatAmount);
     localStorage.setItem('fiatType', fiatType);
@@ -66,8 +64,6 @@ export function ValuesForm({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Estado que controla qual ícone de mão está ativo (0, 1 ou 2)
-  // Após mostrar os 3 (cada um por 2 segundos), ele é removido (null)
   const [activeMao, setActiveMao] = useState<number | null>(0);
   useEffect(() => {
     let counter = 0;
@@ -83,62 +79,27 @@ export function ValuesForm({
     return () => clearInterval(timer);
   }, []);
 
-  // Efeito para demonstrar as opções quando activeMao === 2
   useEffect(() => {
-    // Quando a mão estiver na posição 2, demonstra as opções (primeiro vender, depois comprar)
     if (activeMao === 2) {
-      // Adiciona um delay para dar tempo do usuário perceber a mão
       const delayTimer = setTimeout(() => {
-        const button = document.getElementById('transaction-button');
-        if (button) {
-          // Primeiro passo: garante que esteja em "buy" inicialmente e adiciona pulse suave
-          if (transactionType !== 'buy') {
-            toggleTransactionType(); // Muda para "buy" se estiver em "sell"
-          }
-
-          // Adiciona pulsação suave enquanto aguarda
-          button.classList.add('animate-soft-pulse');
-
-          // Após um breve delay, prepara para mudar para "sell" com animação
-          setTimeout(() => {
-            // Remove a pulsação suave
-            button.classList.remove('animate-soft-pulse');
-
-            // Adiciona efeito de scale-bounce mais elaborado
-            button.classList.add('animate-scale-bounce');
-            button.classList.add('animate-color-shift');
-
-            setTimeout(() => {
-              button.classList.remove('animate-scale-bounce');
-              button.classList.remove('animate-color-shift');
-
-              // Transição para "sell"
-              toggleTransactionType(); // Muda para "sell"
-
-              // Depois de um tempo mostrando "sell", prepara para voltar para "buy"
-              setTimeout(() => {
-                // Adiciona efeito de attention mais refinado
-                button.classList.add('animate-attention');
-                button.classList.add('animate-color-shift');
-
-                setTimeout(() => {
-                  button.classList.remove('animate-attention');
-                  button.classList.remove('animate-color-shift');
-
-                  // Transição de volta para "buy"
-                  toggleTransactionType(); // Volta para "buy"
-                }, 800); // Tempo maior para a animação completa
-              }, 1500); // Tempo maior mostrando "sell" para melhor percepção
-            }, 700); // Tempo ajustado para a animação completa
-          }, 800); // Delay maior para dar mais tempo de perceber a mão
+        // Garante que comece em "buy"
+        if (transactionType !== 'buy') {
+          toggleTransactionType();
         }
-      }, 700); // Delay inicial
+
+        setTimeout(() => {
+          toggleTransactionType();
+
+          setTimeout(() => {
+            toggleTransactionType();
+          }, 700);
+        }, 700);
+      }, 700);
 
       return () => clearTimeout(delayTimer);
     }
   }, [activeMao, toggleTransactionType, transactionType]);
 
-  // Função para obter o placeholder correto baseado no tipo de moeda
   const getFiatPlaceholder = () => {
     switch (fiatType) {
       case 'BRL':
@@ -150,7 +111,6 @@ export function ValuesForm({
     }
   };
 
-  // Função para obter o ícone correto baseado no tipo de moeda
   const getFiatIcon = () => {
     switch (fiatType) {
       case 'BRL':
@@ -162,7 +122,6 @@ export function ValuesForm({
     }
   };
 
-  // Função para obter o texto alt correto baseado no tipo de moeda
   const getFiatIconAlt = () => {
     switch (fiatType) {
       case 'BRL':
