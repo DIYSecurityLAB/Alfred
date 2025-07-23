@@ -30,6 +30,16 @@ export function Fees() {
 
         <section className="pb-8">
           <h2 className="text-xl font-semibold mb-4 text-white">
+            {t('fees.paymentLimitsTitle')}
+          </h2>
+          <p className="text-white">{t('fees.paymentLimits1')}</p>
+          <p className="text-white pt-4">{t('fees.paymentLimits2')}</p>
+          <p className="text-white pt-4">{t('fees.paymentLimits3')}</p>
+          <p className="text-white pt-4">{t('fees.paymentLimits4')}</p>
+        </section>
+
+        <section className="pb-8">
+          <h2 className="text-xl font-semibold mb-4 text-white">
             {t('fees.couponsTitle')}
           </h2>
           <p className="text-white">{t('fees.coupons')}</p>
