@@ -10,13 +10,16 @@ export const MarketPriceModel = z.object({
   bitcoin: z.object({
     brl: z.number(),
     eur: z.number().optional(),
+    ars: z.number().optional(),
   }),
   usd: z.object({
     brl: z.number(),
+    ars: z.number().optional(),
   }),
   euro: z
     .object({
       brl: z.number(),
+      ars: z.number().optional(),
     })
     .optional(),
 });
@@ -46,19 +49,32 @@ export class BitcoinRateRepositoryImpl implements BitcoinRateRepository {
         url: '/price/btc-usdt',
         model: MarketPriceModel,
       });
+      console.log('Market Data COMPLETO:', marketData);
+
+      // Log específico para valores de ARS
+      if (marketData) {
+        console.log('ARS rates em MARKETDATA:', {
+          bitcoin_ars: marketData.bitcoin?.ars,
+          usd_ars: marketData.usd?.ars,
+          euro_ars: marketData.euro?.ars,
+        });
+      }
 
       if (!marketData) {
         return Result.Error({ code: 'SERIALIZATION' });
       }
 
-      // Processar as taxas incluindo o Euro
+      // Processar as taxas incluindo o Euro e ARS
       const result: ListedCryptoRateModel = {
         bitcoin: {
           brl: marketData.bitcoin.brl,
           eur: marketData.bitcoin.eur,
+          // Garantir que ars seja incluído, mesmo que como undefined
+          ars: marketData.bitcoin.ars,
         },
         tether: {
           brl: marketData.usd.brl,
+          ars: marketData.usd.ars,
         },
       };
 
@@ -66,6 +82,15 @@ export class BitcoinRateRepositoryImpl implements BitcoinRateRepository {
       if (marketData.euro) {
         result.euro = {
           brl: marketData.euro.brl,
+          ars: marketData.euro.ars,
+        };
+      }
+
+      // Adicionar dados do USD separadamente se necessário
+      if (marketData.usd) {
+        result.usd = {
+          brl: marketData.usd.brl,
+          ars: marketData.usd.ars,
         };
       }
 
