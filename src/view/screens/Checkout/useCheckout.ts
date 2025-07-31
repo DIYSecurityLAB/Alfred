@@ -83,9 +83,6 @@ export function useCheckout() {
           eurRate = btcUsdRate / 1.08;
         }
 
-        // Buscar a taxa ARS diretamente da resposta da API
-        console.log('Dados brutos da API:', JSON.stringify(result.data));
-
         // Inicializar com um valor seguro
         let arsRateValue = 0;
 
@@ -93,9 +90,7 @@ export function useCheckout() {
         // A estrutura parece ser diferente do que estamos esperando
         // Verificar diretamente o bitcoin.ars que deveria estar nos dados
         try {
-          console.log('VITE_API_URL:', import.meta.env.VITE_API_URL);
           const apiUrl = `${import.meta.env.VITE_API_URL || ''}/market/price/btc-usdt`;
-          console.log('Tentando buscar dados diretamente de:', apiUrl);
 
           // Usar uma chamada direta para obter o valor ARS da API original
           const apiResponse = await fetch(apiUrl, {
@@ -104,40 +99,21 @@ export function useCheckout() {
             },
           });
 
-          console.log('Status da resposta API:', apiResponse.status);
-
           if (apiResponse.ok) {
             const rawData = await apiResponse.json();
-            console.log(
-              'Resposta direta da API (estrutura completa):',
-              JSON.stringify(rawData),
-            );
 
-            // Buscar o valor ARS na estrutura correta
             if (rawData && rawData.bitcoin && rawData.bitcoin.ars) {
               arsRateValue = rawData.bitcoin.ars;
-              console.log('ARS encontrado diretamente na API:', arsRateValue);
             } else if (rawData && rawData.usd && rawData.usd.ars) {
-              // Alternativa: calcular via USD
               const usdArsRate = rawData.usd.ars;
               arsRateValue = btcUsdRate * usdArsRate;
-              console.log('ARS calculado via USD da API:', arsRateValue);
             }
 
-            // Verificar outros lugares possíveis onde o valor ARS possa estar
-            console.log(
-              'Verificando todas as propriedades da resposta para "ars":',
-            );
             Object.keys(rawData).forEach((key) => {
               const value = rawData[key];
               if (typeof value === 'object' && value !== null) {
                 Object.keys(value).forEach((subKey) => {
                   if (subKey === 'ars') {
-                    console.log(
-                      `Encontrado ars em rawData.${key}.${subKey} =`,
-                      value[subKey],
-                    );
-                    // Se ainda não temos um valor ARS, use este
                     if (!arsRateValue) {
                       arsRateValue = value[subKey];
                     }
@@ -157,7 +133,6 @@ export function useCheckout() {
 
         // Garantir que o valor ARS seja válido e maior que zero antes de usar
         if (arsRateValue && arsRateValue > 0) {
-          console.log('Definindo taxa ARS no formulário:', arsRateValue);
           form.setValue('arsRate', arsRateValue);
         } else {
           console.warn(
@@ -171,14 +146,6 @@ export function useCheckout() {
           const estimatedUsdToArsRate = 1350; // Aproximação da cotação USD/ARS
           const brlToArsRate = estimatedUsdToArsRate / usdToBrlRate;
           const tempArsRate = btcBrlRate * brlToArsRate;
-
-          console.log('Cálculo de fallback para taxa ARS:', {
-            btcBrlRate,
-            usdToBrlRate,
-            estimatedUsdToArsRate,
-            brlToArsRate,
-            tempArsRate,
-          });
 
           form.setValue('arsRate', tempArsRate);
         }

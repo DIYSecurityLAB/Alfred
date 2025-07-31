@@ -134,8 +134,6 @@ export function useValuesForm() {
         // Verificamos se o valor já contém "ARS" para evitar duplicação
         const formattedNumber = numericValue.toLocaleString('es-AR');
         formattedValue = `ARS ${formattedNumber}`;
-
-        console.log('Valor formatado em ARS:', formattedValue);
       } catch (error) {
         // Fallback simples caso a formatação falhe
         formattedValue = `ARS ${numericValue.toLocaleString()}`;

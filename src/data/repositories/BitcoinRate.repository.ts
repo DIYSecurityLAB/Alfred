@@ -49,16 +49,6 @@ export class BitcoinRateRepositoryImpl implements BitcoinRateRepository {
         url: '/price/btc-usdt',
         model: MarketPriceModel,
       });
-      console.log('Market Data COMPLETO:', marketData);
-
-      // Log específico para valores de ARS
-      if (marketData) {
-        console.log('ARS rates em MARKETDATA:', {
-          bitcoin_ars: marketData.bitcoin?.ars,
-          usd_ars: marketData.usd?.ars,
-          euro_ars: marketData.euro?.ars,
-        });
-      }
 
       if (!marketData) {
         return Result.Error({ code: 'SERIALIZATION' });
