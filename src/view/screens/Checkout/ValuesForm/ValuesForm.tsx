@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { FaQuestionCircle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
+import Ars from '../../../assets/ars-removebg-preview.png';
 import Btc from '../../../assets/bitcoin.svg';
 import Brl from '../../../assets/brl.svg';
 import DepixIcon from '../../../assets/depix-logo.png';
 import Euro from '../../../assets/eur.svg';
 import Mao from '../../../assets/SITE_MAO_ALFRED.png';
 import Usdt from '../../../assets/usd.svg';
+
 import { useValuesForm } from './useValuesForm';
 
 interface ValuesFormProps {
@@ -106,6 +108,8 @@ export function ValuesForm({
         return t('checkout.brl_placeholder');
       case 'EUR':
         return t('checkout.eur_placeholder') || 'Valor em EUR';
+      case 'ARS':
+        return t('checkout.ars_placeholder') || 'Valor em ARS';
       default:
         return t('checkout.usd_placeholder');
     }
@@ -117,6 +121,8 @@ export function ValuesForm({
         return Brl;
       case 'EUR':
         return Euro;
+      case 'ARS':
+        return Ars;
       default:
         return Usdt;
     }
@@ -128,6 +134,8 @@ export function ValuesForm({
         return t('checkout.brl_label');
       case 'EUR':
         return t('checkout.eur_label') || 'Euro';
+      case 'ARS':
+        return t('checkout.ars_label') || 'Peso Argentino';
       default:
         return t('checkout.usd_label');
     }

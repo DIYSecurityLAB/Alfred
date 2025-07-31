@@ -212,8 +212,12 @@ export default function DataForm() {
 
     if (fiatType.toUpperCase() !== 'BRL') {
       const whatsappNumber = '5511911872097';
+      const valorFormatado =
+        fiatType === 'ARS' && fiatAmount.includes('ARS')
+          ? fiatAmount
+          : `${fiatAmount} (${fiatType})`;
       const message = `Olá! Estou Querendo comprar ${cryptoType.toUpperCase()} com ${fiatType} .
-Valor: ${fiatAmount} (${fiatType})
+Valor: ${valorFormatado}
 Crypto (${cryptoType.toUpperCase()}): ${cryptoAmount}
 Rede: ${network}
 Endereço da carteira: ${coldWallet}
@@ -326,7 +330,10 @@ Cupom: ${cupom || 'Nenhum'}`;
 
         <section className="flex flex-col items-center gap-y-4 pt-4 w-full relative">
           <p className="text-lg sm:text-xl text-center text-white">
-            {t('buycheckout.value')}: {fiatAmount} {fiatType}
+            {t('buycheckout.value')}:{' '}
+            {fiatType === 'ARS' && fiatAmount.includes('ARS')
+              ? fiatAmount
+              : `${fiatAmount} ${fiatType}`}
             <br />
             {t('buycheckout.valueCrypto')}: {cryptoAmount}{' '}
             {cryptoType.toUpperCase()}
