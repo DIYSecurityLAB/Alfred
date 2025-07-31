@@ -364,8 +364,12 @@ export function useDataForm() {
 
     if (fiatType.toUpperCase() !== 'BRL') {
       const whatsappNumber = '5511911872097';
+      const valorFormatado =
+        fiatType === 'ARS' && fiatAmount.includes('ARS')
+          ? fiatAmount
+          : `${fiatAmount} (${fiatType})`;
       const message = `Olá! Estou Querendo comprar ${cryptoType.toUpperCase()} com ${fiatType} .
-Valor: ${fiatAmount} (${fiatType})
+Valor: ${valorFormatado}
 Crypto (${cryptoType}): ${cryptoAmount}
 Rede: ${network}
 Cold Wallet: ${coldWallet}
@@ -505,7 +509,7 @@ Cupom: ${cupom}`;
           const message = `
 Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Validação para Transações Anônimas.
 
-- Valor: ${fiatAmount} (${fiatType})
+- Valor: ${fiatType === 'ARS' && fiatAmount.includes('ARS') ? fiatAmount : `${fiatAmount} (${fiatType})`}
 - Valor Crypto: ${cryptoAmount} ${cryptoType.toUpperCase()}
 - Rede: ${network}
 - Endereço da carteira: ${coldWallet}
