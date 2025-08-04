@@ -591,7 +591,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
         axios.isAxiosError(error) &&
         error.response?.data?.code === 'LIMIT_EXCEEDED_COUPON'
       ) {
-        toast.error(`Você usou o cupom "ZERO" mais de 1 vez.`);
+        toast.error(`Este cupom só pode ser utilizado na primeira compra.`);
       }
       if (
         axios.isAxiosError(error) &&
@@ -718,12 +718,12 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
           ...prev,
           cupom:
             error.response?.data?.message ||
-            t('Você usou o cupom "ZERO" mais de 1 vez.'),
+            t('Este cupom só pode ser utilizado na primeira compra.'),
         }));
         setCupom('');
         toast.error(
           error.response?.data?.message ||
-            t('Você usou o cupom "ZERO" mais de 1 vez.'),
+            t('Este cupom só pode ser utilizado na primeira compra.'),
         );
         return;
       }
