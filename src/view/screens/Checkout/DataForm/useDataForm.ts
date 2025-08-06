@@ -125,6 +125,48 @@ export function useDataForm() {
     setIsDropdownOpenMethod(false);
   };
 
+  function normalizeWalletAddress(address: string): string {
+    if (!address) return address;
+    
+    let normalized = address.trim();
+    
+    // Remove prefixos de URI Bitcoin (bitcoin:, BITCOIN:, etc.)
+    if (normalized.toLowerCase().startsWith('bitcoin:')) {
+      normalized = normalized.substring(8); // Remove "bitcoin:"
+    }
+    
+    // Remove parâmetros da URI (como ?amount=0.1)
+    const questionMarkIndex = normalized.indexOf('?');
+    if (questionMarkIndex !== -1) {
+      normalized = normalized.substring(0, questionMarkIndex);
+    }
+    
+    // Para endereços Bitcoin onchain, normalizar case
+    if (normalized.toLowerCase().startsWith('bc1')) {
+      // Bech32 deve ser lowercase
+      normalized = normalized.toLowerCase();
+    }
+    
+    // Para LNURL, deve ser lowercase
+    if (normalized.toLowerCase().startsWith('lnurl1')) {
+      normalized = normalized.toLowerCase();
+    }
+    
+    // Para endereços Liquid
+    if (normalized.toLowerCase().startsWith('vjl') || 
+        normalized.toLowerCase().startsWith('ex1') || 
+        normalized.toLowerCase().startsWith('lq1')) {
+      normalized = normalized.toLowerCase();
+    }
+    
+    // Para endereços Polygon (0x...)
+    if (normalized.toLowerCase().startsWith('0x')) {
+      normalized = normalized.toLowerCase();
+    }
+    
+    return normalized;
+  }
+
   function decodeLnurl(lnurl: string): string {
     try {
       const words = bech32.decode(lnurl, 1023);
@@ -189,29 +231,32 @@ export function useDataForm() {
     if (!coldWallet) {
       newErrors.coldWallet = t('buycheckout.coldWalletError');
     } else {
+      // Normalizar o endereço antes da validação
+      const normalizedWallet = normalizeWalletAddress(coldWallet);
+      
       if (
         cryptoType.toUpperCase() === 'USDT' ||
         cryptoType.toUpperCase() === 'BTC_USDT'
       ) {
         if (network === 'Liquid') {
           if (
-            !/^VJL[a-km-zA-HJ-NP-Z0-9]{43,}$/i.test(coldWallet) &&
-            !/^ex1[a-z0-9]{39,59}$/i.test(coldWallet) &&
-            !/^CT[a-km-zA-HJ-NP-Z0-9]{40,64}$/i.test(coldWallet) &&
-            !/^lq1[a-z0-9]{40,100}$/i.test(coldWallet)
+            !/^VJL[a-km-zA-HJ-NP-Z0-9]{43,}$/i.test(normalizedWallet) &&
+            !/^ex1[a-z0-9]{39,59}$/i.test(normalizedWallet) &&
+            !/^CT[a-km-zA-HJ-NP-Z0-9]{40,64}$/i.test(normalizedWallet) &&
+            !/^lq1[a-z0-9]{40,100}$/i.test(normalizedWallet)
           ) {
             newErrors.coldWallet = t(
               'buycheckout.invalidColdWalletErrorLiquid',
             );
           }
         } else if (network === 'Polygon') {
-          if (!/^0x[a-fA-F0-9]{40}$/.test(coldWallet)) {
+          if (!/^0x[a-fA-F0-9]{40}$/.test(normalizedWallet)) {
             newErrors.coldWallet = t(
               'buycheckout.invalidColdWalletErrorPolygon',
             );
           }
         } else if (network === 'Tron') {
-          if (!/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(coldWallet)) {
+          if (!/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(normalizedWallet)) {
             newErrors.coldWallet = t('buycheckout.invalidColdWalletErrorTron');
           }
         } else {
@@ -221,8 +266,8 @@ export function useDataForm() {
         switch (network) {
           case 'Onchain':
             if (
-              !/^(1|3)[a-km-zA-HJ-NP-Z0-9]{25,34}$|^bc1[a-zA-HJ-NP-Z0-9]{39,59}$/.test(
-                coldWallet,
+              !/^(1|3)[a-km-zA-HJ-NP-Z0-9]{25,34}$|^bc1[a-zA-HJ-NP-Z0-9]{39,59}$/i.test(
+                normalizedWallet,
               )
             ) {
               newErrors.coldWallet = t(
@@ -232,10 +277,10 @@ export function useDataForm() {
             break;
           case 'Liquid':
             if (
-              !/^VJL[a-km-zA-HJ-NP-Z0-9]{43,}$/i.test(coldWallet) &&
-              !/^ex1[a-z0-9]{39,59}$/i.test(coldWallet) &&
-              !/^CT[a-km-zA-HJ-NP-Z0-9]{40,64}$/i.test(coldWallet) &&
-              !/^lq1[a-z0-9]{40,100}$/i.test(coldWallet)
+              !/^VJL[a-km-zA-HJ-NP-Z0-9]{43,}$/i.test(normalizedWallet) &&
+              !/^ex1[a-z0-9]{39,59}$/i.test(normalizedWallet) &&
+              !/^CT[a-km-zA-HJ-NP-Z0-9]{40,64}$/i.test(normalizedWallet) &&
+              !/^lq1[a-z0-9]{40,100}$/i.test(normalizedWallet)
             ) {
               newErrors.coldWallet = t(
                 'buycheckout.invalidColdWalletErrorLiquid',
@@ -243,7 +288,7 @@ export function useDataForm() {
             }
             break;
           case 'Lightning': {
-            const lightningError = await validateLightningWallet(coldWallet, t);
+            const lightningError = await validateLightningWallet(normalizedWallet, t);
             if (lightningError) {
               newErrors.coldWallet = lightningError;
             }
@@ -743,6 +788,12 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
     }
   };
 
+  // Função customizada para definir coldWallet com normalização automática
+  const setNormalizedColdWallet = (address: string) => {
+    const normalized = normalizeWalletAddress(address);
+    setColdWallet(normalized);
+  };
+
   return {
     network,
     timeLeft,
@@ -777,7 +828,7 @@ Estou comprando mais de 5 mil reais no Alfred e preciso do formulário de Valida
     handleProcessPayment,
     copyToClipboard,
     checkCouponValidity,
-    setColdWallet,
+    setColdWallet: setNormalizedColdWallet,
     setAcceptTerms,
     setAcceptFees,
     setCupom,
