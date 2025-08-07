@@ -327,6 +327,10 @@
       "expected_amount": "Valor Esperado (BRL)",
       "expected_amount_crypto": "Valor Esperado (Cripto)"
     },
+    "wallet_confirmation": {
+      "title": "Confirmación de Dirección",
+      "checkbox_label": "Confirmo que la dirección es correcta:"
+    },
     "buttons": {
       "cancel": "Cancelar",
       "confirm": "Confirmar"
