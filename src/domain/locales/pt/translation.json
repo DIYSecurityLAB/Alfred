@@ -211,7 +211,7 @@
     "invalidColdWalletErrorLiquid": "Endereço da carteira Liquid inválido. Verifique se o endereço está correto e tente novamente.",
     "invalidColdWalletErrorOnchain": "Endereço da carteira Onchain inválido. Use um endereço Bitcoin válido (bc1... ou 1... ou 3...).",
     "invalidColdWalletErrorLightning": "Endereço da carteira Lightning inválido. Use apenas um LNURL ou um e-mail Lightning válido.",
-    "invalidLnurl": "LNURL inválido. Verifique o endereço e tente novamente.",
+    "invalidLnurl": "LNURL não suportado, use o formato de email Lightning.",
     "invalidLnurlResponse": "Resposta inválida do servidor LNURL.",
     "fixedAmountLnurlNotSupported": "LNURLs com valor fixo não são suportados. Use um LNURL que permita valores personalizados.",
     "lightningInvoiceNotSupported": "Faturas Lightning (bolt11) não são mais suportadas. Use apenas LNURL ou e-mail Lightning.",
