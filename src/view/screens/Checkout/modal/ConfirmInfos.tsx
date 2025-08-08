@@ -15,15 +15,20 @@ const Button = ({
   onClick,
   children,
   variant,
+  disabled = false,
 }: {
   onClick: () => void;
   children: React.ReactNode;
   variant?: string;
+  disabled?: boolean;
 }) => (
   <button
     onClick={onClick}
+    disabled={disabled}
     className={`px-6 py-3 rounded-3xl font-bold text-sm sm:text-base transition duration-300 ${
-      variant === 'outline'
+      disabled
+        ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
+        : variant === 'outline'
         ? 'border-2 border-[#F39200] text-[#F39200] hover:bg-[#F39200] hover:text-white'
         : 'bg-[#F39200] text-white hover:bg-orange-600'
     }`}
@@ -93,6 +98,7 @@ export default function ConfirmInfosModal({
 
   const [isDataVisible, setIsDataVisible] = useState(false);
   const [isTaxVisible, setIsTaxVisible] = useState(false);
+  const [isWalletConfirmed, setIsWalletConfirmed] = useState(false);
 
   if (!isOpen) return null;
 
@@ -278,12 +284,28 @@ export default function ConfirmInfosModal({
             </p>
           </div>
 
+          {/* Confirmação de Endereço */}
+          <div className="bg-[#1a1d2b] p-4 rounded-lg border-l-4 border-[#F39200]">
+            <div className="flex items-start space-x-3">
+              <input
+                type="checkbox"
+                id="walletConfirmation"
+                checked={isWalletConfirmed}
+                onChange={(e) => setIsWalletConfirmed(e.target.checked)}
+                className="mt-1 w-5 h-5 text-[#F39200] bg-gray-100 border-gray-300 rounded focus:ring-[#F39200] focus:ring-2"
+              />
+              <label htmlFor="walletConfirmation" className="text-base text-gray-300 cursor-pointer">
+                {t('confirm_infos.wallet_confirmation.checkbox_label')} <br /> <span className="text-[#F39200] break-all">{coldWallet}</span>
+              </label>
+            </div>
+          </div>
+
           {/* Botões */}
           <div className="flex justify-between space-x-4 mt-6">
             <Button variant="outline" onClick={onClose}>
               {t('confirm_infos.buttons.cancel')}
             </Button>
-            <Button onClick={onConfirm}>
+            <Button onClick={onConfirm} disabled={!isWalletConfirmed}>
               {t('confirm_infos.buttons.confirm')}
             </Button>
           </div>

@@ -212,7 +212,7 @@
     "invalidColdWalletErrorLiquid": "Dirección de billetera Liquid inválida. Verifique que la dirección sea correcta e intente nuevamente.",
     "invalidColdWalletErrorOnchain": "Dirección de billetera Onchain inválida. Use una dirección Bitcoin válida (bc1... o 1... o 3...).",
     "invalidColdWalletErrorLightning": "Dirección de billetera Lightning inválida. Use solo un LNURL o un correo electrónico Lightning válido.",
-    "invalidLnurl": "LNURL inválido. Verifique la dirección e intente nuevamente.",
+    "invalidLnurl": "LNURL no compatible, use el formato de correo electrónico Lightning.",
     "invalidLnurlResponse": "Respuesta inválida del servidor LNURL.",
     "fixedAmountLnurlNotSupported": "Los LNURL con monto fijo no son compatibles. Use un LNURL que permita montos personalizados.",
     "lightningInvoiceNotSupported": "Las facturas Lightning (bolt11) ya no son compatibles. Use solo LNURL o correo electrónico Lightning.",
@@ -326,6 +326,10 @@
       "title": "Resumen Final",
       "expected_amount": "Valor Esperado (BRL)",
       "expected_amount_crypto": "Valor Esperado (Cripto)"
+    },
+    "wallet_confirmation": {
+      "title": "Confirmación de Dirección",
+      "checkbox_label": "Confirmo que la dirección es correcta:"
     },
     "buttons": {
       "cancel": "Cancelar",
