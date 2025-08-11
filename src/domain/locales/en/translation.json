@@ -211,7 +211,7 @@
     "invalidColdWalletErrorLiquid": "Invalid Liquid wallet address. Please verify the address is correct and try again.",
     "invalidColdWalletErrorOnchain": "Invalid Onchain wallet address. Use a valid Bitcoin address (bc1... or 1... or 3...).",
     "invalidColdWalletErrorLightning": "Invalid Lightning wallet address. Use only a LNURL or a valid Lightning email.",
-    "invalidLnurl": "Invalid LNURL. Please check the address and try again.",
+    "invalidLnurl": "LNURL not supported, please use the Lightning email format.",
     "invalidLnurlResponse": "Invalid response from LNURL server.",
     "fixedAmountLnurlNotSupported": "Fixed amount LNURLs are not supported. Please use a LNURL that allows custom amounts.",
     "lightningInvoiceNotSupported": "Lightning invoices (bolt11) are no longer supported. Use only LNURL or Lightning email.",
@@ -325,6 +325,10 @@
       "title": "Final Summary",
       "expected_amount": "Expected Amount (BRL)",
       "expected_amount_crypto": "Expected Amount (Crypto)"
+    },
+    "wallet_confirmation": {
+      "title": "Address Confirmation",
+      "checkbox_label": "I confirm that the address is correct:"
     },
     "buttons": {
       "cancel": "Cancel",
