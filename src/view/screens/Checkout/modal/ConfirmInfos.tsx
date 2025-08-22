@@ -76,6 +76,7 @@ export default function ConfirmInfosModal({
     alfredFee,
     alfredFeeRate,
     conversionFeeUsdBrl,
+    usdToBrl,
   }: {
     onchainFee: number | null;
     btcToBrl: number | null;
@@ -86,6 +87,7 @@ export default function ConfirmInfosModal({
     alfredFee: number;
     alfredFeeRate: number;
     conversionFeeUsdBrl: number | null;
+    usdToBrl: number | null;
   } = useConfirmInfos(
     network,
     fiatAmount,
@@ -99,6 +101,40 @@ export default function ConfirmInfosModal({
   const [isDataVisible, setIsDataVisible] = useState(false);
   const [isTaxVisible, setIsTaxVisible] = useState(false);
   const [isWalletConfirmed, setIsWalletConfirmed] = useState(false);
+
+  const handleConfirm = () => {
+    // Converte o valor do fiat para número
+    const fiatAmountNum = parseFloat(
+      fiatAmount.replace(/[^\d,]/g, '').replace(',', '.'),
+    );
+
+    const amountBRL =
+      fiatType.toUpperCase() === 'BRL'
+        ? fiatAmountNum
+        : fiatAmountNum * (usdToBrl || 0);
+
+    if (amountBRL > 5000) {
+      const whatsappNumber = import.meta.env.VITE_SUPPORT_NUMBER;
+      const message = encodeURIComponent(
+        `${t('confirm_infos.whatsapp_message.greeting')} ${fiatAmount} ${fiatType.toUpperCase()} para ${cryptoAmount} ${cryptoType.toUpperCase()}.\n\n` +
+        `${t('confirm_infos.whatsapp_message.transaction_details')}\n` +
+        `${t('confirm_infos.whatsapp_message.value_label')} ${fiatAmount} ${fiatType.toUpperCase()}\n` +
+        `${t('confirm_infos.whatsapp_message.crypto_label')} ${cryptoAmount} ${cryptoType.toUpperCase()}\n` +
+        `${t('confirm_infos.whatsapp_message.network_label')} ${network}\n` +
+        `${t('confirm_infos.whatsapp_message.wallet_label')} ${coldWallet}\n` +
+        `${t('confirm_infos.whatsapp_message.payment_method_label')} ${paymentMethod}\n` +
+        `${cupom ? `${t('confirm_infos.whatsapp_message.coupon_label')} ${cupom}\n` : ''}` +
+        `\n${t('confirm_infos.whatsapp_message.help_request')}`
+      );
+      
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
+      window.open(whatsappUrl, '_blank');
+      onClose();
+    } else {
+      // Valor abaixo de 5000, segue com a lógica original
+      onConfirm();
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -305,7 +341,7 @@ export default function ConfirmInfosModal({
             <Button variant="outline" onClick={onClose}>
               {t('confirm_infos.buttons.cancel')}
             </Button>
-            <Button onClick={onConfirm} disabled={!isWalletConfirmed}>
+            <Button onClick={handleConfirm} disabled={!isWalletConfirmed}>
               {t('confirm_infos.buttons.confirm')}
             </Button>
           </div>

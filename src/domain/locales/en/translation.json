@@ -330,6 +330,17 @@
       "title": "Address Confirmation",
       "checkbox_label": "I confirm that the address is correct:"
     },
+    "whatsapp_message": {
+      "greeting": "Hello! I would like to make a transaction of",
+      "transaction_details": "Transaction details:",
+      "value_label": "- Amount:",
+      "crypto_label": "- Cryptocurrency:",
+      "network_label": "- Network:",
+      "wallet_label": "- Wallet address:",
+      "payment_method_label": "- Payment method:",
+      "coupon_label": "- Coupon:",
+      "help_request": "Please help me process this transaction."
+    },
     "buttons": {
       "cancel": "Cancel",
       "confirm": "Confirm"

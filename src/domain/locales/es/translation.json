@@ -331,6 +331,17 @@
       "title": "Confirmación de Dirección",
       "checkbox_label": "Confirmo que la dirección es correcta:"
     },
+    "whatsapp_message": {
+      "greeting": "¡Hola! Me gustaría realizar una transacción de",
+      "transaction_details": "Detalles de la transacción:",
+      "value_label": "- Valor:",
+      "crypto_label": "- Criptomoneda:",
+      "network_label": "- Red:",
+      "wallet_label": "- Dirección de billetera:",
+      "payment_method_label": "- Método de pago:",
+      "coupon_label": "- Cupón:",
+      "help_request": "Por favor, ayúdenme a procesar esta transacción."
+    },
     "buttons": {
       "cancel": "Cancelar",
       "confirm": "Confirmar"
