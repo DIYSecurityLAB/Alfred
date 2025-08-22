@@ -114,7 +114,7 @@ export default function ConfirmInfosModal({
         : fiatAmountNum * (usdToBrl || 0);
 
     if (amountBRL > 5000) {
-      const whatsappNumber = import.meta.env.VITE_SUPPORT_NUMBER;
+      const whatsappNumber = import.meta.env.VITE_SUPPORT_NUMBER || '5511911872097';
       const message = encodeURIComponent(
         `${t('confirm_infos.whatsapp_message.greeting')} ${fiatAmount} ${fiatType.toUpperCase()} para ${cryptoAmount} ${cryptoType.toUpperCase()}.\n\n` +
         `${t('confirm_infos.whatsapp_message.transaction_details')}\n` +
